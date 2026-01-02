@@ -65,7 +65,7 @@
     .btn-page { background: #333; color: white; border: 1px solid #444; padding: 5px 15px; border-radius: 4px; }
     .btn-page:disabled { opacity: 0.5; }
     
-    /* BOTON FLOTANTE */
+    /* BOTON FLOTANTE DE PACK */
     #fab-cart { 
         position: fixed; bottom: 20px; right: 20px; 
         background: var(--primary); color: white; 
@@ -84,7 +84,7 @@
 
     <div id="loader">
         <div class="spinner-border text-danger" role="status"></div>
-        <div class="mt-2 text-secondary">Cargando catálogo...</div>
+        <div class="mt-2 text-secondary">Cargando catálogo completo...</div>
     </div>
 
     <nav class="navbar fixed-top px-3 pb-2 pt-2">
@@ -184,7 +184,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 🔴 URL DE TU SCRIPT DE GOOGLE
+        // ===============================================
+        // 🔴 PEGA TU URL DE GOOGLE SCRIPT AQUÍ
+        // ===============================================
         const API_URL = "https://script.google.com/macros/s/AKfycbwEJ3Xxa66rLlawdhgJsVI2FwDeKYci5k3kgHiQA98JjkgV2YD_xjAyySckQXaWURtw/exec";
 
         var DB = []; var VIEW_DB = []; var currentPage = 1; var itemsPerPage = 24; 
@@ -194,13 +196,15 @@
             fetch(API_URL)
                 .then(r => r.json())
                 .then(paquete => {
+                    // 1. LINK APK DINÁMICO (Desde Google Sheets)
                     if (paquete.apk && paquete.apk.startsWith("http")) {
                         document.getElementById('btn-apk').href = paquete.apk;
                     }
+                    // 2. CARGAR CATÁLOGO
                     iniciarWeb(paquete.catalogo);
                 })
                 .catch(e => {
-                    document.getElementById('loader').innerHTML = "<div class='text-white text-center p-5'>Error de conexión.</div>";
+                    document.getElementById('loader').innerHTML = "<div class='text-white text-center p-5'>Error de conexión.<br>Verifica la URL del script.</div>";
                 });
         };
 
@@ -229,11 +233,12 @@
                     generos: gens, 
                     link: item.link,
                     sinopsis: item.sinopsis,
-                    // 🔥 GUARDAMOS EL JSON ORIGINAL COMPLETO (Recibido del Backend)
+                    // 🔥 AQUI ESTA LA MAGIA: Guardamos el JSON completo original
                     jsonFull: item.jsonFull 
                 };
             });
 
+            // Llenar selects
             var selCat = document.getElementById('filtro-cat');
             Array.from(categoriasSet).sort().forEach(c => { selCat.innerHTML += `<option value="${c}">${c}</option>`; });
 
@@ -241,6 +246,7 @@
             Array.from(generosSet).sort().forEach(g => { selGen.innerHTML += `<option value="${g}">${g}</option>`; });
 
             var selAnio = document.getElementById('filtro-anio');
+            // Años ordenados descendente (2025, 2024...)
             Array.from(aniosSet).sort((a,b) => b - a).forEach(a => { selAnio.innerHTML += `<option value="${a}">${a}</option>`; });
 
             document.getElementById('loader').style.display = 'none'; 
@@ -270,7 +276,8 @@
                 return matchText && matchCat && matchGen && matchAnio;
             });
 
-            if (orden === 'nuevo') VIEW_DB.sort((a,b) => b.anio - a.anio);
+            // LOGICA ORDENAMIENTO
+            if (orden === 'nuevo') VIEW_DB.sort((a,b) => b.anio - a.anio); // Año descendente
             else if (orden === 'viejo') VIEW_DB.sort((a,b) => a.anio - b.anio);
             else if (orden === 'az') VIEW_DB.sort((a,b) => a.titulo.localeCompare(b.titulo));
 
@@ -284,10 +291,13 @@
 
         function renderGrid() {
             var container = document.getElementById('grid'); container.innerHTML = "";
+            
             if (VIEW_DB.length === 0) { 
                 container.innerHTML = "<p class='text-center w-100 text-muted mt-5'>Sin resultados.</p>"; 
-                document.getElementById('pagination').style.display = 'none'; return; 
+                document.getElementById('pagination').style.display = 'none'; 
+                return; 
             }
+            
             var start = (currentPage - 1) * itemsPerPage; 
             var end = start + itemsPerPage; 
             var paginatedItems = VIEW_DB.slice(start, end); 
@@ -302,7 +312,8 @@
                 <div class="card ${isSelected}" onclick="clickCard('${item.id}')">
                     <span class="badge-cat">${item.tipo}</span>
                     <span class="badge-year">${item.anio > 0 ? item.anio : ''}</span>
-                    <div class="select-overlay"></div>${iconCheck}
+                    <div class="select-overlay"></div>
+                    ${iconCheck}
                     <img src="${item.img}" class="card-img-top" loading="lazy" onerror="this.src='https://via.placeholder.com/300x450?text=Sin+Imagen'">
                     <div class="card-body">
                         <div class="card-title">${item.titulo}</div>
@@ -311,26 +322,50 @@
                 </div>`;
                 col.innerHTML = html; container.appendChild(col);
             });
+
             document.getElementById('pagination').style.display = 'flex'; 
             document.getElementById('page-info').innerText = currentPage + " / " + maxPages;
             document.querySelector('#pagination button:first-child').disabled = (currentPage === 1); 
             document.querySelector('#pagination button:last-child').disabled = (currentPage === maxPages);
         }
 
-        // LÓGICA DE SELECCIÓN
+        // LÓGICA DE SELECCIÓN MÚLTIPLE (PACK)
         function toggleSelectMode() {
             isSelectMode = !isSelectMode;
             var btn = document.getElementById('btn-select-mode');
-            if (isSelectMode) { btn.innerText = "Cancelar"; btn.className = "btn btn-sm btn-danger text-white"; } 
-            else { btn.innerText = "Seleccionar"; btn.className = "btn btn-sm btn-outline-light"; selectedIds.clear(); updateFab(); }
+            
+            if (isSelectMode) {
+                btn.innerText = "Cancelar";
+                btn.className = "btn btn-sm btn-danger text-white";
+            } else {
+                btn.innerText = "Seleccionar";
+                btn.className = "btn btn-sm btn-outline-light";
+                selectedIds.clear(); 
+                updateFab();
+            }
             renderGrid();
         }
+
         function clickCard(id) {
-            if (!isSelectMode) { abrirModal(id); return; }
-            if (selectedIds.has(id)) { selectedIds.delete(id); } 
-            else { if (selectedIds.size >= 30) { alert("⚠️ Límite alcanzado: Solo 30 archivos."); return; } selectedIds.add(id); }
-            updateFab(); renderGrid();
+            if (!isSelectMode) {
+                abrirModal(id);
+                return;
+            }
+
+            if (selectedIds.has(id)) {
+                selectedIds.delete(id);
+            } else {
+                // LÍMITE DE 30 ARCHIVOS
+                if (selectedIds.size >= 30) {
+                    alert("⚠️ Límite alcanzado: Solo puedes seleccionar 30 archivos por Pack.");
+                    return;
+                }
+                selectedIds.add(id);
+            }
+            updateFab();
+            renderGrid();
         }
+
         function updateFab() {
             var fab = document.getElementById('fab-cart');
             document.getElementById('cart-count').innerText = selectedIds.size;
@@ -365,6 +400,7 @@
             document.getElementById('m-anio').innerText = item.anio > 0 ? item.anio : "----"; 
             document.getElementById('m-cat').innerText = item.tipo;
 
+            // --- LÓGICA DE BOTÓN SUPERIOR (APP vs JSON) ---
             var btnContainer = document.getElementById('dynamic-btn-container');
             var catLower = item.tipo ? item.tipo.toLowerCase() : "";
             
