@@ -201,10 +201,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // 🔒 URL PROTEGIDA (OFUSCADA)
         // ===============================================
-        // 🔴 PEGA TU URL DE GOOGLE SCRIPT AQUÍ
+        
+        // 1. Aquí pegas el código raro que te dio la página Base64
+        const SECURE_HOST = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5OGxZa0s2WF9xbUpLMXNhdEwzaFFqRTJkQTAxUkFRZTRLbjVCYkw1T0xRS1p0cl9JcDRSVWJoaTFHMkZtU2xHYy9leGVjP2tleT1Ub2RvVmlsdV9TZWNyZXRfMjAyNl9BY2Nlc3M=";
+        // 2. El navegador lo traduce automáticamente a la URL real
+        const API_URL = atob(SECURE_HOST);
         // ===============================================
-        const API_URL = "https://script.google.com/macros/s/AKfycby8lYkK6X_qmJK1satL3hQjE2dA01RAQe4Kn5BbL5OLQKZtr_Ip4RUbhi1G2FmSlGc/exec";
 
         var DB = []; var VIEW_DB = []; var currentPage = 1; var itemsPerPage = 24; 
         var selectedIds = new Set(); var isSelectMode = false;
