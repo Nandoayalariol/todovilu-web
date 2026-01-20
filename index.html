@@ -395,22 +395,28 @@
 
         // 🔥 FUNCIÓN CORREGIDA: Descargar Pack usando los JSON ORIGINALES
         function descargarPack() {
-            if (selectedIds.size === 0) return;
-            
-            // Filtramos los items seleccionados y extraemos SU JSON ORIGINAL
-            var packArray = DB.filter(i => selectedIds.has(i.id)).map(i => i.jsonFull);
-            
-            var dataStr = JSON.stringify(packArray, null, 2);
-            var blob = new Blob([dataStr], { type: "application/json;charset=utf-8" });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = "Pack_TodoVilu_" + selectedIds.size + "_items.json";
-            document.body.appendChild(a); a.click(); 
-            setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
-            toggleSelectMode();
-        }
-
+    if (selectedIds.size === 0) return;
+    
+    var packArray = DB.filter(i => selectedIds.has(i.id)).map(i => i.jsonFull);
+    var dataStr = JSON.stringify(packArray, null, 2);
+    
+    // ✅ Si está en la app Android, envía JSON directo
+    if (typeof Android !== 'undefined') {
+        Android.downloadJson(dataStr);  // Envía el JSON como string
+        alert("✅ Importando " + selectedIds.size + " items en la app...");
+        toggleSelectMode();
+    } else {
+        // ✅ Fallback: descarga normal si abren en navegador
+        var blob = new Blob([dataStr], { type: "application/json;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = "Pack_TodoVilu_" + selectedIds.size + "_items.json";
+        document.body.appendChild(a); a.click(); 
+        setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
+        toggleSelectMode();
+    }
+}
         function abrirModal(id) {
             var item = DB.find(x => x.id === id); if(!item) return;
 
@@ -443,21 +449,27 @@
 
         // 🔥 FUNCIÓN CORREGIDA: Descargar JSON Individual usando el ORIGINAL
         function descargarJSON(id) {
-            var item = DB.find(x => x.id === id);
-            
-            // Usamos el jsonFull que viene del backend
-            var dataStr = JSON.stringify(item.jsonFull, null, 2);
-            var blob = new Blob([dataStr], { type: "application/json;charset=utf-8" });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            // Limpiar nombre de archivo
-            var cleanName = item.titulo.replace(/[^a-zA-Z0-9 ]/g, "").replace(/ /g, "_");
-            a.download = cleanName + ".json";
-            document.body.appendChild(a); a.click(); 
-            setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
-        }
-
+    var item = DB.find(x => x.id === id);
+    var dataStr = JSON.stringify(item.jsonFull, null, 2);
+    
+    // ✅ Si está en la app Android, envía directo
+    if (typeof Android !== 'undefined') {
+        Android.downloadJson(dataStr);
+        alert("✅ Importando '" + item.titulo + "' en la app...");
+        var myModal = bootstrap.Modal.getInstance(document.getElementById('infoModal'));
+        if (myModal) myModal.hide();
+    } else {
+        // ✅ Fallback navegador
+        var blob = new Blob([dataStr], { type: "application/json;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        var cleanName = item.titulo.replace(/[^a-zA-Z0-9 ]/g, "").replace(/ /g, "_");
+        a.download = cleanName + ".json";
+        document.body.appendChild(a); a.click(); 
+        setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
+    }
+}
         function mostrarOpcionesVenta() { document.getElementById('sales-overlay').style.display = 'block'; }
     </script>
 </body>
