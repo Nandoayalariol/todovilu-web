@@ -1,0 +1,491 @@
+// --- 🔒 MIS CREDENCIALES ---
+const EMAIL = "firebase-adminsdk-fbsvc@vilustreaming-47e9f.iam.gserviceaccount.com"; 
+const KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCyPzkZUoeL4Xp1\nWaWSB+EPbPnHdVKk9bR4rn0Yt/LWXUM+w6VFeecyx2zKNEZ5g1NVDfzixWp0kaQq\nKrVUXY0WHSMrjMjOQzOe5jqUF+tyjHlVmVX3jM+7W8PPMlfyOSNK++9xmrJX5+wK\nYRacbI0eBbtT5DlagjWAoMWtdCAfmFPqS4AMjutyUceJHyHckT/xF0T8tnywIrnP\nEvyKBuWURWW+EawRgJUNKSQT+2UlTWMP2qr7VtI7nNdpNJqw2WnaO1ccS2UQ5gYB\nykjy06HX5eHp0/dPtV0cm5JucRZxR3U5xzBJqs5HpM6rSxMde/Jj9RrjDUqxBd28\nZ1v849rXAgMBAAECggEAGquXEZDlsypjtldZjMYdCL/Xh96oJQKWpFAHa8FqVmTS\nAPwpKIIa8+AfCQpVWS0rNNjI8+1yBksccyq8wwjUaXCmqIeCLEql2Kq+LRZ/Jj6a\nkRJGaKnrEy+h1sjDm/ysqTWVGDx7XufWy57HUVR0sP9Ojjjh1AcTllF4AoITpGZY\nBHJelgY2aaMzce+1VRvfFJhXt3jZZqhdq9Ig2N63rD/moICav7mdU8As2/5tgZ4/\n3+Bv4uCxonJfty/8pB4IFL5TaQtWEvnJGR4i7nzyS8Om0K44fSzF4O7G+Cu6txun\nZjNaqj0Zr6Kqdb4S3IM8pOkYjfPah68mOHY1w8DywQKBgQDy1WMrkCUGNPq4/4bR\niUmdmdJcKY3BcZ47/gKQyLa0wYJpxU9SS1/FkzSIrjojnZMgjBmuB6yrHTCzHMeM\nB/msNUEoTQSEoKWpQBjXuRotgv+yk2jbrJgZEYU3MAiaq1A3nTcDbM7iSCTnumZW\nYj7n2NAXttZhdTUcGhK/DXqRRwKBgQC76VoTNaTv175o/igF2Syv9M+G03Ul+vXI\n8jl+vA0VOsfr7oumrMufqnlruQA84c0fNyY8MxaV7+aGUEwq53Ww77xOd5eEOOjM\noBaGdbhjwvcjlLvMcihpb3nFu8DN/J+Ce/ZwEkduJUrnS7rmHvZrSk2LKPd1stEt\nM/DuwPmx8QKBgQDsrsmjGzLLEvZRPFWmg75pyxS62ZGeO2S0KodLoSZblcTL3RHM\nL0UgqLLqiY6HSj2t2n/pHPfSLHhcC6//L4LNs3ZXloHR11bAWYYdNQBr3aPl5UGt\n41K4FFiYisvIHTPpkOWfA/29lf3KkubOSaHwjmV8x6u6f+gNBOjCqJuPXwKBgHzD\nVav1bRpVmzXosbgYVqRJHdS950UdWD1gHi54OxOCYKTUUGKMzfGn5VBRl8fUgDWe\nj0NfBDru+pbpD3lZDno44kUTAEWo52CdVfdWh+Os2hwEr5/xl8VRX3+axku91EZ1\nec01RbnrBs2FKYWKvz/DKLMhsxOxc1LY7roG5IJxAoGBALqSJHLkj5P/lHRr9XPp\nyNK9KiaLo846OKZ/XFIexd2QCnOG+3PDaWXNG821EHxn8XHGwn5Usi+0MiRyrroT\nOwfExgKDy+7Zidfa1mLUQwnNQEY9+Bq+/+yA1ZdXKWuWw8IGoJGSU3s2jxjFD1Cg\nC4fjKK977bYaULbkTjoH6yrf\n-----END PRIVATE KEY-----\n"; 
+const PROJECT_ID = "vilustreaming-47e9f"; 
+
+const API_KEY = "d6764c51ff72a9f951258024922093fc"; 
+const MULTIPLIER = 1048576; 
+
+const CANALES = {
+  "peliculas": -1003433911781, 
+  "reelshorts": -1003315373393,
+  "series": -1003321083063,    
+  "animes": -1003395897063,    
+  "textos": -1003333779378     
+};
+
+function getFirestore() { return FirestoreApp.getFirestore(EMAIL, KEY, PROJECT_ID); }
+
+// ==========================================
+// BACKEND HÍBRIDO CON SEGURIDAD 🔒
+// ==========================================
+function doGet(e) {
+  // 🔑 LA CONTRASEÑA (Cámbiala por algo difícil)
+  var API_KEY_SECRET = "TodoVilu_Secret_2026_Access"; 
+
+  // 1. VERIFICAR PERMISOS
+  // Si no traen la llave y no es modo admin... ¡FUERA! ⛔
+  var keyRecibida = e.parameter.key || "";
+  var modo = e.parameter.modo || "";
+
+  if (modo !== "admin" && keyRecibida !== API_KEY_SECRET) {
+     return ContentService.createTextOutput("⛔ ACCESO DENEGADO: No tienes permiso para ver este catálogo.")
+            .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  // 2. 🔓 MODO ADMIN (Login con PIN)
+  if (modo === "admin") {
+    return HtmlService.createHtmlOutputFromFile('Sidebar')
+        .setTitle('TodoVilu Admin Móvil')
+        .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no');
+  }
+
+  // 3. 📲 MODO APP (Entrega el JSON si pasó la seguridad)
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var linkApk = "#"; 
+  var hojaConfig = ss.getSheetByName("Config");
+  if (hojaConfig) { linkApk = hojaConfig.getRange("A1").getValue().toString(); }
+
+  var output = [];
+  var busqueda = e.parameter.q ? e.parameter.q.toString().toLowerCase() : "";
+  var hojas = ["Peliculas", "Series", "Animes", "Reelshorts"]; 
+
+  hojas.forEach(function(nombreHoja) {
+    var sheet = ss.getSheetByName(nombreHoja);
+    if (sheet) {
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        var data = sheet.getRange(2, 1, lastRow - 1, 6).getValues();
+        for (var i = 0; i < data.length; i++) {
+          var row = data[i];
+          if (!row[0] || String(row[0]).trim() === "") continue;
+          var titulo = String(row[1]).toLowerCase(); 
+          if (busqueda === "" || titulo.includes(busqueda)) {
+             output.push(procesarFila(row, nombreHoja));
+          }
+        }
+      }
+    }
+  });
+
+  if (busqueda === "") { output.sort(function() { return 0.5 - Math.random() }); }
+
+  var paquete = { apk: linkApk, catalogo: output };
+
+  return ContentService.createTextOutput(JSON.stringify(paquete))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// (Deja la función procesarFila como estaba, esa no cambia)
+function procesarFila(row, categoria) {
+  var meta = { link: "#", year: "----", generos: "General" };
+  var datosOriginales = {}; // Aquí guardaremos el JSON completo para la App
+
+  // INTENTO 1: Leer JSON (Columna E)
+  try {
+    var jsonRaw = row[4];
+    if (jsonRaw && String(jsonRaw).trim() !== "") {
+      var parsed = JSON.parse(jsonRaw);
+      datosOriginales = parsed; // Guardamos el objeto original exacto
+
+      if (parsed.year) meta.year = String(parsed.year);
+      if (parsed.link) meta.link = parsed.link;
+      if (parsed.generos) meta.generos = Array.isArray(parsed.generos) ? parsed.generos.join(", ") : parsed.generos;
+      if (meta.link === "#" && parsed.trailerUrl) meta.link = parsed.trailerUrl;
+      // Aseguramos que la App tenga su ID correcto
+      if (parsed.idMsgCaratula) meta.idApp = parsed.idMsgCaratula;
+    }
+  } catch (e) {}
+
+  // Si no había JSON, creamos uno básico para que la App no falle
+  if (Object.keys(datosOriginales).length === 0) {
+      datosOriginales = {
+          id: String(row[0]),
+          titulo: String(row[1]),
+          imagen: String(row[2]),
+          sinopsis: String(row[3]),
+          link: row[5] || "#",
+          categoria: categoria
+      };
+  }
+
+  // INTENTO 2: Link Manual
+  if (row[5] && String(row[5]).startsWith("http")) meta.link = row[5];
+
+  return {
+    id: String(row[0]),          
+    idApp: String(meta.idApp || row[0]),   
+    titulo: String(row[1]),      
+    imagen: String(row[2]),
+    sinopsis: String(row[3]),
+    link: meta.link,
+    anio: meta.year,
+    generos: meta.generos,
+    categoria: categoria,
+    // 🔥 ESTA ES LA CLAVE: Enviamos el JSON crudo para las descargas
+    jsonFull: datosOriginales 
+  };
+}
+
+function servirArchivoJson(idBuscado, nombreHoja) {
+  const data = buscarFila(idBuscado, nombreHoja);
+  if (!data) return ContentService.createTextOutput("Error: No encontrado");
+  const tituloLimpio = limpiarNombre(data[1]);
+  return ContentService.createTextOutput(data[4]).setMimeType(ContentService.MimeType.JSON).downloadAsFile(tituloLimpio + ".json");
+}
+
+function servirPackJson(idsString, categoriaFija) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let jsonArray = [];
+  let nombreArchivo = "pack_descarga.json";
+
+  if (idsString === "TODO" && categoriaFija) {
+    const sheet = ss.getSheetByName(categoriaFija);
+    if (sheet && sheet.getLastRow() > 1) {
+      const datos = sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues();
+      jsonArray = datos.map(r => { try { return JSON.parse(r[0]); } catch(e) { return null; } }).filter(item => item !== null);
+      nombreArchivo = "Pack_Completo_" + categoriaFija + ".json";
+    }
+  } else if (idsString) {
+    const idsBuscados = idsString.split(",");
+    const hojas = ['Peliculas', 'Series', 'Animes', 'Reelshorts', 'Textos'];
+    hojas.forEach(nombre => {
+      const sheet = ss.getSheetByName(nombre);
+      if (sheet && sheet.getLastRow() > 1) {
+        const datos = sheet.getRange(2, 1, sheet.getLastRow() - 1, 5).getValues();
+        datos.forEach(fila => {
+          if (idsBuscados.includes(String(fila[0]))) {
+            try { jsonArray.push(JSON.parse(fila[4])); } catch(e) {}
+          }
+        });
+      }
+    });
+    nombreArchivo = "Pack_Seleccion_" + jsonArray.length + "_items.json";
+  }
+  return ContentService.createTextOutput(JSON.stringify(jsonArray)).setMimeType(ContentService.MimeType.JSON).downloadAsFile(nombreArchivo);
+}
+
+function buscarFila(id, hoja) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(hoja);
+  if (!sheet) return null;
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]) === String(id)) return data[i];
+  }
+  return null;
+}
+
+function limpiarNombre(txt) {
+  let s = txt.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  s = s.replace(/ñ/gi, "n").replace(/[^a-zA-Z0-9 \-]/g, "");
+  return s.trim();
+}
+
+function onOpen() { SpreadsheetApp.getUi().createMenu('🎬 TodoVilu Admin').addItem('Abrir Importador', 'mostrarSidebar').addToUi(); }
+function mostrarSidebar() { SpreadsheetApp.getUi().showSidebar(HtmlService.createHtmlOutputFromFile('Sidebar').setTitle('Importador TodoVilu').setWidth(420)); }
+
+// ==========================================
+// 3. BUSCADORES
+// ==========================================
+
+function normalizarTexto(texto) { return String(texto).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim(); }
+
+function buscarCandidatos(query) {
+  try {
+    const url = `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=es-MX&query=${encodeURIComponent(query)}`;
+    const data = JSON.parse(UrlFetchApp.fetch(url, {muteHttpExceptions:true}).getContentText());
+    if (!data.results) return [];
+    return data.results.map(item => ({
+      id: item.id, tipo: item.media_type, titulo: item.title || item.name,
+      anio: item.release_date || item.first_air_date || '?',
+      imagen: item.poster_path ? `https://image.tmdb.org/t/p/w92${item.poster_path}` : 'https://via.placeholder.com/92x138?text=Sin+IMG',
+      descripcion: item.overview ? item.overview.substring(0, 50) + '...' : ''
+    }));
+  } catch (e) { return []; }
+}
+
+function buscarEnBaseDeDatos(query) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const hojas = ['Peliculas', 'Series', 'Animes', 'Reelshorts', 'Textos'];
+  let resultados = [];
+  const qClean = normalizarTexto(query);
+  hojas.forEach(nombre => {
+    const sheet = ss.getSheetByName(nombre);
+    if (sheet && sheet.getLastRow() > 1) {
+      const datos = sheet.getRange(2, 1, sheet.getLastRow() - 1, 5).getValues();
+      datos.forEach(fila => {
+        const id = normalizarTexto(fila[0]);
+        const titulo = normalizarTexto(fila[1]);
+        if (titulo.includes(qClean) || id === qClean) {
+          resultados.push({ json: fila[4], titulo: fila[1], imagen: fila[2], hoja: nombre });
+        }
+      });
+    }
+  });
+  return resultados;
+}
+
+// ==========================================
+// 4. DETALLES AVANZADOS (CON AUTO-SAGA)
+// ==========================================
+
+function obtenerDatosPeli(id, tipo) {
+  let append = "credits,videos,release_dates,content_ratings";
+  if (tipo === 'tv') append = "credits,videos,content_ratings";
+  const url = `https://api.themoviedb.org/3/${tipo}/${id}?api_key=${API_KEY}&language=es-MX&append_to_response=${append}`;
+  const item = JSON.parse(UrlFetchApp.fetch(url).getContentText());
+  
+  let duracion = 0;
+  if (tipo === 'movie') duracion = item.runtime || 0;
+  else if (item.episode_run_time?.length) duracion = item.episode_run_time[0];
+
+  const trailer = buscarTrailer(item.videos);
+  const clasif = buscarClasificacion(item, tipo);
+  const director = buscarDirector(item.credits);
+  const reparto = (item.credits && item.credits.cast) ? item.credits.cast.slice(0, 8).map(c => c.name) : [];
+  const productoras = (item.production_companies) ? item.production_companies.map(p => p.name) : [];
+  const creadores = (item.created_by) ? item.created_by.map(c => c.name) : [];
+  const networks = (item.networks) ? item.networks.map(n => n.name) : [];
+  
+  // 🔥 AUTO-DETECTAR SAGA / COLECCIÓN
+  let sagaAuto = "";
+  if (item.belongs_to_collection && item.belongs_to_collection.name) {
+      // Convertir "The Avengers Collection" -> "the_avengers_collection"
+      sagaAuto = item.belongs_to_collection.name.toLowerCase().trim().replace(/ /g, "_").replace(/[^a-z0-9_]/g, "");
+  }
+
+  let datos = {
+    tmdbId: item.id, titulo: item.title || item.name,
+    original_name: item.original_name || item.original_title,
+    sinopsis: item.overview,
+    imagen: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",
+    year: parseInt((item.release_date || item.first_air_date || "").substring(0,4)) || 0,
+    duracion: duracion, generos: item.genres.map(g => g.name),
+    tipo: tipo, categoria_sugerida: (tipo === 'movie') ? 'peliculas' : 'series',
+    calificacion: item.vote_average || 0.0, clasificacion: clasif,
+    idioma: item.original_language || "es", paisOrigen: (item.production_countries && item.production_countries.length > 0) ? item.production_countries[0].iso_3166_1 : "",
+    reparto: reparto, productoras: productoras, trailerUrl: trailer,
+    director: director, creadores: creadores, networks: networks,
+    enEmision: (item.status === "Returning Series" || item.status === "In Production"),
+    saga: sagaAuto, // <--- CAMPO AUTOMÁTICO
+    episodios: [] 
+  };
+
+  if (tipo !== 'movie') {
+    datos.episodios = traerEpisodios(id, item.number_of_seasons);
+    datos.total_temporadas = item.number_of_seasons || 0;
+  }
+  return datos;
+}
+
+function buscarTrailer(videosObj) {
+  if (!videosObj || !videosObj.results) return "";
+  const vid = videosObj.results.find(v => v.type === "Trailer" && v.site === "YouTube");
+  if (vid) return `https://www.youtube.com/watch?v=${vid.key}`;
+  return "";
+}
+
+function buscarClasificacion(item, tipo) {
+  try {
+    if (tipo === 'movie' && item.release_dates) {
+      const release = item.release_dates.results.find(r => r.iso_3166_1 === "MX") || item.release_dates.results.find(r => r.iso_3166_1 === "US");
+      if (release && release.release_dates.length > 0) return release.release_dates[0].certification;
+    } else if (tipo === 'tv' && item.content_ratings) {
+      const rating = item.content_ratings.results.find(r => r.iso_3166_1 === "MX") || item.content_ratings.results.find(r => r.iso_3166_1 === "US");
+      if (rating) return rating.rating;
+    }
+  } catch(e) {}
+  return "";
+}
+
+function buscarDirector(credits) {
+  if (!credits || !credits.crew) return "";
+  const dir = credits.crew.find(c => c.job === "Director");
+  return dir ? dir.name : "";
+}
+
+function traerEpisodios(id, totalTemps) {
+  let lista = [];
+  for(let s=1; s<=Math.min(totalTemps, 20); s++){
+     try {
+       let urlS = `https://api.themoviedb.org/3/tv/${id}/season/${s}?api_key=${API_KEY}&language=es-MX`;
+       let data = JSON.parse(UrlFetchApp.fetch(urlS).getContentText());
+       data.episodes.forEach(e => {
+         lista.push({ temporada: s, numero: e.episode_number, titulo: e.name, sinopsis: e.overview || "", duracion: e.runtime || 0 });
+       });
+     } catch(e) {}
+  }
+  return lista;
+}
+
+// ==========================================
+// 5. GUARDADO INTELIGENTE Y ROBUSTO
+// ==========================================
+
+function upsertFirestore(firestore, ruta, datos) {
+  try { firestore.updateDocument(ruta, datos); } catch(e) {
+    try { firestore.createDocument(ruta, datos); } catch(e2) {
+      try { firestore.deleteDocument(ruta); } catch(e3){}
+      firestore.createDocument(ruta, datos);
+    }
+  }
+}
+
+function guardarFormulario(d) {
+  const ahora = new Date();
+  let catFinal = d.categoria.toLowerCase();
+  let tmdbKey = String(d.tmdbId).trim();
+  
+  let idCanalFijo = CANALES[catFinal] || 0; 
+  let rawMsgCaratula = parseInt(d.idMsgCaratula) || 0;
+  let finalMsgCaratula = rawMsgCaratula > 0 ? rawMsgCaratula * MULTIPLIER : 0;
+  
+  const nombreHoja = catFinal.charAt(0).toUpperCase() + catFinal.slice(1); 
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(nombreHoja);
+  if(!sheet) return "Error: No existe pestaña " + nombreHoja;
+
+  const data = sheet.getDataRange().getValues();
+  let filaEncontrada = -1;
+  let fechaOriginal = null;
+
+  for (let i = 1; i < data.length; i++) {
+    let idEnCelda = String(data[i][0]).trim();
+    if (idEnCelda === tmdbKey) {
+      filaEncontrada = i + 1;
+      try { 
+        let jsonViejo = JSON.parse(data[i][4]); 
+        if (jsonViejo.fechaAgregada) fechaOriginal = jsonViejo.fechaAgregada;
+      } catch(e){}
+      break;
+    }
+  }
+
+  const fechaApp = fechaOriginal || { "_seconds": Math.floor(ahora.getTime() / 1000), "_nanoseconds": 0 };
+  let fechaFirestore = ahora;
+  if (fechaOriginal && fechaOriginal._seconds) {
+      fechaFirestore = new Date(fechaOriginal._seconds * 1000);
+  }
+
+  // --- DATOS BASE ---
+  let baseData = {
+    titulo: d.titulo, sinopsis: d.sinopsis, year: parseInt(d.anio) || 0,
+    destacada: d.destacada === true, nuevo: d.nuevo === true,
+    generos: d.generos, tmdbId: parseInt(d.tmdbId),
+    categoria: catFinal, idCanalCaratula: idCanalFijo, idMsgCaratula: finalMsgCaratula,
+    calificacion: parseFloat(d.calificacion) || 0, clasificacion: d.clasificacion || "",
+    idioma: d.idioma || "es", paisOrigen: d.paisOrigen || "", trailerUrl: d.trailerUrl || "",
+    reparto: d.reparto || [], productoras: d.productoras || [],
+    saga: d.saga || "", // <--- GUARDAMOS SAGA DETECTADA O MANUAL
+    fechaAgregada: fechaApp
+  };
+
+  let jsonFirestore = { ...baseData, fechaAgregada: fechaFirestore, lastUpdate: ahora };
+  let jsonExcel = { ...baseData, fechaAgregada: fechaApp, lastUpdate: fechaApp }; 
+
+  const rutaDoc = catFinal + "/" + finalMsgCaratula;
+  const firestore = getFirestore();
+
+  try {
+    if (catFinal === 'peliculas' || catFinal === 'reelshorts') {
+      let rawMsgVideo = parseInt(d.idMsgVideo) || 0;
+      [jsonFirestore, jsonExcel].forEach(j => {
+        j.idCanalVideo = idCanalFijo;
+        j.idMsgVideo = rawMsgVideo > 0 ? rawMsgVideo * MULTIPLIER : 0;
+        j.duracion = parseInt(d.duracion) || 0;
+        j.director = d.director || "";
+      });
+      upsertFirestore(firestore, rutaDoc, jsonFirestore);
+    } 
+    else if (catFinal === 'series' || catFinal === 'animes') {
+      [jsonFirestore, jsonExcel].forEach(j => {
+        j.temporadas = d.total_temporadas;
+        j.duracionPromedio = parseInt(d.duracion) || 0;
+        j.creadores = d.creadores || [];
+        j.networks = d.networks || [];
+        j.enEmision = d.enEmision === true;
+        if (catFinal === 'animes') j.estado = "En emisión"; 
+      });
+
+      let episodiosListos = d.episodios.map(ep => {
+        let finalEpMsg = (parseInt(ep.idMsgVideo) || 0) * MULTIPLIER;
+        return {
+          numero: ep.numero, titulo: ep.titulo, sinopsis: ep.sinopsis, duracion: ep.duracion || 0, temporada: ep.temporada,
+          idCanalVideo: idCanalFijo, idMsgVideo: finalEpMsg, idCanalCaratula: idCanalFijo, idMsgCaratula: 0,
+          subirAFirestore: ep.subirAFirestore
+        };
+      });
+      jsonExcel.episodios = episodiosListos;
+      upsertFirestore(firestore, rutaDoc, jsonFirestore); 
+      episodiosListos.forEach(ep => {
+        if (ep.subirAFirestore === true) {
+            delete ep.subirAFirestore; 
+            let nombreDoc = (ep.temporada > 1) ? "s"+ep.temporada+"ep"+ep.numero : "ep"+ep.numero;
+            let rutaEp = rutaDoc + "/episodios/" + nombreDoc;
+            upsertFirestore(firestore, rutaEp, ep);
+        }
+      });
+    }
+    else if (catFinal === 'textos') {
+      [jsonFirestore, jsonExcel].forEach(j => { 
+          j.autor = d.autor || ""; 
+          j.estado = "En emisión"; 
+          j.paginasPromedio = parseInt(d.duracion) || 0;
+      });
+      let capitulosListos = d.episodios.map(ep => {
+        let finalEpMsg = (parseInt(ep.idMsgVideo) || 0) * MULTIPLIER;
+        return {
+           id: "cap"+ep.numero, numero: ep.numero, titulo: ep.titulo, tipo: "manga",
+           idCanalCapitulo: idCanalFijo, idMsgCapitulo: finalEpMsg, paginas: ep.duracion || 0, estado: "disponible"
+        };
+      });
+      jsonExcel.capitulos = capitulosListos;
+      upsertFirestore(firestore, rutaDoc, jsonFirestore);
+    }
+  } catch(e) { return "⚠️ Error Firestore: " + e.message; }
+
+  if (filaEncontrada > 0) {
+    sheet.getRange(filaEncontrada, 2).setValue(d.titulo);
+    sheet.getRange(filaEncontrada, 3).setValue(d.imagen);
+    sheet.getRange(filaEncontrada, 4).setValue(d.sinopsis);
+    sheet.getRange(filaEncontrada, 5).setValue(JSON.stringify(jsonExcel));
+    sheet.getRange(filaEncontrada, 6).setValue(new Date()); 
+    return "✅ [EDITADO] " + d.titulo;
+  } else {
+    sheet.appendRow([d.tmdbId, d.titulo, d.imagen, d.sinopsis, JSON.stringify(jsonExcel), new Date()]);
+    return "✅ [NUEVO] " + d.titulo;
+  }
+}
+
+function obtenerTodoElCatalogo() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const hojas = ['Peliculas', 'Series', 'Animes', 'Reelshorts', 'Textos'];
+  let todo = [];
+  hojas.forEach(nombre => {
+    const sheet = ss.getSheetByName(nombre);
+    if (sheet && sheet.getLastRow() > 1) {
+      const datos = sheet.getRange(2, 1, sheet.getLastRow() - 1, 5).getValues();
+      const datosConTipo = datos.map(f => [ String(f[0]), String(f[1]), String(f[2]), String(f[3]), String(f[4]), nombre ]);
+      todo = todo.concat(datosConTipo);
+    }
+  });
+  for (let i = todo.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [todo[i], todo[j]] = [todo[j], todo[i]]; }
+  return todo;
+}
+
+function obtenerDatosHoja(n) { 
+  const s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(n); 
+  if (!s || s.getLastRow() < 2) return []; 
+  return s.getRange(2, 1, s.getLastRow()-1, 5).getValues().map(r=>r.map(String)); 
+}
+
+function verificarPasswordAdmin(passwordIngresada) {
+  const PASSWORD_REAL = "1325"; 
+  return passwordIngresada === PASSWORD_REAL;
+}
+
+function obtenerLinkDescargaApp() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const hoja = ss.getSheetByName("Config"); 
+  if (!hoja) return "#"; 
+  return hoja.getRange("A1").getValue(); 
+}
