@@ -1110,17 +1110,27 @@
                     "dynamic-btn-container"
                 );
 
-            buttonContainer.innerHTML = `
-                <button
-                    class="btn-deeplink style-app"
-                    onclick="descargarJSON('${escapar(item.id)}')">
+            if (ES_APP_TODOVILU) {
+    buttonContainer.innerHTML = `
+        <button
+            class="btn-deeplink style-app"
+            onclick="descargarJSON('${escapar(item.id)}')">
 
-                    <i class="bi bi-play-fill"></i>
-                    ${ES_APP_TODOVILU
-                        ? "VER"
-                        : "ABRIR EN APP"}
-                </button>
-            `;
+            <i class="bi bi-play-fill"></i>
+            VER DETALLES
+        </button>
+    `;
+} else {
+    buttonContainer.innerHTML = `
+        <button
+            class="btn-deeplink style-app"
+            onclick="mostrarOpcionesVenta()">
+
+            <i class="bi bi-phone-fill"></i>
+            DISPONIBLE EN LA APP
+        </button>
+    `;
+}
 
             const secondaryContainer =
                 document.getElementById(
@@ -1160,67 +1170,20 @@
         }
 
         function descargarJSON(id) {
-            const item =
-                DB.find(element => element.id === id);
+    const item = DB.find(element => element.id === id);
 
-            if (!item || !item.jsonFull) {
-                alert("No hay JSON disponible.");
-                return;
-            }
+    if (!item || !item.jsonFull) {
+        return;
+    }
+    if (
+        ES_APP_TODOVILU &&
+        typeof Android !== "undefined"
+    ) {
+        const jsonString = JSON.stringify(item.jsonFull);
 
-            const dataStr =
-                JSON.stringify(item.jsonFull);
-
-            if (
-                ES_APP_TODOVILU &&
-                typeof Android !== "undefined"
-            ) {
-                Android.downloadJson(dataStr);
-
-                const modal =
-                    bootstrap.Modal.getInstance(
-                        document.getElementById("infoModal")
-                    );
-
-                if (modal) {
-                    modal.hide();
-                }
-
-                return;
-            }
-
-            const blob =
-                new Blob(
-                    [JSON.stringify(item.jsonFull, null, 2)],
-                    {
-                        type: "application/json;charset=utf-8"
-                    }
-                );
-
-            const url =
-                URL.createObjectURL(blob);
-
-            const link =
-                document.createElement("a");
-
-            link.href = url;
-
-            const nombre =
-                item.titulo
-                    .replace(/[^a-zA-Z0-9 ]/g, "")
-                    .replace(/ /g, "_");
-
-            link.download = nombre + ".json";
-
-            document.body.appendChild(link);
-            link.click();
-
-            setTimeout(() => {
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }, 100);
-        }
-
+        Android.downloadJson(jsonString);
+    }
+}
         function descargarPack() {
             if (
                 ES_APP_TODOVILU &&
