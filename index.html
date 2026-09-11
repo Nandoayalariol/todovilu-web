@@ -361,6 +361,11 @@
             body.en-app {
                 padding-top: calc(115px + env(safe-area-inset-top));
             }
+        
+#btn-select-mode,
+#fab-cart {
+    display: none !important;
+}
         }
     </style>
 </head>
@@ -388,7 +393,8 @@
                     <button
                         class="btn btn-sm btn-outline-light"
                         onclick="toggleSelectMode()"
-                        id="btn-select-mode">
+                        id="btn-select-mode"
+                        style="display:none;">
                         Seleccionar
                     </button>
                 </div>
