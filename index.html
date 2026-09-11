@@ -1,214 +1,1261 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <base target="_top">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Catálogo TodoVilu</title>
+
+    <meta name="description" content="Catálogo TodoVilu Streaming">
+    <meta name="theme-color" content="#e50914">
+
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
     <style>
-        :root { --primary:#e50914; --bg:#141414; --card:#1f1f1f; --text:#fff; }
-        * { box-sizing:border-box; }
-        body { background:var(--bg); color:var(--text); padding-top:145px; padding-bottom:80px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
-        .navbar { background:rgba(20,20,20,.98); border-bottom:1px solid #333; backdrop-filter:blur(10px); }
-        .brand-logo { color:var(--primary); font-weight:900; font-size:1.5rem; cursor:pointer; }
-        .filters-bar { display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; scrollbar-width:none; }
-        .filters-bar::-webkit-scrollbar { display:none; }
-        .form-select-dark { background:#333; color:#fff!important; border:1px solid #444; font-size:.85rem; min-width:130px; }
-        .search-input { background:#333; border:1px solid #444; color:#fff!important; border-radius:50px; padding:5px 15px; width:100%; }
-        .card { background:var(--card); border:none; position:relative; overflow:hidden; border-radius:8px; height:100%; box-shadow:0 4px 6px rgba(0,0,0,.3); cursor:pointer; }
-        .card-img-top { aspect-ratio:2/3; object-fit:cover; width:100%; display:block; background:#292929; }
-        .card-body { padding:10px; display:flex; flex-direction:column; }
-        .card-title { font-size:.9rem; font-weight:700; color:#fff!important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:5px; }
-        .badge-cat,.badge-year { font-size:.65rem; padding:3px 8px; border-radius:4px; position:absolute; top:5px; z-index:5; font-weight:bold; background:rgba(0,0,0,.85); border:1px solid rgba(255,255,255,.2); }
-        .badge-cat { right:5px; color:#fff!important; }
-        .badge-year { left:5px; color:#ffeb3b!important; }
-        .select-overlay { position:absolute; inset:0; background:rgba(229,9,20,.2); border:2px solid var(--primary); display:none; pointer-events:none; z-index:2; border-radius:8px; }
-        .card.selected .select-overlay { display:block; }
-        .btn-detalles { background:#333; color:#fff!important; border:1px solid #555; font-size:.75rem; font-weight:bold; width:100%; padding:8px; border-radius:4px; text-align:center; margin-top:8px; }
-        #fab-cart { position:fixed; bottom:20px; right:20px; background:var(--primary); color:#fff; padding:15px 25px; border-radius:50px; font-weight:bold; box-shadow:0 4px 15px rgba(229,9,20,.6); z-index:100; display:none; cursor:pointer; }
-        #loader { position:fixed; inset:0; background:#000; z-index:9999; display:flex; justify-content:center; align-items:center; flex-direction:column; }
-        .pagination-container { display:flex; justify-content:center; align-items:center; gap:15px; margin-top:20px; padding:10px; background:#1f1f1f; border-radius:8px; border:1px solid #333; }
-        .btn-page { background:#333; color:#fff; border:1px solid #444; padding:8px 16px; border-radius:4px; cursor:pointer; }
-        .btn-page:disabled { opacity:.5; cursor:not-allowed; }
-        .page-info { color:#aaa; font-size:.9rem; font-weight:bold; }
-        .modal-content { background:#141414; color:#fff; border:1px solid #333; }
-        .modal-header { border-bottom:1px solid #333; }
-        .btn-close { filter:invert(1); }
-        .btn-play-sales { width:100%; background:#e50914; color:#fff; font-weight:bold; padding:12px; border-radius:6px; border:none; font-size:1.1rem; margin-top:15px; display:flex; align-items:center; justify-content:center; gap:10px; }
-        .btn-secundario { width:100%; background:#333; color:#ccc; font-weight:bold; padding:10px; border-radius:6px; border:1px solid #555; font-size:.9rem; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
-        .meta-tag { background:#333; padding:2px 8px; border-radius:4px; font-size:.8rem; margin-right:5px; color:#ccc; }
-        #sales-overlay { display:none; margin-top:15px; background:#222; padding:15px; border-radius:8px; border:1px solid #e50914; text-align:center; }
-        @media (max-width:600px) { .brand-logo { font-size:1.25rem; } body { padding-top:135px; } }
+        :root {
+            --primary: #e50914;
+            --bg: #141414;
+            --card: #1f1f1f;
+            --text: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            background: var(--bg);
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding-top: calc(145px + env(safe-area-inset-top));
+            padding-bottom: 80px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .navbar {
+            background-color: rgba(20, 20, 20, 0.98);
+            border-bottom: 1px solid #333;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-logo {
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 1.5rem;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .filters-bar {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+            scrollbar-width: none;
+        }
+
+        .filters-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .form-select-dark {
+            background-color: #333;
+            color: #fff !important;
+            border: 1px solid #444;
+            font-size: 0.85rem;
+            min-width: 130px;
+        }
+
+        .search-input {
+            background: #333;
+            border: 1px solid #444;
+            color: #fff !important;
+            border-radius: 50px;
+            padding: 7px 15px;
+            width: 100%;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: #aaa;
+        }
+
+        .card {
+            background-color: var(--card);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-img-top {
+            aspect-ratio: 2 / 3;
+            object-fit: cover;
+            width: 100%;
+            display: block;
+        }
+
+        .card-body {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-detalles {
+            width: 100%;
+            background: #eee;
+            color: #111;
+            border: none;
+            padding: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .badge-cat {
+            font-size: 0.65rem;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff !important;
+            padding: 3px 8px;
+            border-radius: 4px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            z-index: 5;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .badge-year {
+            font-size: 0.65rem;
+            background: #f1c40f;
+            color: #000 !important;
+            padding: 3px 8px;
+            border-radius: 4px;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            z-index: 5;
+            font-weight: bold;
+        }
+
+        .select-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(229, 9, 20, 0.4);
+            border: 3px solid var(--primary);
+            display: none;
+            pointer-events: none;
+            z-index: 10;
+            border-radius: 8px;
+        }
+
+        .card.selected .select-overlay {
+            display: block;
+        }
+
+        .select-icon {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            z-index: 11;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .card.selected .select-icon {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #141414;
+            color: white;
+            border: 1px solid #333;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #333;
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        .btn-deeplink {
+            display: block;
+            width: 100%;
+            color: #fff;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .style-app {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+
+        .style-json {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+        }
+
+        .btn-play-sales {
+            width: 100%;
+            background: #e50914;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-secundario {
+            width: 100%;
+            background: #333;
+            color: #ccc;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        #sales-overlay {
+            display: none;
+            margin-top: 15px;
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e50914;
+            text-align: center;
+        }
+
+        .meta-tag {
+            background: #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            color: #ccc;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-page {
+            background: #333;
+            color: white;
+            border: 1px solid #444;
+            padding: 6px 15px;
+            border-radius: 4px;
+        }
+
+        .btn-page:disabled {
+            opacity: 0.5;
+        }
+
+        #fab-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.6);
+            z-index: 100;
+            display: none;
+            cursor: pointer;
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Ajustes exclusivos dentro de la app */
+        body.en-app #banner-app,
+        body.en-app #btn-select-mode,
+        body.en-app #fab-cart {
+            display: none !important;
+        }
+
+        body.en-app {
+            padding-top: calc(120px + env(safe-area-inset-top));
+        }
+
+        @media (max-width: 600px) {
+            .brand-logo {
+                font-size: 1.25rem;
+            }
+
+            .search-input {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            body {
+                padding-top: calc(135px + env(safe-area-inset-top));
+            }
+
+            body.en-app {
+                padding-top: calc(115px + env(safe-area-inset-top));
+            }
+        
+#btn-select-mode,
+#fab-cart {
+    display: none !important;
+}
+        }
     </style>
 </head>
+
 <body>
+
     <div id="loader">
         <div class="spinner-border text-danger" role="status"></div>
-        <div class="mt-2 text-secondary">Cargando catálogo...</div>
+        <div class="mt-2 text-secondary">
+            Cargando catálogo completo...
+        </div>
     </div>
 
     <nav class="navbar fixed-top px-3 pb-2 pt-2">
         <div class="container-fluid p-0 d-block">
+
             <div class="d-flex align-items-center justify-content-between w-100 mb-3">
                 <div class="d-flex align-items-center">
-                    <span class="brand-logo me-3" onclick="resetFiltros()">TODOVILU</span>
-                    <button class="btn btn-sm btn-outline-secondary text-white" onclick="toggleSelectMode()" id="btn-select-mode">Seleccionar</button>
+                    <span
+                        class="brand-logo me-3"
+                        onclick="resetFiltros()">
+                        TODOVILU
+                    </span>
+
+                    <button
+                        class="btn btn-sm btn-outline-light"
+                        onclick="toggleSelectMode()"
+                        id="btn-select-mode"
+                        style="display:none;">
+                        Seleccionar
+                    </button>
                 </div>
-                <div style="width:40%;"><input type="text" id="buscador" class="search-input" placeholder="Buscar (Nombre o Año)..." onkeyup="aplicarFiltros()"></div>
+
+                <div style="width: 50%;">
+                    <input
+                        type="text"
+                        id="buscador"
+                        class="search-input"
+                        placeholder="Buscar..."
+                        onkeyup="aplicarFiltros()">
+                </div>
             </div>
+
             <div class="filters-bar w-100">
-                <select id="filtro-cat" class="form-select form-select-dark" onchange="aplicarFiltros()">
-                    <option value="todos">Categorías</option>
-                    <option value="Peliculas">Películas</option>
-                    <option value="Series">Series</option>
-                    <option value="Animes">Animes</option>
-                    <option value="Reelshorts">Reelshorts</option>
-                    <option value="Textos">Textos</option>
+                <select
+                    id="filtro-cat"
+                    class="form-select form-select-dark"
+                    onchange="aplicarFiltros()">
+                    <option value="Todos">Categorías</option>
                 </select>
-                <select id="filtro-orden" class="form-select form-select-dark" onchange="aplicarFiltros()">
-                    <option value="anio">Año (estreno)</option>
+
+                <select
+                    id="filtro-genero"
+                    class="form-select form-select-dark"
+                    onchange="aplicarFiltros()">
+                    <option value="Todos">Géneros</option>
+                </select>
+
+                <select
+                    id="filtro-anio"
+                    class="form-select form-select-dark"
+                    onchange="aplicarFiltros()">
+                    <option value="Todos">Año</option>
+                </select>
+
+                <select
+                    id="filtro-orden"
+                    class="form-select form-select-dark"
+                    onchange="aplicarFiltros()">
+                    <option value="nuevo">Más recientes</option>
+                    <option value="viejo">Más antiguos</option>
                     <option value="az">A-Z</option>
                 </select>
             </div>
         </div>
     </nav>
 
-    <main class="container-fluid">
-        <div id="banner-app" class="card mb-2 border-0" style="display:none;background:#1f1f1f;border:1px solid #333;">
-            <div class="card-body p-2 d-flex align-items-center justify-content-between">
-                <div><i class="bi bi-android2 text-success fs-1 me-2"></i><span class="fw-bold">App Oficial</span></div>
-                <a id="btn-apk" href="#" class="btn btn-sm btn-success rounded-pill fw-bold">DESCARGAR</a>
-            </div>
-        </div>
-        <div class="d-flex justify-content-between mb-2"><span id="contador" class="text-secondary small">0 resultados</span></div>
-        <div id="grid" class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2"></div>
-        <div id="pagination" class="pagination-container" style="display:none;">
-            <button class="btn-page" onclick="prevPage()">❮ Anterior</button>
-            <span id="page-info" class="page-info">Página 1</span>
-            <button class="btn-page" onclick="nextPage()">Siguiente ❯</button>
-        </div>
-    </main>
+    <div class="container-fluid">
 
-    <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"><div class="modal-content">
-            <div class="modal-header border-0 pb-0"><h5 class="modal-title w-100 text-center fw-bold" id="m-titulo">Título</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body pt-0">
-                <div class="text-center mb-3"><img id="m-img" src="" style="width:140px;border-radius:8px;"></div>
-                <button class="btn-play-sales" onclick="mostrarOpcionesVenta()"><i class="bi bi-play-fill fs-1"></i> REPRODUCIR</button>
-                <div id="sales-overlay"><h6 class="fw-bold">🔒 CONTENIDO EXCLUSIVO</h6><p class="small text-muted">Contrata el servicio para desbloquear todo el catálogo.</p><div class="d-grid gap-2"><a href="https://wa.me/573181974244" target="_blank" class="btn btn-success fw-bold">WhatsApp</a><a href="http://t.me/Registrotodovilu" target="_blank" class="btn btn-primary fw-bold">Telegram</a></div></div>
-                <div class="d-flex justify-content-center gap-2 mt-3 mb-3"><span id="m-anio" class="meta-tag"></span><span id="m-cat" class="meta-tag"></span><span id="m-dur" class="meta-tag"></span></div>
-                <p id="m-sinopsis" style="font-size:.9rem;color:#ccc;line-height:1.4;text-align:justify;"></p>
-                <div id="sec-btn-container" class="d-grid"></div><div id="saga-container"></div>
+        <div
+            id="banner-app"
+            class="card mb-2 border-0"
+            style="display:block; background:#1f1f1f; border:1px solid #333;">
+
+            <div class="card-body p-2 d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-android2 text-success fs-1 me-2"></i>
+
+                    <div style="line-height:1.2;">
+                        <span
+                            class="fw-bold text-white"
+                            style="font-size:0.9rem;">
+                            App Oficial
+                        </span>
+
+                        <div
+                            class="text-muted"
+                            style="font-size:0.7rem;">
+                            Mejor experiencia
+                        </div>
+                    </div>
+                </div>
+
+                <a
+                    id="btn-apk"
+                    href="#"
+                    target="_blank"
+                    class="btn btn-sm btn-success rounded-pill fw-bold px-3"
+                    style="font-size:0.8rem;">
+                    DESCARGAR
+                </a>
             </div>
-        </div></div>
+        </div>
+
+        <div class="d-flex justify-content-between mb-2">
+            <span
+                id="contador"
+                class="text-secondary small">
+                0 resultados
+            </span>
+        </div>
+
+        <div
+            id="grid"
+            class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2">
+        </div>
+
+        <div
+            id="pagination"
+            class="pagination-container"
+            style="display:none;">
+
+            <button
+                class="btn-page"
+                onclick="prevPage()">
+                ❮ Anterior
+            </button>
+
+            <span
+                id="page-info"
+                class="text-white align-self-center small fw-bold">
+                1 / 1
+            </span>
+
+            <button
+                class="btn-page"
+                onclick="nextPage()">
+                Siguiente ❯
+            </button>
+        </div>
     </div>
 
-    <div id="fab-cart" onclick="descargarSeleccion()">Descargar Pack (<span id="cart-count">0</span>)</div>
+    <div
+        id="fab-cart"
+        onclick="descargarPack()">
+
+        <i class="bi bi-cloud-download-fill"></i>
+        Descargar Pack
+        (<span id="cart-count">0</span>)
+    </div>
+
+    <div
+        class="modal fade"
+        id="infoModal"
+        tabindex="-1"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header border-0 pb-0">
+                    <h5
+                        class="modal-title w-100 text-center fw-bold"
+                        id="m-titulo">
+                        Título
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+                </div>
+
+                <div class="modal-body pt-0">
+
+                    <div
+                        style="text-align:center; margin-bottom:15px;">
+
+                        <img
+                            id="m-img"
+                            src=""
+                            style="width:140px; border-radius:8px; box-shadow:0 5px 20px rgba(0,0,0,0.5);">
+
+                        <div id="dynamic-btn-container"></div>
+                    </div>
+
+                    <button
+                        class="btn-play-sales"
+                        onclick="mostrarOpcionesVenta()">
+
+                        <i class="bi bi-play-fill fs-1"></i>
+                        REPRODUCIR
+                    </button>
+
+                    <div id="sales-overlay">
+                        <h6 class="fw-bold text-white mb-2">
+                            🔒 CONTENIDO EXCLUSIVO
+                        </h6>
+
+                        <p class="small text-muted mb-3">
+                            Contrata el servicio para desbloquear todo el catálogo.
+                        </p>
+
+                        <div class="d-grid gap-2">
+                            <a
+                                href="https://wa.me/573181974244"
+                                target="_blank"
+                                class="btn btn-success fw-bold">
+                                <i class="bi bi-whatsapp"></i>
+                                WhatsApp
+                            </a>
+
+                            <a
+                                href="https://t.me/Registrotodovilu"
+                                target="_blank"
+                                class="btn btn-primary fw-bold"
+                                style="background:#0088cc; border:none;">
+                                <i class="bi bi-telegram"></i>
+                                Telegram
+                            </a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="d-flex justify-content-center gap-2 mt-3 mb-3">
+
+                        <span
+                            id="m-anio"
+                            class="meta-tag">
+                        </span>
+
+                        <span
+                            id="m-cat"
+                            class="meta-tag">
+                        </span>
+                    </div>
+
+                    <p
+                        id="m-sinopsis"
+                        style="font-size:0.9rem; color:#ccc; line-height:1.4; text-align:justify;">
+                    </p>
+
+                    <div
+                        id="sec-btn-container"
+                        class="d-grid gap-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxffB_Ny3HZeIqJl1vEq5vdMritEBb41BC1r0Rk2C08CF259lCMovaDI9mCnfPUkECb/exec";
-        var API_KEY_SECRET = "TodoVilu_Secret_2026_Access";
-        var ITEMS_PER_PAGE = 24;
-        var DB = [];
-        var selectedIds = new Set();
-        var isSelectMode = false;
-        var currentPage = 1;
-        var totalPages = 1;
-        var totalResultados = 0;
-        var ES_APP = navigator.userAgent.includes("TodoViluApp") || typeof Android !== "undefined";
+        const SECURE_HOST =
+            "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5OGxZa0s2WF9xbUpLMXNhdEwzaFFqRTJkQTAxUkFRZTRLbjVCYkw1T0xRS1p0cl9JcDRSVWJoaTFHMkZtU2xHYy9leGVjP2tleT1Ub2RvVmlsdV9TZWNyZXRfMjAyNl9BY2Nlc3M=";
 
-        window.onload = function() { cargarPagina(1); };
+        const API_URL = atob(SECURE_HOST);
 
-        function construirUrl(pagina) {
-            var params = new URLSearchParams();
-            params.set("key", API_KEY_SECRET);
-            params.set("page", pagina);
-            params.set("limit", ITEMS_PER_PAGE);
-            var texto = document.getElementById("buscador").value.trim();
-            var categoria = document.getElementById("filtro-cat").value;
-            if (texto) params.set("q", texto);
-            if (categoria !== "todos") params.set("categoria", categoria.toLowerCase());
-            return SCRIPT_URL + "?" + params.toString();
+        const ES_APP_TODOVILU =
+            navigator.userAgent.includes("TodoViluApp") ||
+            typeof Android !== "undefined";
+
+        if (ES_APP_TODOVILU) {
+            document.body.classList.add("en-app");
         }
 
-        function cargarPagina(pagina) {
-            currentPage = pagina;
-            var loader = document.getElementById("loader");
-            loader.style.display = "flex";
-            loader.innerHTML = '<div class="spinner-border text-danger" role="status"></div><div class="mt-2 text-secondary">Cargando página ' + pagina + '...</div>';
-            fetch(construirUrl(pagina))
-                .then(function(response) { if (!response.ok) throw new Error("HTTP " + response.status); return response.json(); })
-                .then(function(paquete) {
-                    if (!paquete.ok) throw new Error(paquete.mensaje || paquete.error || "Error del catálogo");
-                    DB = (paquete.catalogo || []).map(normalizarElemento);
-                    currentPage = paquete.pagina || pagina;
-                    totalPages = paquete.totalPaginas || 1;
-                    totalResultados = paquete.total || 0;
-                    document.getElementById("contador").innerText = totalResultados + " resultados";
-                    renderGrid();
-                    actualizarPaginacion();
-                    if (paquete.apk && paquete.apk.indexOf("http") === 0) { document.getElementById("btn-apk").href = paquete.apk; document.getElementById("banner-app").style.display = "block"; }
-                    loader.style.display = "none";
+        let DB = [];
+        let VIEW_DB = [];
+        let currentPage = 1;
+        const itemsPerPage = 24;
+        let selectedIds = new Set();
+        let isSelectMode = false;
+
+        window.onload = function() {
+            cargarCatalogo();
+        };
+
+        function cargarCatalogo() {
+            fetch(API_URL)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+
+                    return response.json();
                 })
-                .catch(function(error) {
-                    loader.innerHTML = '<div class="text-white text-center p-5">Error de conexión.<br>Verifica la URL del catálogo.<br><button class="btn btn-danger mt-3" onclick="cargarPagina(' + currentPage + ')">REINTENTAR</button></div>';
+                .then(paquete => {
+
+                    if (!ES_APP_TODOVILU &&
+                        paquete.apk &&
+                        paquete.apk.startsWith("http")) {
+
+                        document.getElementById("btn-apk").href =
+                            paquete.apk;
+                    }
+
+                    iniciarWeb(paquete.catalogo || []);
+                })
+                .catch(error => {
+                    document.getElementById("loader").innerHTML = `
+                        <div class="text-white text-center p-5">
+                            Error de conexión.<br>
+                            Verifica la URL del catálogo.
+                        </div>
+                    `;
+
                     console.error(error);
                 });
+        };
+
+        function normalizarCategoria(categoria) {
+            return String(categoria || "")
+                .toLowerCase()
+                .trim();
         }
 
-        function normalizarElemento(item) {
-            var generos = Array.isArray(item.generos) ? item.generos : String(item.generos || "").split(",").map(function(g) { return g.trim(); }).filter(Boolean);
-            var anio = parseInt(item.anio || item.year || 0, 10);
-            return { id:String(item.id || ""), titulo:String(item.titulo || ""), img:item.imagen || "", tipo:String(item.categoria || ""), obj:item.jsonFull || item, anio:isNaN(anio) ? 0 : anio, generos:generos };
+        function iniciarWeb(datos) {
+            const generosSet = new Set();
+            const categoriasSet = new Set();
+            const aniosSet = new Set();
+
+            DB = datos.map(item => {
+                const categoria =
+                    normalizarCategoria(item.categoria);
+
+                const generos = Array.isArray(item.generos)
+                    ? item.generos
+                    : String(item.generos || "")
+                        .split(",")
+                        .map(g => g.trim())
+                        .filter(Boolean);
+
+                generos.forEach(g => generosSet.add(g));
+
+                if (categoria) {
+                    categoriasSet.add(categoria);
+                }
+
+                const anioNum =
+                    parseInt(item.anio || item.year || 0);
+
+                if (!isNaN(anioNum) && anioNum > 0) {
+                    aniosSet.add(anioNum);
+                }
+
+                return {
+                    id: String(item.id || item.tmdbId || ""),
+                    idApp: String(item.idApp || item.id || ""),
+                    titulo: String(item.titulo || ""),
+                    img: item.imagen || "",
+                    tipo: categoria,
+                    anio: isNaN(anioNum) ? 0 : anioNum,
+                    generos: generos,
+                    link: item.link || "",
+                    sinopsis: item.sinopsis || "",
+                    jsonFull: item.jsonFull || item
+                };
+            });
+
+            const selCat =
+                document.getElementById("filtro-cat");
+
+            Array.from(categoriasSet)
+                .sort()
+                .forEach(categoria => {
+                    const option =
+                        document.createElement("option");
+
+                    option.value = categoria;
+                    option.textContent = categoria;
+                    selCat.appendChild(option);
+                });
+
+            const selGen =
+                document.getElementById("filtro-genero");
+
+            Array.from(generosSet)
+                .sort()
+                .forEach(genero => {
+                    const option =
+                        document.createElement("option");
+
+                    option.value = genero;
+                    option.textContent = genero;
+                    selGen.appendChild(option);
+                });
+
+            const selAnio =
+                document.getElementById("filtro-anio");
+
+            Array.from(aniosSet)
+                .sort((a, b) => b - a)
+                .forEach(anio => {
+                    const option =
+                        document.createElement("option");
+
+                    option.value = anio;
+                    option.textContent = anio;
+                    selAnio.appendChild(option);
+                });
+
+            document.getElementById("loader")
+                .style.display = "none";
+
+            aplicarFiltros();
         }
 
-        function resetFiltros() { document.getElementById("filtro-cat").value = "todos"; document.getElementById("filtro-orden").value = "anio"; document.getElementById("buscador").value = ""; cargarPagina(1); }
-        function aplicarFiltros() { cargarPagina(1); }
-        function prevPage() { if (currentPage > 1) { cargarPagina(currentPage - 1); window.scrollTo(0, 0); } }
-        function nextPage() { if (currentPage < totalPages) { cargarPagina(currentPage + 1); window.scrollTo(0, 0); } }
+        function resetFiltros() {
+            document.getElementById("filtro-cat").value = "Todos";
+            document.getElementById("filtro-genero").value = "Todos";
+            document.getElementById("filtro-anio").value = "Todos";
+            document.getElementById("filtro-orden").value = "nuevo";
+            document.getElementById("buscador").value = "";
+
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const texto =
+                document.getElementById("buscador")
+                    .value
+                    .toLowerCase();
+
+            const categoria =
+                document.getElementById("filtro-cat").value;
+
+            const genero =
+                document.getElementById("filtro-genero").value;
+
+            const anio =
+                document.getElementById("filtro-anio").value;
+
+            const orden =
+                document.getElementById("filtro-orden").value;
+
+            VIEW_DB = DB.filter(item => {
+                const coincideTexto =
+                    item.titulo
+                        .toLowerCase()
+                        .includes(texto);
+
+                const coincideCategoria =
+                    categoria === "Todos" ||
+                    item.tipo === categoria;
+
+                const coincideGenero =
+                    genero === "Todos" ||
+                    item.generos.includes(genero);
+
+                const coincideAnio =
+                    anio === "Todos" ||
+                    item.anio == anio;
+
+                return coincideTexto &&
+                    coincideCategoria &&
+                    coincideGenero &&
+                    coincideAnio;
+            });
+
+            if (orden === "nuevo") {
+                VIEW_DB.sort((a, b) => b.anio - a.anio);
+            }
+
+            if (orden === "viejo") {
+                VIEW_DB.sort((a, b) => a.anio - b.anio);
+            }
+
+            if (orden === "az") {
+                VIEW_DB.sort((a, b) =>
+                    a.titulo.localeCompare(b.titulo)
+                );
+            }
+
+            document.getElementById("contador")
+                .innerText =
+                VIEW_DB.length + " resultados";
+
+            currentPage = 1;
+            renderGrid();
+        }
 
         function renderGrid() {
-            var container = document.getElementById("grid"); container.innerHTML = "";
-            if (!DB.length) { container.innerHTML = "<p class='text-center w-100 text-muted mt-5'>Sin resultados.</p>"; document.getElementById("pagination").style.display = "none"; return; }
-            DB.forEach(function(item) {
-                var col = document.createElement("div"); col.className = "col";
-                var selected = selectedIds.has(item.id) ? "selected" : "";
-                var imagen = item.img || "https://via.placeholder.com/300x450?text=Sin+Imagen";
-                col.innerHTML = '<div class="card ' + selected + '" onclick="clickCard(\'' + escapar(item.id) + '\', this)"><span class="badge-cat">' + escapar(item.tipo) + '</span><span class="badge-year">' + (item.anio || "0") + '</span><div class="select-overlay"></div><img src="' + escapar(imagen) + '" class="card-img-top" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x450?text=Sin+Imagen\'"><div class="card-body"><div class="card-title">' + escapar(item.titulo) + '</div><button class="btn-detalles" type="button" onclick="abrirModal(\'' + escapar(item.id) + '\', event)">DETALLES</button></div></div>';
+            const container =
+                document.getElementById("grid");
+
+            container.innerHTML = "";
+
+            if (VIEW_DB.length === 0) {
+                container.innerHTML =
+                    "<p class='text-center w-100 text-muted mt-5'>" +
+                    "Sin resultados.</p>";
+
+                document.getElementById("pagination")
+                    .style.display = "none";
+
+                return;
+            }
+
+            const start =
+                (currentPage - 1) * itemsPerPage;
+
+            const end =
+                start + itemsPerPage;
+
+            const paginatedItems =
+                VIEW_DB.slice(start, end);
+
+            const maxPages =
+                Math.ceil(
+                    VIEW_DB.length / itemsPerPage
+                );
+
+            paginatedItems.forEach(item => {
+                const col =
+                    document.createElement("div");
+
+                col.className = "col";
+
+                const isSelected =
+                    selectedIds.has(item.id);
+
+                const selectedClass =
+                    isSelected ? "selected" : "";
+
+                const iconCheck =
+                    isSelected
+                        ? "<div class='select-icon'>✔</div>"
+                        : "";
+
+                const img =
+                    item.img ||
+                    "https://via.placeholder.com/300x450?text=Sin+Imagen";
+
+                col.innerHTML = `
+                    <div
+                        class="card ${selectedClass}"
+                        onclick="clickCard('${escapar(item.id)}')">
+
+                        <span class="badge-cat">
+                            ${escapar(item.tipo)}
+                        </span>
+
+                        <span class="badge-year">
+                            ${item.anio > 0 ? item.anio : ""}
+                        </span>
+
+                        <div class="select-overlay"></div>
+
+                        ${iconCheck}
+
+                        <img
+                            src="${escapar(img)}"
+                            class="card-img-top"
+                            loading="lazy"
+                            onerror="this.src='https://via.placeholder.com/300x450?text=Sin+Imagen'">
+
+                        <div class="card-body">
+                            <div class="card-title">
+                                ${escapar(item.titulo)}
+                            </div>
+
+                            ${
+                                !isSelectMode
+                                    ? "<button class='btn-detalles mt-auto'>" +
+                                      "VER DETALLES</button>"
+                                    : ""
+                            }
+                        </div>
+                    </div>
+                `;
+
                 container.appendChild(col);
             });
+
+            document.getElementById("pagination")
+                .style.display = "flex";
+
+            document.getElementById("page-info")
+                .innerText =
+                currentPage + " / " + maxPages;
+
+            const buttons =
+                document.querySelectorAll(
+                    "#pagination button"
+                );
+
+            buttons[0].disabled =
+                currentPage === 1;
+
+            buttons[1].disabled =
+                currentPage === maxPages;
         }
 
-        function actualizarPaginacion() { var p = document.getElementById("pagination"); p.style.display = totalPages > 1 ? "flex" : "none"; document.getElementById("page-info").innerText = "Página " + currentPage + " de " + totalPages; var b = p.querySelectorAll("button"); b[0].disabled = currentPage <= 1; b[1].disabled = currentPage >= totalPages; }
-        function escapar(valor) { return String(valor).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
-
-        function abrirModal(id, evento) {
-            if (evento) evento.stopPropagation();
-            var item = DB.find(function(x) { return x.id === id; }); if (!item) return;
-            document.getElementById("sales-overlay").style.display = "none";
-            document.getElementById("m-titulo").innerText = item.titulo;
-            document.getElementById("m-img").src = item.img;
-            document.getElementById("m-sinopsis").innerText = item.obj.sinopsis || "Sin sinopsis disponible.";
-            document.getElementById("m-anio").innerText = item.anio || "----";
-            document.getElementById("m-cat").innerText = item.tipo;
-            var dur = item.obj.duracion || item.obj.duracionPromedio || item.obj.paginasPromedio || 0;
-            document.getElementById("m-dur").innerText = dur + (item.tipo.toLowerCase() === "textos" ? " páginas" : " min");
-            var buttons = document.getElementById("sec-btn-container"); buttons.innerHTML = "";
-            var btn = document.createElement("button"); btn.className = "btn-secundario"; btn.innerHTML = '<i class="bi bi-phone"></i> Abrir en App'; btn.onclick = function() { enviarDetalleAAndroid(item.id); }; buttons.appendChild(btn);
-            document.getElementById("saga-container").innerHTML = "";
-            new bootstrap.Modal(document.getElementById("infoModal")).show();
+        function escapar(valor) {
+            return String(valor || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
-        function mostrarOpcionesVenta() { document.getElementById("sales-overlay").style.display = "block"; }
-        function clickCard(id, elemento) { if (!isSelectMode) { abrirModal(id); return; } if (selectedIds.has(id)) { selectedIds.delete(id); elemento.classList.remove("selected"); } else { if (selectedIds.size >= 30) { alert("Solo puedes seleccionar 30 elementos."); return; } selectedIds.add(id); elemento.classList.add("selected"); } updateFab(); }
-        function toggleSelectMode() { isSelectMode = !isSelectMode; document.getElementById("btn-select-mode").innerText = isSelectMode ? "Cancelar" : "Seleccionar"; if (!isSelectMode) { selectedIds.clear(); updateFab(); } renderGrid(); }
-        function updateFab() { document.getElementById("cart-count").innerText = selectedIds.size; document.getElementById("fab-cart").style.display = selectedIds.size ? "block" : "none"; }
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderGrid();
+                window.scrollTo(0, 0);
+            }
+        }
 
-        function enviarDetalleAAndroid(id) { var item = DB.find(function(x) { return x.id === id; }); if (!item || !item.obj) return; if (ES_APP && typeof Android !== "undefined") Android.downloadJson(JSON.stringify(item.obj)); else descargarUno(id, item.tipo); }
-        function descargarUno(id, cat) { window.open(SCRIPT_URL + "?cmd=bajar&id=" + encodeURIComponent(id) + "&cat=" + encodeURIComponent(cat), "_blank"); }
-        function descargarSeleccion() { if (!selectedIds.size) return; window.open(SCRIPT_URL + "?cmd=bajarLote&ids=" + encodeURIComponent(Array.from(selectedIds).join(",")), "_blank"); toggleSelectMode(); }
+        function nextPage() {
+            const maxPages =
+                Math.ceil(
+                    VIEW_DB.length / itemsPerPage
+                );
+
+            if (currentPage < maxPages) {
+                currentPage++;
+                renderGrid();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function toggleSelectMode() {
+            isSelectMode = !isSelectMode;
+
+            const button =
+                document.getElementById("btn-select-mode");
+
+            if (isSelectMode) {
+                button.innerText = "Cancelar";
+                button.className =
+                    "btn btn-sm btn-danger text-white";
+            } else {
+                button.innerText = "Seleccionar";
+                button.className =
+                    "btn btn-sm btn-outline-light";
+
+                selectedIds.clear();
+                updateFab();
+            }
+
+            renderGrid();
+        }
+
+        function clickCard(id) {
+    if (!isSelectMode) {
+
+        // Si está dentro de TodoVilu:
+        // no abre modal web, envía JSON a Android.
+        if (
+            ES_APP_TODOVILU &&
+            typeof Android !== "undefined"
+        ) {
+            enviarDetalleAAndroid(id);
+            return;
+        }
+
+        // Si está en PC o navegador:
+        // conserva el modal web normal.
+        abrirModal(id);
+        return;
+    }
+
+    // Este bloque solo funciona en PC/navegador
+    // para seleccionar varios elementos.
+    if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+    } else {
+        if (selectedIds.size >= 30) {
+            alert(
+                "Solo puedes seleccionar 30 elementos."
+            );
+            return;
+        }
+
+        selectedIds.add(id);
+    }
+
+    updateFab();
+    renderGrid();
+}
+
+        function updateFab() {
+            const fab =
+                document.getElementById("fab-cart");
+
+            document.getElementById("cart-count")
+                .innerText =
+                selectedIds.size;
+
+            fab.style.display =
+                selectedIds.size > 0
+                    ? "block"
+                    : "none";
+        }
+
+        function abrirModal(id) {
+            const item =
+                DB.find(element => element.id === id);
+
+            if (!item) return;
+
+            document.getElementById("sales-overlay")
+                .style.display = "none";
+
+            document.getElementById("m-titulo")
+                .innerText = item.titulo;
+
+            document.getElementById("m-img")
+                .src = item.img;
+
+            document.getElementById("m-sinopsis")
+                .innerText =
+                item.sinopsis ||
+                "Sin sinopsis disponible.";
+
+            document.getElementById("m-anio")
+                .innerText =
+                item.anio > 0
+                    ? item.anio
+                    : "----";
+
+            document.getElementById("m-cat")
+                .innerText = item.tipo;
+
+            const buttonContainer =
+                document.getElementById(
+                    "dynamic-btn-container"
+                );
+
+            if (ES_APP_TODOVILU) {
+    buttonContainer.innerHTML = `
+        <button
+            class="btn-deeplink style-app"
+            onclick="descargarJSON('${escapar(item.id)}')">
+
+            <i class="bi bi-play-fill"></i>
+            VER DETALLES
+        </button>
+    `;
+} else {
+    buttonContainer.innerHTML = `
+        <button
+            class="btn-deeplink style-app"
+            onclick="mostrarOpcionesVenta()">
+
+            <i class="bi bi-phone-fill"></i>
+            DISPONIBLE EN LA APP
+        </button>
+    `;
+}
+
+            const secondaryContainer =
+                document.getElementById(
+                    "sec-btn-container"
+                );
+
+            secondaryContainer.innerHTML = "";
+
+            if (
+                item.link &&
+                item.link.startsWith("http") &&
+                !item.link.includes("youtube.com") &&
+                !item.link.includes("youtu.be")
+            ) {
+                const link =
+                    document.createElement("a");
+
+                link.className =
+                    "btn-secundario";
+
+                link.href = item.link;
+                link.target = "_blank";
+
+                link.innerHTML =
+                    "<i class='bi bi-cloud-download'></i>" +
+                    " Descarga directa";
+
+                secondaryContainer.appendChild(link);
+            }
+
+            const modal =
+                new bootstrap.Modal(
+                    document.getElementById("infoModal")
+                );
+
+            modal.show();
+        }
+
+        function descargarJSON(id) {
+    const item = DB.find(element => element.id === id);
+
+    if (!item || !item.jsonFull) {
+        return;
+    }
+    if (
+        ES_APP_TODOVILU &&
+        typeof Android !== "undefined"
+    ) {
+        const jsonString = JSON.stringify(item.jsonFull);
+
+        Android.downloadJson(jsonString);
+    }
+}
+        function descargarPack() {
+            if (
+                ES_APP_TODOVILU &&
+                typeof Android !== "undefined"
+            ) {
+                alert(
+                    "Elige una ficha individual para verla en la app."
+                );
+
+                return;
+            }
+
+            if (selectedIds.size === 0) return;
+
+            const pack =
+                DB
+                    .filter(item =>
+                        selectedIds.has(item.id)
+                    )
+                    .map(item => item.jsonFull);
+
+            const blob =
+                new Blob(
+                    [JSON.stringify(pack, null, 2)],
+                    {
+                        type: "application/json;charset=utf-8"
+                    }
+                );
+
+            const url =
+                URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+            link.download =
+                "Pack_TodoVilu_" +
+                selectedIds.size +
+                "_items.json";
+
+            document.body.appendChild(link);
+            link.click();
+
+            setTimeout(() => {
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }, 100);
+
+            toggleSelectMode();
+        }
+
+        function mostrarOpcionesVenta() {
+            document.getElementById("sales-overlay")
+                .style.display = "block";
+        }
+        function enviarDetalleAAndroid(id) {
+    const item = DB.find(element => element.id === id);
+
+    if (!item || !item.jsonFull) {
+        return;
+    }
+
+    if (
+        ES_APP_TODOVILU &&
+        typeof Android !== "undefined"
+    ) {
+        const jsonString = JSON.stringify(item.jsonFull);
+
+        Android.downloadJson(jsonString);
+    }
+}
     </script>
 </body>
 </html>
