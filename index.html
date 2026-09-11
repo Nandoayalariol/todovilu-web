@@ -1019,28 +1019,42 @@
         }
 
         function clickCard(id) {
-            if (!isSelectMode) {
-                abrirModal(id);
-                return;
-            }
+    if (!isSelectMode) {
 
-            if (selectedIds.has(id)) {
-                selectedIds.delete(id);
-            } else {
-                if (selectedIds.size >= 30) {
-                    alert(
-                        "Solo puedes seleccionar 30 elementos."
-                    );
-
-                    return;
-                }
-
-                selectedIds.add(id);
-            }
-
-            updateFab();
-            renderGrid();
+        // Si está dentro de TodoVilu:
+        // no abre modal web, envía JSON a Android.
+        if (
+            ES_APP_TODOVILU &&
+            typeof Android !== "undefined"
+        ) {
+            enviarDetalleAAndroid(id);
+            return;
         }
+
+        // Si está en PC o navegador:
+        // conserva el modal web normal.
+        abrirModal(id);
+        return;
+    }
+
+    // Este bloque solo funciona en PC/navegador
+    // para seleccionar varios elementos.
+    if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+    } else {
+        if (selectedIds.size >= 30) {
+            alert(
+                "Solo puedes seleccionar 30 elementos."
+            );
+            return;
+        }
+
+        selectedIds.add(id);
+    }
+
+    updateFab();
+    renderGrid();
+}
 
         function updateFab() {
             const fab =
@@ -1257,6 +1271,22 @@
             document.getElementById("sales-overlay")
                 .style.display = "block";
         }
+        function enviarDetalleAAndroid(id) {
+    const item = DB.find(element => element.id === id);
+
+    if (!item || !item.jsonFull) {
+        return;
+    }
+
+    if (
+        ES_APP_TODOVILU &&
+        typeof Android !== "undefined"
+    ) {
+        const jsonString = JSON.stringify(item.jsonFull);
+
+        Android.downloadJson(jsonString);
+    }
+}
     </script>
 </body>
 </html>
