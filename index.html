@@ -657,7 +657,7 @@
         };
 
         function cargarCatalogo() {
-            fetch(API_URL)
+            fetch(API_URL + "&vista=indice")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("HTTP " + response.status);
@@ -728,13 +728,14 @@
                     id: String(item.id || item.tmdbId || ""),
                     idApp: String(item.idApp || item.id || ""),
                     titulo: String(item.titulo || ""),
-                    img: item.imagen || "",
+                    img: String(item.imagen || "")
+    .replace(/\/t\/p\/w\d+\//, "/t/p/w342/"),
                     tipo: categoria,
                     anio: isNaN(anioNum) ? 0 : anioNum,
                     generos: generos,
                     link: item.link || "",
                     sinopsis: item.sinopsis || "",
-                    jsonFull: item.jsonFull || item
+                    jsonFull: null
                 };
             });
 
@@ -1024,7 +1025,7 @@
             renderGrid();
         }
 
-        function clickCard(id) {
+        async function clickCard(id) {
     if (!isSelectMode) {
 
         // Si está dentro de TodoVilu:
@@ -1033,7 +1034,7 @@
             ES_APP_TODOVILU &&
             typeof Android !== "undefined"
         ) {
-            enviarDetalleAAndroid(id);
+            await enviarDetalleAAndroid(id);
             return;
         }
 
@@ -1240,20 +1241,58 @@
             document.getElementById("sales-overlay")
                 .style.display = "block";
         }
-        function enviarDetalleAAndroid(id) {
+
+        async function obtenerJsonCompleto(item) {
+    if (item.jsonFull) {
+        return item.jsonFull;
+    }
+
+    const url = new URL(API_URL);
+
+    url.searchParams.set("vista", "detalle");
+    url.searchParams.set("id", item.id);
+    url.searchParams.set("categoria", item.tipo);
+
+    const response = await fetch(url.toString());
+
+    if (!response.ok) {
+        throw new Error("No se pudo cargar el detalle");
+    }
+
+    const paquete = await response.json();
+
+    if (!paquete.item) {
+        throw new Error("Detalle no encontrado");
+    }
+
+    item.jsonFull = paquete.item;
+
+    return item.jsonFull;
+}
+
+        async function enviarDetalleAAndroid(id) {
     const item = DB.find(element => element.id === id);
 
-    if (!item || !item.jsonFull) {
+    if (
+        !item ||
+        !ES_APP_TODOVILU ||
+        typeof Android === "undefined"
+    ) {
         return;
     }
 
-    if (
-        ES_APP_TODOVILU &&
-        typeof Android !== "undefined"
-    ) {
-        const jsonString = JSON.stringify(item.jsonFull);
+    try {
+        document.getElementById("loader").style.display = "flex";
 
-        Android.downloadJson(jsonString);
+        const jsonFull = await obtenerJsonCompleto(item);
+
+        document.getElementById("loader").style.display = "none";
+
+        Android.downloadJson(JSON.stringify(jsonFull));
+    } catch (error) {
+        document.getElementById("loader").style.display = "none";
+        alert("No se pudo abrir el detalle. Intenta nuevamente.");
+        console.error(error);
     }
 }
     </script>
