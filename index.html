@@ -382,22 +382,30 @@
     <nav class="navbar fixed-top px-3 pb-2 pt-2">
         <div class="container-fluid p-0 d-block">
 
-            <div class="d-flex align-items-center justify-content-between w-100 mb-3">
-                <div class="d-flex align-items-center">
-                    <span
-                        class="brand-logo me-3"
-                        onclick="resetFiltros()">
-                        TODOVILU
-                    </span>
+            <div class="d-flex align-items-center">
+    <span
+        class="brand-logo me-2"
+        onclick="resetFiltros()">
+        TODOVILU
+    </span>
 
-                    <button
-                        class="btn btn-sm btn-outline-light"
-                        onclick="toggleSelectMode()"
-                        id="btn-select-mode"
-                        style="display:none;">
-                        Seleccionar
-                    </button>
-                </div>
+    <button
+        type="button"
+        class="btn btn-sm btn-outline-light me-2"
+        onclick="location.reload()"
+        aria-label="Actualizar catálogo"
+        title="Actualizar catálogo">
+        ↻
+    </button>
+
+    <button
+        class="btn btn-sm btn-outline-light"
+        onclick="toggleSelectMode()"
+        id="btn-select-mode"
+        style="display:none;">
+        Seleccionar
+    </button>
+</div>
 
                 <div style="width: 50%;">
                     <input
