@@ -380,76 +380,74 @@
     </div>
 
     <nav class="navbar fixed-top px-3 pb-2 pt-2">
-        <div class="container-fluid p-0 d-block">
+    <div class="container-fluid p-0">
 
-            <div class="d-flex align-items-center">
-    <span
-        class="brand-logo me-3"
-        onclick="resetFiltros()">
-        TODOVILU
-    </span>
+        <div class="d-flex align-items-center w-100 gap-2">
 
-    <button
-        type="button"
-        class="btn btn-sm btn-outline-light me-3"
-        onclick="location.reload()"
-        aria-label="Actualizar catálogo"
-        title="Actualizar catálogo">
-        ↻
-    </button>
+            <span
+                class="brand-logo flex-shrink-0"
+                onclick="resetFiltros()">
+                TODOVILU
+            </span>
 
-    <button
-        class="btn btn-sm btn-outline-light"
-        onclick="toggleSelectMode()"
-        id="btn-select-mode"
-        style="display:none;">
-        Seleccionar
-    </button>
-</div>
+            <button
+                type="button"
+                class="btn btn-sm btn-outline-light flex-shrink-0"
+                onclick="location.reload()"
+                aria-label="Actualizar catálogo"
+                title="Actualizar catálogo">
+                ↻
+            </button>
 
-                <div style="width: 40%;">
-                    <input
-                        type="text"
-                        id="buscador"
-                        class="search-input"
-                        placeholder="Buscar..."
-                        onkeyup="aplicarFiltros()">
-                </div>
+            <div class="flex-grow-1">
+                <input
+                    type="text"
+                    id="buscador"
+                    class="search-input w-100"
+                    placeholder="Buscar..."
+                    onkeyup="aplicarFiltros()">
             </div>
 
-            <div class="filters-bar w-100">
-                <select
-                    id="filtro-cat"
-                    class="form-select form-select-dark"
-                    onchange="aplicarFiltros()">
-                    <option value="Todos">Categorías</option>
-                </select>
+            <button
+                class="btn btn-sm btn-outline-light flex-shrink-0"
+                onclick="toggleSelectMode()"
+                id="btn-select-mode"
+                style="display:none;">
+                Seleccionar
+            </button>
 
-                <select
-                    id="filtro-genero"
-                    class="form-select form-select-dark"
-                    onchange="aplicarFiltros()">
-                    <option value="Todos">Géneros</option>
-                </select>
-
-                <select
-                    id="filtro-anio"
-                    class="form-select form-select-dark"
-                    onchange="aplicarFiltros()">
-                    <option value="Todos">Año</option>
-                </select>
-
-                <select
-                    id="filtro-orden"
-                    class="form-select form-select-dark"
-                    onchange="aplicarFiltros()">
-                    <option value="nuevo">Más recientes</option>
-                    <option value="viejo">Más antiguos</option>
-                    <option value="az">A-Z</option>
-                </select>
-            </div>
         </div>
-    </nav>
+
+        <div class="d-flex gap-2 w-100 mt-2">
+
+            <select
+                id="filtro-categoria"
+                class="form-select">
+                <option value="">Categorías</option>
+            </select>
+
+            <select
+                id="filtro-genero"
+                class="form-select">
+                <option value="">Géneros</option>
+            </select>
+
+            <select
+                id="filtro-anio"
+                class="form-select">
+                <option value="">Año</option>
+            </select>
+
+            <select
+                id="orden"
+                class="form-select">
+                <option value="recientes">Más recientes</option>
+            </select>
+
+        </div>
+
+    </div>
+</nav>
 
     <div class="container-fluid">
 
