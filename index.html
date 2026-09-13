@@ -374,9 +374,9 @@
 
     <div id="loader">
         <div class="spinner-border text-danger" role="status"></div>
-        <div class="mt-2 text-secondary">
-            Cargando catálogo completo...
-        </div>
+        <div id="loader-text" class="mt-2 text-secondary">
+    Cargando contenido...
+</div>
     </div>
 
     <nav class="navbar fixed-top px-3 pb-2 pt-2">
@@ -1280,7 +1280,10 @@
     }
 
     try {
-        document.getElementById("loader").style.display = "flex";
+        document.getElementById("loader-text").textContent =
+    "Preparando detalle...";
+
+document.getElementById("loader").style.display = "flex";
 
         const jsonFull = await obtenerJsonCompleto(item);
 
