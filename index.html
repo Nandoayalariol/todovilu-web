@@ -747,6 +747,7 @@
                     generos: generos,
                     link: item.link || "",
                     sinopsis: item.sinopsis || "",
+                saga: String(item.saga || "").trim(),
                     jsonFull: null
                 };
             });
@@ -1277,10 +1278,35 @@
         throw new Error("Detalle no encontrado");
     }
 
-    item.jsonFull = paquete.item;
+    item.jsonFull = {
+        ...paquete.item,
+        saga: String(paquete.item.saga || "").trim()
+    };
 
     return item.jsonFull;
 }
+
+    const url = new URL(API_URL);
+
+    url.searchParams.set("vista", "detalle");
+    url.searchParams.set("id", item.id);
+    url.searchParams.set("categoria", item.tipo);
+
+    const response = await fetch(url.toString());
+
+    if (!response.ok) {
+        throw new Error("No se pudo cargar el detalle");
+    }
+
+    const paquete = await response.json();
+
+    if (!paquete.item) {
+        throw new Error("Detalle no encontrado");
+    }
+
+    item.jsonFull = paquete.item;
+
+    return item.jsonFull;
 
         async function enviarDetalleAAndroid(id) {
     const item = DB.find(element => element.id === id);
