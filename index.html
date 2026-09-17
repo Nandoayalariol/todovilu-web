@@ -1318,9 +1318,24 @@ const coincideTexto =
     }
 
     item.jsonFull = {
-        ...paquete.item,
-        saga: String(paquete.item.saga || "").trim()
-    };
+    ...paquete.item,
+
+    coleccion: String(
+        paquete.item.coleccion ||
+        paquete.item.collection ||
+        paquete.item.saga ||
+        item.coleccion ||
+        ""
+    ).trim(),
+
+    saga: String(
+        paquete.item.saga ||
+        paquete.item.coleccion ||
+        paquete.item.collection ||
+        item.coleccion ||
+        ""
+    ).trim()
+};
 
     return item.jsonFull;
 }
