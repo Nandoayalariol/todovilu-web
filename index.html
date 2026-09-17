@@ -707,6 +707,21 @@
                 .trim();
         }
 
+        function normalizarTexto(valor) {
+    return String(valor || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function normalizarColeccion(valor) {
+    return normalizarTexto(valor)
+        .replace(/\s+coleccion$/i, "")
+        .trim();
+}
         function iniciarWeb(datos) {
             const generosSet = new Set();
             const categoriasSet = new Set();
@@ -737,19 +752,26 @@
                 }
 
                 return {
-                    id: String(item.id || item.tmdbId || ""),
-                    idApp: String(item.idApp || item.id || ""),
-                    titulo: String(item.titulo || ""),
-                    img: String(item.imagen || "")
-    .replace(/\/t\/p\/w\d+\//, "/t/p/w342/"),
-                    tipo: categoria,
-                    anio: isNaN(anioNum) ? 0 : anioNum,
-                    generos: generos,
-                    link: item.link || "",
-                    sinopsis: item.sinopsis || "",
-                saga: String(item.saga || "").trim(),
-                    jsonFull: null
-                };
+    id: String(item.id || item.tmdbId || ""),
+    idApp: String(item.idApp || item.id || ""),
+    titulo: String(item.titulo || ""),
+    img: String(item.imagen || "")
+        .replace(/\/t\/p\/w\d+\//, "/t/p/w342/"),
+    tipo: categoria,
+    anio: isNaN(anioNum) ? 0 : anioNum,
+    generos: generos,
+    link: item.link || "",
+    sinopsis: item.sinopsis || "",
+
+    coleccion: String(
+        item.coleccion ||
+        item.collection ||
+        item.saga ||
+        ""
+    ).trim(),
+
+    jsonFull: null
+};
             });
 
             const selCat =
@@ -811,10 +833,9 @@
         }
 
         function aplicarFiltros() {
-            const texto =
-                document.getElementById("buscador")
-                    .value
-                    .toLowerCase();
+            const texto = normalizarTexto(
+    document.getElementById("buscador").value
+);
 
             const categoria =
                 document.getElementById("filtro-cat").value;
@@ -829,10 +850,28 @@
                 document.getElementById("filtro-orden").value;
 
             VIEW_DB = DB.filter(item => {
-                const coincideTexto =
-                    item.titulo
-                        .toLowerCase()
-                        .includes(texto);
+                const titulo = normalizarTexto(item.titulo);
+
+const coleccion = normalizarColeccion(
+    item.coleccion
+);
+
+const sinopsis = normalizarTexto(
+    item.sinopsis
+);
+
+const generosTexto = normalizarTexto(
+    Array.isArray(item.generos)
+        ? item.generos.join(" ")
+        : item.generos
+);
+
+const coincideTexto =
+    texto === "" ||
+    titulo.includes(texto) ||
+    coleccion.includes(texto) ||
+    sinopsis.includes(texto) ||
+    generosTexto.includes(texto);
 
                 const coincideCategoria =
                     categoria === "Todos" ||
