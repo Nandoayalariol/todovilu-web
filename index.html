@@ -442,6 +442,67 @@
     display: none !important;
 }
         }
+        /* Catálogo integrado en Android */
+body.en-app {
+    padding-top: 0 !important;
+}
+
+/* La marca ahora la muestra el encabezado nativo */
+body.en-app .navbar .brand-logo {
+    display: none !important;
+}
+
+/* Buscador y filtros debajo del encabezado nativo */
+body.en-app .navbar {
+    position: sticky !important;
+    top: 0 !important;
+    right: auto !important;
+    left: auto !important;
+
+    width: 100%;
+    z-index: 1030;
+
+    background: #141414;
+    border-bottom: 1px solid #292929;
+    backdrop-filter: none;
+}
+
+body.en-app .navbar .flex-grow-1 {
+    min-width: 0;
+}
+
+body.en-app .navbar .search-input {
+    min-height: 42px;
+    font-size: 14px;
+}
+
+/* Todos los filtros visibles sin deslizar lateralmente */
+body.en-app .filters-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+
+    overflow: visible;
+    padding-bottom: 4px;
+    margin-bottom: 0;
+}
+
+body.en-app .filters-bar .form-select-dark {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+
+    font-size: 13px;
+    border-radius: 8px;
+    background-color: #242424;
+    border-color: #383838;
+}
+
+body.en-app #banner-app,
+body.en-app #btn-select-mode,
+body.en-app #fab-cart {
+    display: none !important;
+}
     </style>
 </head>
 
