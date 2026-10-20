@@ -611,6 +611,24 @@ body.en-app #fab-cart {
         #appsTodoViluModal .tv-muted {
             color: #b8b8b8;
         }
+                /* Toda la tarjeta abre la vista de aplicaciones */
+        #banner-app {
+            position: relative;
+            cursor: pointer;
+        }
+
+        #banner-app #btn-apk::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        #banner-app:focus-within {
+            outline: 2px solid #2ecc71;
+            outline-offset: 3px;
+        }
     </style>
 </head>
 
@@ -727,12 +745,13 @@ body.en-app #fab-cart {
                     </div>
                 </div>
 
-                                <button
+                             <button
                     type="button"
                     id="btn-apk"
-                    class="btn btn-sm btn-success rounded-pill fw-bold px-3"
+                    class="btn btn-sm btn-success rounded-pill fw-bold px-3 stretched-link"
                     style="font-size:0.8rem;"
-                    onclick="abrirAplicacionesTodoVilu()">
+                    onclick="abrirAplicacionesTodoVilu()"
+                    aria-label="Ver aplicaciones, precios y opciones de acceso a TodoVilu">
                     VER APLICACIÓN
                 </button>
             </div>
