@@ -503,6 +503,114 @@ body.en-app #btn-select-mode,
 body.en-app #fab-cart {
     display: none !important;
 }
+        /* Ventana de aplicaciones y acceso */
+        #appsTodoViluModal .modal-content {
+            border-radius: 20px;
+            background: #181818;
+            border: 1px solid #343434;
+            overflow: hidden;
+        }
+
+        #appsTodoViluModal .modal-header {
+            padding: 20px;
+        }
+
+        #appsTodoViluModal .modal-body {
+            padding: 20px;
+        }
+
+        #appsTodoViluModal .tv-platform-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 5px;
+            background: #101010;
+            border-radius: 14px;
+        }
+
+        #appsTodoViluModal .tv-platform-tabs .nav-item {
+            flex: 1;
+        }
+
+        #appsTodoViluModal .tv-platform-tabs .nav-link {
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 11px 6px;
+            background: transparent;
+            color: #bdbdbd;
+            font-weight: 600;
+        }
+
+        #appsTodoViluModal .tv-platform-tabs .nav-link.active {
+            background: #303030;
+            color: #fff;
+        }
+
+        #appsTodoViluModal .tv-access-notice {
+            border: 1px solid #694024;
+            background: #2a2018;
+            color: #f3d5b8;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        #appsTodoViluModal .tv-field {
+            width: 100%;
+            color: #fff;
+            background-color: #262626;
+            border: 1px solid #444;
+            border-radius: 10px;
+            min-height: 46px;
+        }
+
+        #appsTodoViluModal .tv-price-box {
+            background: #222;
+            border: 1px solid #353535;
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        #appsTodoViluModal .tv-price-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 8px;
+            color: #c8c8c8;
+            font-size: 0.9rem;
+        }
+
+        #appsTodoViluModal .tv-total-line {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #3b3b3b;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        #appsTodoViluModal .tv-action {
+            border-radius: 11px;
+            padding: 12px;
+        }
+
+        #appsTodoViluModal .tv-coming-soon {
+            padding: 40px 12px;
+            text-align: center;
+            color: #bdbdbd;
+        }
+
+        #appsTodoViluModal .tv-coming-soon i {
+            display: block;
+            margin-bottom: 14px;
+            color: #e50914;
+            font-size: 42px;
+        }
+
+        #appsTodoViluModal .tv-muted {
+            color: #b8b8b8;
+        }
     </style>
 </head>
 
@@ -612,21 +720,21 @@ body.en-app #fab-cart {
                         </span>
 
                         <div
-                            class="text-muted"
+                            class="text-secondary"
                             style="font-size:0.7rem;">
-                            Mejor experiencia
+                            Acceso de pago · 30 días
                         </div>
                     </div>
                 </div>
 
-                <a
+                                <button
+                    type="button"
                     id="btn-apk"
-                    href="#"
-                    target="_blank"
                     class="btn btn-sm btn-success rounded-pill fw-bold px-3"
-                    style="font-size:0.8rem;">
-                    DESCARGAR
-                </a>
+                    style="font-size:0.8rem;"
+                    onclick="abrirAplicacionesTodoVilu()">
+                    VER APLICACIÓN
+                </button>
             </div>
         </div>
 
@@ -778,7 +886,250 @@ body.en-app #fab-cart {
             </div>
         </div>
     </div>
+    <!-- Aplicaciones y contratación -->
+    <div
+        class="modal fade"
+        id="appsTodoViluModal"
+        tabindex="-1"
+        aria-labelledby="tv-apps-title"
+        aria-hidden="true">
 
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <div>
+                        <h5
+                            class="modal-title fw-bold mb-1"
+                            id="tv-apps-title">
+                            TodoVilu en tus dispositivos
+                        </h5>
+
+                        <div class="small tv-muted">
+                            Aplicaciones y acceso al servicio
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <ul
+                        class="nav nav-pills tv-platform-tabs mb-4"
+                        role="tablist"
+                        aria-label="Plataformas">
+
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link active"
+                                id="tv-tab-android"
+                                data-bs-toggle="pill"
+                                data-bs-target="#tv-panel-android"
+                                type="button"
+                                role="tab"
+                                aria-controls="tv-panel-android"
+                                aria-selected="true">
+                                <i class="bi bi-android2 me-1"></i>
+                                Android
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="tv-tab-tv"
+                                data-bs-toggle="pill"
+                                data-bs-target="#tv-panel-tv"
+                                type="button"
+                                role="tab"
+                                aria-controls="tv-panel-tv"
+                                aria-selected="false">
+                                <i class="bi bi-tv me-1"></i>
+                                TV
+                            </button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button
+                                class="nav-link"
+                                id="tv-tab-pc"
+                                data-bs-toggle="pill"
+                                data-bs-target="#tv-panel-pc"
+                                type="button"
+                                role="tab"
+                                aria-controls="tv-panel-pc"
+                                aria-selected="false">
+                                <i class="bi bi-pc-display me-1"></i>
+                                PC
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div
+                            class="tab-pane fade show active"
+                            id="tv-panel-android"
+                            role="tabpanel"
+                            aria-labelledby="tv-tab-android">
+
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <i class="bi bi-android2 text-success fs-1"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1">
+                                        Aplicación para Android
+                                    </h6>
+                                    <div
+                                        id="tv-app-version"
+                                        class="small tv-muted">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tv-access-notice mb-3">
+                                <i class="bi bi-lock-fill me-1"></i>
+                                El acceso a los canales es de pago.
+                                Descargar la aplicación no activa el servicio.
+                                La activación se coordina por WhatsApp.
+                            </div>
+
+                            <p
+                                id="tv-config-status"
+                                class="small tv-muted"
+                                role="status">
+                                Cargando información…
+                            </p>
+
+                            <label
+                                for="tv-region"
+                                class="form-label small">
+                                ¿Desde dónde vas a contratar?
+                            </label>
+
+                            <select
+                                id="tv-region"
+                                class="form-select tv-field mb-3"
+                                onchange="actualizarOfertaTodoVilu()">
+                                <option value="">Selecciona tu ubicación</option>
+                                <option value="co">Colombia · COP</option>
+                                <option value="internacional">Otros países · USD</option>
+                            </select>
+
+                            <div id="tv-method-wrapper" hidden>
+                                <label
+                                    for="tv-payment-method"
+                                    class="form-label small">
+                                    Método de pago
+                                </label>
+
+                                <select
+                                    id="tv-payment-method"
+                                    class="form-select tv-field mb-3"
+                                    onchange="actualizarOfertaTodoVilu()">
+                                    <option value="">Selecciona un método</option>
+                                </select>
+                            </div>
+
+                            <div
+                                class="tv-price-box mb-3"
+                                aria-live="polite">
+
+                                <div class="tv-price-line">
+                                    <span>Acceso</span>
+                                    <span id="tv-duration">—</span>
+                                </div>
+
+                                <div class="tv-price-line">
+                                    <span>Precio del servicio</span>
+                                    <span id="tv-base-price">—</span>
+                                </div>
+
+                                <div
+                                    id="tv-fee-row"
+                                    class="tv-price-line"
+                                    hidden>
+                                    <span>Comisión adicional</span>
+                                    <span id="tv-fee">—</span>
+                                </div>
+
+                                <div class="tv-price-line tv-total-line mb-0">
+                                    <span>Total</span>
+                                    <span id="tv-total">—</span>
+                                </div>
+                            </div>
+
+                            <button
+                                type="button"
+                                id="tv-contact-button"
+                                class="btn btn-success tv-action w-100 fw-bold mb-3"
+                                onclick="contactarTodoVilu()"
+                                disabled>
+                                <i class="bi bi-whatsapp me-1"></i>
+                                Consultar y activar por WhatsApp
+                            </button>
+
+                            <div class="form-check mb-3">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="tv-acknowledge"
+                                    onchange="actualizarOfertaTodoVilu()">
+
+                                <label
+                                    class="form-check-label small tv-muted"
+                                    for="tv-acknowledge">
+                                    Entiendo que descargar la app no incluye
+                                    el acceso y que debo contratar el servicio.
+                                </label>
+                            </div>
+
+                            <button
+                                type="button"
+                                id="tv-download-button"
+                                class="btn btn-outline-light tv-action w-100"
+                                onclick="descargarAndroidTodoVilu()"
+                                disabled>
+                                <i class="bi bi-download me-1"></i>
+                                Descargar APK para Android
+                            </button>
+
+                        </div>
+
+                        <div
+                            class="tab-pane fade"
+                            id="tv-panel-tv"
+                            role="tabpanel"
+                            aria-labelledby="tv-tab-tv">
+                            <div class="tv-coming-soon">
+                                <i class="bi bi-tv"></i>
+                                <h5 class="text-white">TodoVilu para TV</h5>
+                                <p class="mb-0">Próximamente.</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="tab-pane fade"
+                            id="tv-panel-pc"
+                            role="tabpanel"
+                            aria-labelledby="tv-tab-pc">
+                            <div class="tv-coming-soon">
+                                <i class="bi bi-pc-display"></i>
+                                <h5 class="text-white">TodoVilu para PC</h5>
+                                <p class="mb-0">Próximamente.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -799,7 +1150,392 @@ body.en-app #fab-cart {
         const itemsPerPage = 24;
         let selectedIds = new Set();
         let isSelectMode = false;
+        let tvConfiguracion = null;
+        let tvApkUrl = "";
+        let tvConfigPromise = null;
 
+        function tvNumeroValido(valor, permitirCero = false) {
+            return typeof valor === "number" &&
+                Number.isFinite(valor) &&
+                (permitirCero ? valor >= 0 : valor > 0);
+        }
+
+        function tvUrlHttps(valor) {
+            try {
+                const url = new URL(String(valor || ""));
+                return url.protocol === "https:" ? url.href : "";
+            } catch (_) {
+                return "";
+            }
+        }
+
+        function tvDinero(valor, moneda) {
+            return new Intl.NumberFormat(
+                moneda === "COP" ? "es-CO" : "en-US",
+                {
+                    style: "currency",
+                    currency: moneda,
+                    minimumFractionDigits: moneda === "COP" ? 0 : 2,
+                    maximumFractionDigits: moneda === "COP" ? 0 : 2
+                }
+            ).format(valor) + " " + moneda;
+        }
+
+        function aplicarPaqueteComercialTodoVilu(paquete) {
+            tvApkUrl = tvUrlHttps(paquete.apk);
+
+            const config = paquete.configuracion;
+
+            if (config && typeof config === "object") {
+                tvConfiguracion = {
+                    version: String(config.version || ""),
+                    whatsapp: String(config.whatsapp || "")
+                        .replace(/\D/g, ""),
+                    duracionDias: config.duracionDias,
+                    precioColombiaCOP: config.precioColombiaCOP,
+                    precioInternacionalUSD:
+                        config.precioInternacionalUSD,
+                    metodosPago: (
+                        Array.isArray(config.metodosPago)
+                            ? config.metodosPago
+                            : []
+                    ).filter(metodo =>
+                        metodo &&
+                        String(metodo.nombre || "").trim() &&
+                        tvNumeroValido(metodo.comisionUSD, true)
+                    )
+                };
+
+                const select =
+                    document.getElementById("tv-payment-method");
+
+                select.replaceChildren(
+                    new Option("Selecciona un método", "")
+                );
+
+                tvConfiguracion.metodosPago.forEach(
+                    (metodo, index) => {
+                        select.add(
+                            new Option(
+                                String(metodo.nombre),
+                                String(index)
+                            )
+                        );
+                    }
+                );
+
+                // Actualiza también los contactos antiguos de venta.
+                document.querySelectorAll(
+                    '#sales-overlay a[href*="wa.me/"]'
+                ).forEach(enlace => {
+                    if (
+                        /^[1-9]\d{6,14}$/.test(
+                            tvConfiguracion.whatsapp
+                        )
+                    ) {
+                        enlace.href =
+                            "https://wa.me/" +
+                            tvConfiguracion.whatsapp;
+                        enlace.rel = "noopener noreferrer";
+                    }
+                });
+            }
+
+            actualizarOfertaTodoVilu();
+        }
+
+        async function abrirAplicacionesTodoVilu() {
+            if (ES_APP_TODOVILU) return;
+
+            bootstrap.Tab.getOrCreateInstance(
+                document.getElementById("tv-tab-android")
+            ).show();
+
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById("appsTodoViluModal")
+            ).show();
+
+            if (tvConfiguracion) {
+                actualizarOfertaTodoVilu();
+                return;
+            }
+
+            const status =
+                document.getElementById("tv-config-status");
+
+            status.textContent = "Cargando información…";
+
+            try {
+                if (!tvConfigPromise) {
+                    tvConfigPromise = fetch(
+                        API_URL + "&vista=config"
+                    )
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(
+                                    "HTTP " + response.status
+                                );
+                            }
+                            return response.json();
+                        })
+                        .then(paquete => {
+                            if (!paquete.configuracion) {
+                                throw new Error(
+                                    "Falta la configuración comercial"
+                                );
+                            }
+                            aplicarPaqueteComercialTodoVilu(
+                                paquete
+                            );
+                        })
+                        .finally(() => {
+                            tvConfigPromise = null;
+                        });
+                }
+
+                await tvConfigPromise;
+            } catch (error) {
+                console.error(error);
+                status.textContent =
+                    "No se pudo cargar la información. " +
+                    "Cierra esta ventana y vuelve a intentarlo.";
+            }
+        }
+
+        function obtenerOfertaTodoVilu() {
+            const region =
+                document.getElementById("tv-region").value;
+
+            if (!tvConfiguracion || !region) return null;
+
+            const dias = tvConfiguracion.duracionDias;
+
+            if (!Number.isInteger(dias) || dias <= 0) {
+                return null;
+            }
+
+            if (region === "co") {
+                const base =
+                    tvConfiguracion.precioColombiaCOP;
+
+                if (!tvNumeroValido(base)) return null;
+
+                return {
+                    region: "Colombia",
+                    moneda: "COP",
+                    dias: dias,
+                    base: base,
+                    comision: 0,
+                    total: base,
+                    metodo: ""
+                };
+            }
+
+            if (region !== "internacional") return null;
+
+            const base =
+                tvConfiguracion.precioInternacionalUSD;
+
+            const seleccion =
+                document.getElementById(
+                    "tv-payment-method"
+                ).value;
+
+            if (!tvNumeroValido(base) || seleccion === "") {
+                return null;
+            }
+
+            const metodo =
+                tvConfiguracion.metodosPago[
+                    Number(seleccion)
+                ];
+
+            if (!metodo) return null;
+
+            return {
+                region: "Otros países",
+                moneda: "USD",
+                dias: dias,
+                base: base,
+                comision: metodo.comisionUSD,
+                total: Math.round(
+                    (base + metodo.comisionUSD) * 100
+                ) / 100,
+                metodo: String(metodo.nombre)
+            };
+        }
+
+        function actualizarOfertaTodoVilu() {
+            const region =
+                document.getElementById("tv-region").value;
+
+            const internacional =
+                region === "internacional";
+
+            document.getElementById(
+                "tv-method-wrapper"
+            ).hidden = !internacional;
+
+            const feeRow =
+                document.getElementById("tv-fee-row");
+
+            feeRow.hidden = !internacional;
+
+            // Bootstrap aplica display:flex a esta fila.
+            feeRow.style.display =
+                internacional ? "flex" : "none";
+
+            const oferta = obtenerOfertaTodoVilu();
+
+            document.getElementById(
+                "tv-app-version"
+            ).textContent =
+                tvConfiguracion
+                    ? tvConfiguracion.version
+                    : "";
+
+            const dias = tvConfiguracion?.duracionDias;
+
+            document.getElementById(
+                "tv-duration"
+            ).textContent =
+                Number.isInteger(dias) && dias > 0
+                    ? dias + " días"
+                    : "—";
+
+            const base = internacional
+                ? tvConfiguracion?.precioInternacionalUSD
+                : tvConfiguracion?.precioColombiaCOP;
+
+            document.getElementById(
+                "tv-base-price"
+            ).textContent =
+                region && tvNumeroValido(base)
+                    ? tvDinero(
+                        base,
+                        internacional ? "USD" : "COP"
+                    )
+                    : "—";
+
+            document.getElementById("tv-fee").textContent =
+                oferta
+                    ? tvDinero(oferta.comision, "USD")
+                    : "—";
+
+            document.getElementById("tv-total").textContent =
+                oferta
+                    ? tvDinero(
+                        oferta.total,
+                        oferta.moneda
+                    )
+                    : "—";
+
+            const whatsappValido =
+                /^[1-9]\d{6,14}$/.test(
+                    tvConfiguracion?.whatsapp || ""
+                );
+
+            document.getElementById(
+                "tv-contact-button"
+            ).disabled = !oferta || !whatsappValido;
+
+            const aceptado =
+                document.getElementById(
+                    "tv-acknowledge"
+                ).checked;
+
+            document.getElementById(
+                "tv-download-button"
+            ).disabled =
+                !oferta || !aceptado || !tvApkUrl;
+
+            const status =
+                document.getElementById("tv-config-status");
+
+            if (!tvConfiguracion) {
+                status.textContent =
+                    "Información comercial pendiente de cargar.";
+            } else if (!region) {
+                status.textContent =
+                    "Selecciona tu ubicación para ver el precio.";
+            } else if (!tvNumeroValido(base)) {
+                status.textContent =
+                    "Precio no disponible. Inténtalo más tarde.";
+            } else if (internacional && !oferta) {
+                status.textContent =
+                    "Selecciona un método para calcular el total.";
+            } else if (!whatsappValido) {
+                status.textContent =
+                    "El contacto de activación no está disponible.";
+            } else {
+                status.textContent =
+                    "El pago y la activación se coordinan " +
+                    "por WhatsApp. Esta página no procesa pagos.";
+            }
+        }
+
+        function contactarTodoVilu() {
+            const oferta = obtenerOfertaTodoVilu();
+            const numero = tvConfiguracion?.whatsapp || "";
+
+            if (
+                !oferta ||
+                !/^[1-9]\d{6,14}$/.test(numero)
+            ) {
+                return;
+            }
+
+            const lineas = [
+                "Hola, quiero contratar TodoVilu.",
+                "Ubicación: " + oferta.region,
+                "Duración: " + oferta.dias + " días",
+                "Precio: " + tvDinero(
+                    oferta.base,
+                    oferta.moneda
+                )
+            ];
+
+            if (oferta.metodo) {
+                lineas.push(
+                    "Método: " + oferta.metodo,
+                    "Comisión adicional: " +
+                        tvDinero(oferta.comision, "USD")
+                );
+            }
+
+            lineas.push(
+                "Total: " + tvDinero(
+                    oferta.total,
+                    oferta.moneda
+                ),
+                "¿Cómo puedo pagar y activar el acceso?"
+            );
+
+            window.open(
+                "https://wa.me/" + numero +
+                    "?text=" +
+                    encodeURIComponent(lineas.join("\n")),
+                "_blank",
+                "noopener,noreferrer"
+            );
+        }
+
+        function descargarAndroidTodoVilu() {
+            const oferta = obtenerOfertaTodoVilu();
+
+            const aceptado =
+                document.getElementById(
+                    "tv-acknowledge"
+                ).checked;
+
+            if (!oferta || !aceptado || !tvApkUrl) return;
+
+            window.open(
+                tvApkUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+        }
         window.onload = function() {
             cargarCatalogo();
         };
@@ -815,13 +1551,7 @@ body.en-app #fab-cart {
                 })
                 .then(paquete => {
 
-                    if (!ES_APP_TODOVILU &&
-                        paquete.apk &&
-                        paquete.apk.startsWith("http")) {
-
-                        document.getElementById("btn-apk").href =
-                            paquete.apk;
-                    }
+                                        aplicarPaqueteComercialTodoVilu(paquete);
 
                     iniciarWeb(paquete.catalogo || []);
                 })
