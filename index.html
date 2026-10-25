@@ -1,2257 +1,1225 @@
 <!DOCTYPE html>
-<html lang="es" prefix="og: https://ogp.me/ns#">
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>TodoVilu Streaming | Catálogo</title>
-
-    <meta
-        name="description"
-        content="Descubre películas, series, animes y ReelShorts en TodoVilu Streaming. Tu universo, a tu ritmo."
-    >
-
-    <meta name="theme-color" content="#e50914">
-
-    <link
-        rel="canonical"
-        href="https://todovilu-web.vercel.app/"
-    >
-
-    <!-- Vista previa al compartir -->
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="es_ES">
-    <meta property="og:site_name" content="TodoVilu Streaming">
-
-    <meta
-        property="og:url"
-        content="https://todovilu-web.vercel.app/"
-    >
-
-    <meta
-        property="og:title"
-        content="TodoVilu Streaming"
-    >
-
-    <meta
-        property="og:description"
-        content="Descubre películas, series, animes y ReelShorts. Tu universo, a tu ritmo."
-    >
-
-    <meta
-        property="og:image"
-        content="https://todovilu-web.vercel.app/compartir.jpg"
-    >
-
-    <meta property="og:image:type" content="image/jpeg">
-
-    <meta
-        property="og:image:alt"
-        content="Logo de TodoVilu Streaming"
-    >
-
-    <!-- Tarjeta para plataformas que utilizan Twitter Cards -->
-    <meta name="twitter:card" content="summary">
-
-    <meta
-        name="twitter:title"
-        content="TodoVilu Streaming"
-    >
-
-    <meta
-        name="twitter:description"
-        content="Descubre películas, series, animes y ReelShorts. Tu universo, a tu ritmo."
-    >
-
-    <meta
-        name="twitter:image"
-        content="https://todovilu-web.vercel.app/compartir.jpg"
-    >
-
-    <meta
-        name="twitter:image:alt"
-        content="Logo de TodoVilu Streaming"
-    >
-
-    <!-- Icono del navegador -->
-    <link rel="icon" type="image/png" href="favicon.png">
-
-    <!-- Estilos existentes -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
-    >
-
-    <style>
-        :root {
-            --primary: #e50914;
-            --bg: #141414;
-            --card: #1f1f1f;
-            --text: #fff;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            background: var(--bg);
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding-top: calc(145px + env(safe-area-inset-top));
-            padding-bottom: 80px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        .navbar {
-            background-color: rgba(20, 20, 20, 0.98);
-            border-bottom: 1px solid #333;
-            backdrop-filter: blur(10px);
-        }
-
-        .brand-logo {
-            color: var(--primary);
-            font-weight: 900;
-            font-size: 1.5rem;
-            text-decoration: none;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .filters-bar {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 5px;
-            scrollbar-width: none;
-        }
-
-        .filters-bar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .form-select-dark {
-            background-color: #333;
-            color: #fff !important;
-            border: 1px solid #444;
-            font-size: 0.85rem;
-            min-width: 130px;
-        }
-
-        .search-input {
-            background: #333;
-            border: 1px solid #444;
-            color: #fff !important;
-            border-radius: 50px;
-            padding: 7px 15px;
-            width: 100%;
-            outline: none;
-        }
-
-        .search-input::placeholder {
-            color: #aaa;
-        }
-
-        .card {
-            background-color: var(--card);
-            border: none;
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            height: 100%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-
-        .card:active {
-            transform: scale(0.98);
-        }
-
-        .card-img-top {
-            aspect-ratio: 2 / 3;
-            object-fit: cover;
-            width: 100%;
-            display: block;
-        }
-
-        .card-body {
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #fff !important;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-bottom: 5px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        }
-
-        .btn-detalles {
-            width: 100%;
-            background: #eee;
-            color: #111;
-            border: none;
-            padding: 8px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-top: 8px;
-            cursor: pointer;
-        }
-
-        .badge-cat {
-            font-size: 0.65rem;
-            background: rgba(0, 0, 0, 0.85);
-            color: #fff !important;
-            padding: 3px 8px;
-            border-radius: 4px;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            z-index: 5;
-            font-weight: bold;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .badge-year {
-            font-size: 0.65rem;
-            background: #f1c40f;
-            color: #000 !important;
-            padding: 3px 8px;
-            border-radius: 4px;
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            z-index: 5;
-            font-weight: bold;
-        }
-
-        .select-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(229, 9, 20, 0.4);
-            border: 3px solid var(--primary);
-            display: none;
-            pointer-events: none;
-            z-index: 10;
-            border-radius: 8px;
-        }
-
-        .card.selected .select-overlay {
-            display: block;
-        }
-
-        .select-icon {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: white;
-            z-index: 11;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        .card.selected .select-icon {
-            display: block;
-        }
-
-        .modal-content {
-            background-color: #141414;
-            color: white;
-            border: 1px solid #333;
-        }
-
-        .modal-header {
-            border-bottom: 1px solid #333;
-        }
-
-        .btn-close {
-            filter: invert(1);
-        }
-
-        .btn-deeplink {
-            display: block;
-            width: 100%;
-            color: #fff;
-            border: none;
-            padding: 11px;
-            border-radius: 6px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            margin-top: 10px;
-            font-size: 0.95rem;
-            cursor: pointer;
-        }
-
-        .style-app {
-            background: linear-gradient(45deg, #2ecc71, #27ae60);
-        }
-
-        .style-json {
-            background: linear-gradient(45deg, #ff9800, #f57c00);
-        }
-
-        .btn-play-sales {
-            width: 100%;
-            background: #e50914;
-            color: white;
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 6px;
-            border: none;
-            font-size: 1.1rem;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-secundario {
-            width: 100%;
-            background: #333;
-            color: #ccc;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #555;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        #sales-overlay {
-            display: none;
-            margin-top: 15px;
-            background: #222;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e50914;
-            text-align: center;
-        }
-
-        .meta-tag {
-            background: #333;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            color: #ccc;
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .btn-page {
-            background: #333;
-            color: white;
-            border: 1px solid #444;
-            padding: 6px 15px;
-            border-radius: 4px;
-        }
-
-        .btn-page:disabled {
-            opacity: 0.5;
-        }
-
-        #fab-cart {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.6);
-            z-index: 100;
-            display: none;
-            cursor: pointer;
-        }
-
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        /* Ajustes exclusivos dentro de la app */
-        body.en-app #banner-app,
-        body.en-app #btn-select-mode,
-        body.en-app #fab-cart {
-            display: none !important;
-        }
-
-        body.en-app {
-            padding-top: calc(120px + env(safe-area-inset-top));
-        }
-
-        @media (max-width: 600px) {
-            .brand-logo {
-                font-size: 1.25rem;
-            }
-
-            .search-input {
-                padding: 6px 10px;
-                font-size: 0.85rem;
-            }
-
-            body {
-                padding-top: calc(135px + env(safe-area-inset-top));
-            }
-
-            body.en-app {
-                padding-top: calc(115px + env(safe-area-inset-top));
-            }
-        
-#btn-select-mode,
-#fab-cart {
-    display: none !important;
-}
-        }
-        /* Catálogo integrado en Android */
-body.en-app {
-    padding-top: 0 !important;
-}
-
-/* La marca ahora la muestra el encabezado nativo */
-body.en-app .navbar .brand-logo {
-    display: none !important;
-}
-
-/* Buscador y filtros debajo del encabezado nativo */
-body.en-app .navbar {
-    position: sticky !important;
-    top: 0 !important;
-    right: auto !important;
-    left: auto !important;
-
-    width: 100%;
-    z-index: 1030;
-
-    background: #141414;
-    border-bottom: 1px solid #292929;
-    backdrop-filter: none;
-}
-
-body.en-app .navbar .flex-grow-1 {
-    min-width: 0;
-}
-
-body.en-app .navbar .search-input {
-    min-height: 42px;
-    font-size: 14px;
-}
-
-/* Todos los filtros visibles sin deslizar lateralmente */
-body.en-app .filters-bar {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-
-    overflow: visible;
-    padding-bottom: 4px;
-    margin-bottom: 0;
-}
-
-body.en-app .filters-bar .form-select-dark {
-    width: 100%;
-    min-width: 0;
-    min-height: 40px;
-
-    font-size: 13px;
-    border-radius: 8px;
-    background-color: #242424;
-    border-color: #383838;
-}
-
-body.en-app #banner-app,
-body.en-app #btn-select-mode,
-body.en-app #fab-cart {
-    display: none !important;
-}
-        /* Ventana de aplicaciones y acceso */
-        #appsTodoViluModal .modal-content {
-            border-radius: 20px;
-            background: #181818;
-            border: 1px solid #343434;
-            overflow: hidden;
-        }
-
-        #appsTodoViluModal .modal-header {
-            padding: 20px;
-        }
-
-        #appsTodoViluModal .modal-body {
-            padding: 20px;
-        }
-
-        #appsTodoViluModal .tv-platform-tabs {
-            display: flex;
-            gap: 8px;
-            padding: 5px;
-            background: #101010;
-            border-radius: 14px;
-        }
-
-        #appsTodoViluModal .tv-platform-tabs .nav-item {
-            flex: 1;
-        }
-
-        #appsTodoViluModal .tv-platform-tabs .nav-link {
-            width: 100%;
-            border: 0;
-            border-radius: 10px;
-            padding: 11px 6px;
-            background: transparent;
-            color: #bdbdbd;
-            font-weight: 600;
-        }
-
-        #appsTodoViluModal .tv-platform-tabs .nav-link.active {
-            background: #303030;
-            color: #fff;
-        }
-
-        #appsTodoViluModal .tv-access-notice {
-            border: 1px solid #694024;
-            background: #2a2018;
-            color: #f3d5b8;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        #appsTodoViluModal .tv-field {
-            width: 100%;
-            color: #fff;
-            background-color: #262626;
-            border: 1px solid #444;
-            border-radius: 10px;
-            min-height: 46px;
-        }
-
-        #appsTodoViluModal .tv-price-box {
-            background: #222;
-            border: 1px solid #353535;
-            border-radius: 14px;
-            padding: 16px;
-        }
-
-        #appsTodoViluModal .tv-price-line {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 8px;
-            color: #c8c8c8;
-            font-size: 0.9rem;
-        }
-
-        #appsTodoViluModal .tv-total-line {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #3b3b3b;
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        #appsTodoViluModal .tv-action {
-            border-radius: 11px;
-            padding: 12px;
-        }
-
-        #appsTodoViluModal .tv-coming-soon {
-            padding: 40px 12px;
-            text-align: center;
-            color: #bdbdbd;
-        }
-
-        #appsTodoViluModal .tv-coming-soon i {
-            display: block;
-            margin-bottom: 14px;
-            color: #e50914;
-            font-size: 42px;
-        }
-
-        #appsTodoViluModal .tv-muted {
-            color: #b8b8b8;
-        }
-                /* Toda la tarjeta abre la vista de aplicaciones */
-        #banner-app {
-            position: relative;
-            cursor: pointer;
-        }
-
-        #banner-app #btn-apk::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            cursor: pointer;
-        }
-
-        #banner-app:focus-within {
-            outline: 2px solid #2ecc71;
-            outline-offset: 3px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>TodoVilu Streaming — Tu universo, a tu ritmo</title>
+
+  <meta
+    name="description"
+    content="Explora TodoVilu Streaming. Consulta los precios de acceso y descarga la aplicación oficial para Android."
+  >
+  <meta name="theme-color" content="#e50914">
+
+  <link rel="canonical" href="https://todovilu-web.vercel.app/">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TodoVilu Streaming">
+  <meta property="og:title" content="TodoVilu Streaming">
+  <meta
+    property="og:description"
+    content="Tu universo, a tu ritmo. Explora el catálogo y consulta cómo obtener acceso."
+  >
+  <meta
+    property="og:image"
+    content="https://todovilu-web.vercel.app/compartir.jpg"
+  >
+  <meta property="og:url" content="https://todovilu-web.vercel.app/">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TodoVilu Streaming">
+  <meta
+    name="twitter:image"
+    content="https://todovilu-web.vercel.app/compartir.jpg"
+  >
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #08080a;
+      --panel: #15151a;
+      --line: #292930;
+      --red: #e50914;
+      --muted: #adadb8;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(900px 500px at 85% 0%, #e5091425, transparent 65%),
+        var(--bg);
+      color: #fff;
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button, select, input { font: inherit; }
+
+    button, a, select, input { -webkit-tap-highlight-color: transparent; }
+
+    [hidden] { display: none !important; }
+
+    .container {
+      width: min(1120px, calc(100% - 36px));
+      margin-inline: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #08080aeb;
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 15px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: var(--red);
+      border-radius: 11px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--red);
+      font-size: .65rem;
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-text { color: var(--muted); font-size: .9rem; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 13px 21px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-weight: 700;
+      color: #fff;
+      transition: transform .15s, background .2s;
+      text-align: center;
+    }
+
+    .btn:active { transform: scale(.98); }
+
+    .btn-primary {
+      background: var(--red);
+      box-shadow: 0 10px 30px #e509142b;
+    }
+
+    .btn-primary:hover { background: #fa1722; }
+
+    .btn-ghost {
+      background: #ffffff09;
+      border-color: var(--line);
+    }
+
+    .btn-ghost:hover { background: #ffffff14; }
+
+    .btn-small { padding: 9px 15px; font-size: .85rem; }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .full { width: 100%; }
+
+    section { padding: 64px 0; }
+
+    .hero { padding: 80px 0 60px; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      background: #e509141c;
+      border: 1px solid #e509144d;
+      border-radius: 999px;
+      font-size: .8rem;
+      color: #ffd3d6;
+    }
+
+    h1 {
+      font-size: clamp(2.7rem, 6vw, 4.5rem);
+      line-height: 1.04;
+      letter-spacing: -2px;
+      margin: 22px 0;
+    }
+
+    h1 em { color: var(--red); font-style: normal; }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin: 0 0 12px;
+    }
+
+    h3 { margin-top: 0; }
+
+    p { color: var(--muted); }
+
+    .hero p { max-width: 550px; font-size: 1.03rem; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .stat {
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff05;
+    }
+
+    .stat b { display: block; }
+
+    .stat small { color: var(--muted); }
+
+    .visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 450px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        radial-gradient(ellipse at 20% 10%, #e509143b, transparent 65%),
+        linear-gradient(145deg, #18181e, #0d0d10);
+      box-shadow: 0 30px 80px #0008;
+      overflow: hidden;
+    }
+
+    .phone {
+      width: min(275px, 100%);
+      padding: 12px;
+      border-radius: 30px;
+      background: #0a0a0d;
+      border: 1px solid #393940;
+      box-shadow: 0 20px 50px #0009;
+      transform: rotate(-4deg);
+    }
+
+    .screen {
+      border-radius: 20px;
+      background: #15151a;
+      overflow: hidden;
+    }
+
+    .phone-top {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      font-size: .8rem;
+    }
+
+    .phone-search {
+      margin: 0 12px 12px;
+      padding: 9px 12px;
+      background: #25252c;
+      border-radius: 99px;
+      color: var(--muted);
+      font-size: .7rem;
+    }
+
+    .posters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      padding: 0 12px 15px;
+    }
+
+    .poster {
+      aspect-ratio: 2 / 3;
+      display: flex;
+      align-items: flex-end;
+      padding: 6px;
+      border-radius: 9px;
+      background: linear-gradient(155deg, #464652, #19191f);
+      font-size: .55rem;
+    }
+
+    .poster:nth-child(2n) {
+      background: linear-gradient(155deg, #a32336, #251118);
+    }
+
+    .poster:nth-child(3n) {
+      background: linear-gradient(155deg, #354766, #121821);
+    }
+
+    .section-head { margin-bottom: 28px; }
+
+    .section-head p { max-width: 650px; margin: 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .card, .step {
+      padding: 24px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .card > i { color: var(--red); font-size: 1.7rem; }
+
+    .card h3 { margin: 14px 0 8px; font-size: 1.05rem; }
+
+    .card p, .step p { font-size: .9rem; margin-bottom: 0; }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .category {
+      padding: 22px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(150deg, #19191f, #101014);
+    }
+
+    .category:hover { border-color: #e5091480; }
+
+    .category i { color: var(--red); font-size: 1.6rem; }
+
+    .category b { display: block; margin-top: 10px; }
+
+    .category small { color: var(--muted); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .step-number {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      color: #ff9098;
+      background: #e509141f;
+      font-weight: 800;
+    }
+
+    .access-layout {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 35px;
+      align-items: start;
+    }
+
+    .calculator {
+      padding: 28px;
+      border: 1px solid #e5091460;
+      border-radius: 24px;
+      background:
+        radial-gradient(ellipse at top right, #e509141c, transparent 65%),
+        var(--panel);
+    }
+
+    .notice {
+      padding: 16px;
+      margin: 22px 0;
+      border-radius: 14px;
+      border: 1px solid #694024;
+      background: #2a2018;
+      color: #f3d5b8;
+      font-size: .9rem;
+    }
+
+    .field-label {
+      display: block;
+      margin: 18px 0 8px;
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px;
+      min-height: 48px;
+      color: #fff;
+      background: #24242b;
+      border: 1px solid #42424b;
+      border-radius: 12px;
+    }
+
+    select:focus {
+      outline: 2px solid var(--red);
+      outline-offset: 2px;
+    }
+
+    .summary {
+      margin: 22px 0;
+      padding: 18px;
+      background: #0d0d11;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 12px;
+      color: var(--muted);
+    }
+
+    .summary-row span:last-child { text-align: right; }
+
+    .summary-total {
+      margin-bottom: 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+
+    .acknowledge {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+
+    .acknowledge input {
+      margin-top: 5px;
+      accent-color: var(--red);
+    }
+
+    .status { font-size: .86rem; }
+
+    .cta {
+      padding: 42px 25px;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at top, #e5091420, transparent 70%),
+        #101014;
+    }
+
+    .cta .actions { justify-content: center; }
+
+    footer {
+      padding: 30px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .footer-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .access-layout { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .categories { grid-template-columns: repeat(3, 1fr); }
+      .nav-text { display: none; }
+      .visual { min-height: 380px; }
+    }
+
+    @media (max-width: 600px) {
+      .container { width: calc(100% - 24px); }
+      .hero { padding-top: 45px; }
+      section { padding: 42px 0; }
+      .brand { font-size: .9rem; gap: 7px; }
+      .brand small { font-size: .55rem; }
+      .nav { gap: 10px; }
+      .nav-links { gap: 0; }
+      .nav-links .btn { padding: 9px 12px; font-size: .75rem; }
+      .cards, .steps { grid-template-columns: 1fr; }
+      .categories { grid-template-columns: repeat(2, 1fr); }
+      .actions { flex-direction: column; }
+      .actions .btn { width: 100%; }
+      .calculator { padding: 20px; }
+      .visual { min-height: 350px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
 </head>
 
 <body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="TodoVilu Inicio">
+        <span class="brand-icon">
+          <i class="bi bi-play-fill"></i>
+        </span>
+        <span>
+          TODOVILU
+          <small>STREAMING</small>
+        </span>
+      </a>
 
-    <div id="loader">
-        <div class="spinner-border text-danger" role="status"></div>
-        <div id="loader-text" class="mt-2 text-secondary">
-    Cargando contenido...
-</div>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a class="nav-text" href="#contenido">Contenido</a>
+        <a class="nav-text" href="#como-funciona">Cómo funciona</a>
+        <a class="nav-text" href="#acceso">Acceso</a>
+
+        <a class="btn btn-primary btn-small" href="/catalogo/">
+          <i class="bi bi-grid-3x3-gap-fill"></i>
+          Ver catálogo
+        </a>
+      </nav>
     </div>
+  </header>
 
-    <nav class="navbar fixed-top px-3 pb-2 pt-2">
-    <div class="container-fluid p-0">
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="pill">
+            <i class="bi bi-play-circle"></i>
+            Descubre TodoVilu
+          </span>
 
-        <!-- Primera fila: logo, actualizar y buscador -->
-        <div class="d-flex align-items-center w-100 gap-2">
+          <h1>Tu universo,<br><em>a tu ritmo.</em></h1>
 
-            <span
-                class="brand-logo flex-shrink-0"
-                onclick="resetFiltros()">
-                TODOVILU
+          <p>
+            Películas, series, animes, ReelShorts y textos.
+            Explora el catálogo y descubre tu próximo favorito
+            desde la aplicación TodoVilu para Android.
+          </p>
+
+          <div class="actions">
+            <a class="btn btn-primary" href="/catalogo/">
+              <i class="bi bi-play-fill"></i>
+              Explorar catálogo
+            </a>
+
+            <a class="btn btn-ghost" href="#acceso">
+              <i class="bi bi-android2"></i>
+              Aplicación y acceso
+            </a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <b>5 categorías</b>
+              <small>Contenido organizado</small>
+            </div>
+
+            <div class="stat">
+              <b>Android</b>
+              <small>Aplicación oficial</small>
+            </div>
+
+            <div class="stat">
+              <b>Contacto directo</b>
+              <small>Activación por WhatsApp</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="visual" aria-hidden="true">
+          <div class="phone">
+            <div class="screen">
+              <div class="phone-top">
+                <span>TodoVilu</span>
+                <i class="bi bi-wifi"></i>
+              </div>
+
+              <div class="phone-search">
+                <i class="bi bi-search"></i>
+                Buscar películas, series…
+              </div>
+
+              <div class="posters">
+                <div class="poster">PELÍCULAS</div>
+                <div class="poster">SERIES</div>
+                <div class="poster">ANIMES</div>
+                <div class="poster">REELSHORTS</div>
+                <div class="poster">TEXTOS</div>
+                <div class="poster">TODOVILU</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contenido">
+      <div class="container">
+        <div class="section-head">
+          <h2>Todo en un solo lugar</h2>
+          <p>
+            Explora las categorías y encuentra lo que quieres
+            ver o leer.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <i class="bi bi-film"></i>
+            <h3>Películas</h3>
+            <p>Consulta títulos y filtra por género o año.</p>
+          </div>
+
+          <div class="card">
+            <i class="bi bi-tv"></i>
+            <h3>Series y animes</h3>
+            <p>Consulta los detalles y episodios desde la aplicación.</p>
+          </div>
+
+          <div class="card">
+            <i class="bi bi-phone"></i>
+            <h3>ReelShorts</h3>
+            <p>Encuentra la categoría de contenido corto.</p>
+          </div>
+
+          <div class="card">
+            <i class="bi bi-book"></i>
+            <h3>Textos</h3>
+            <p>Explora la sección dedicada a lectura.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <h2>Explora por categoría</h2>
+          <p>Abre el catálogo y utiliza sus filtros para explorar.</p>
+        </div>
+
+        <div class="categories">
+          <a class="category" href="/catalogo/">
+            <i class="bi bi-film"></i>
+            <b>Películas</b>
+            <small>Explorar títulos</small>
+          </a>
+
+          <a class="category" href="/catalogo/">
+            <i class="bi bi-tv"></i>
+            <b>Series</b>
+            <small>Descubrir historias</small>
+          </a>
+
+          <a class="category" href="/catalogo/">
+            <i class="bi bi-stars"></i>
+            <b>Animes</b>
+            <small>Explorar categoría</small>
+          </a>
+
+          <a class="category" href="/catalogo/">
+            <i class="bi bi-phone"></i>
+            <b>ReelShorts</b>
+            <small>Contenido corto</small>
+          </a>
+
+          <a class="category" href="/catalogo/">
+            <i class="bi bi-book"></i>
+            <b>Textos</b>
+            <small>Lectura</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <h2>Empieza en 3 pasos</h2>
+          <p>
+            Descargar la aplicación no activa automáticamente el servicio.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Consulta tu tarifa</h3>
+            <p>
+              Selecciona tu ubicación y, si corresponde,
+              el método de pago.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Coordina tu acceso</h3>
+            <p>
+              Escríbenos por WhatsApp para consultar el pago
+              y la activación.
+            </p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Instala TodoVilu</h3>
+            <p>
+              Descarga la APK oficial y sigue las indicaciones
+              para usar tu acceso.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="acceso">
+      <div class="container">
+        <div class="section-head">
+          <h2>Tu acceso a TodoVilu</h2>
+          <p>
+            Consulta los precios actuales y coordina
+            la activación por WhatsApp.
+          </p>
+        </div>
+
+        <div class="access-layout">
+          <div>
+            <span class="pill">
+              <i class="bi bi-android2"></i>
+              Aplicación para Android
             </span>
 
+            <h3 style="margin-top:22px;">Todo listo para empezar</h3>
+
+            <p>
+              La calculadora muestra el precio del servicio,
+              la comisión del método internacional y el total.
+            </p>
+
+            <p>
+              Versión disponible:
+              <span id="tv-app-version">Cargando…</span>
+            </p>
+
+            <div class="notice">
+              <i class="bi bi-lock-fill"></i>
+              El acceso es de pago. Descargar la aplicación no activa
+              el servicio. El pago se coordina por WhatsApp;
+              esta página no procesa pagos.
+            </div>
+
+            <p>TV y PC: próximamente.</p>
+          </div>
+
+          <div class="calculator">
+            <h3>Calcula tu acceso</h3>
+
+            <p id="tv-config-status" class="status" role="status">
+              Cargando precios y configuración…
+            </p>
+
             <button
-                type="button"
-                class="btn btn-sm btn-outline-light flex-shrink-0"
-                onclick="location.reload()"
-                aria-label="Actualizar catálogo"
-                title="Actualizar catálogo">
-                ↻
+              id="tv-retry"
+              type="button"
+              class="btn btn-ghost btn-small"
+              onclick="cargarConfiguracionTodoVilu()"
+              hidden>
+              Reintentar
             </button>
 
-            <div class="flex-grow-1">
-                <input
-                    type="text"
-                    id="buscador"
-                    class="search-input w-100"
-                    placeholder="Buscar..."
-                    onkeyup="aplicarFiltros()">
+            <label class="field-label" for="tv-region">
+              ¿Desde dónde vas a contratar?
+            </label>
+
+            <select
+              id="tv-region"
+              onchange="actualizarOfertaTodoVilu()"
+              disabled>
+              <option value="">Selecciona tu ubicación</option>
+              <option value="co">Colombia · COP</option>
+              <option value="internacional">Otros países · USD</option>
+            </select>
+
+            <div id="tv-method-wrapper" hidden>
+              <label class="field-label" for="tv-payment-method">
+                Método de pago
+              </label>
+
+              <select
+                id="tv-payment-method"
+                onchange="actualizarOfertaTodoVilu()">
+                <option value="">Selecciona un método</option>
+              </select>
+            </div>
+
+            <div class="summary" aria-live="polite">
+              <div class="summary-row">
+                <span>Duración del acceso</span>
+                <span id="tv-duration">—</span>
+              </div>
+
+              <div class="summary-row">
+                <span>Precio del servicio</span>
+                <span id="tv-base-price">—</span>
+              </div>
+
+              <div id="tv-fee-row" class="summary-row" hidden>
+                <span>Comisión adicional</span>
+                <span id="tv-fee">—</span>
+              </div>
+
+              <div class="summary-row summary-total">
+                <span>Total</span>
+                <span id="tv-total">—</span>
+              </div>
             </div>
 
             <button
-                class="btn btn-sm btn-outline-light flex-shrink-0"
-                onclick="toggleSelectMode()"
-                id="btn-select-mode"
-                style="display:none;">
-                Seleccionar
+              id="tv-contact-button"
+              type="button"
+              class="btn btn-primary full"
+              onclick="contactarTodoVilu()"
+              disabled>
+              <i class="bi bi-whatsapp"></i>
+              Consultar y activar por WhatsApp
             </button>
 
-        </div>
+            <label class="acknowledge" for="tv-acknowledge">
+              <input
+                id="tv-acknowledge"
+                type="checkbox"
+                onchange="actualizarOfertaTodoVilu()">
 
-        <!-- Segunda fila: filtros -->
-        <div class="filters-bar w-100 mt-2">
-
-            <select
-                id="filtro-cat"
-                class="form-select form-select-dark"
-                onchange="aplicarFiltros()">
-                <option value="Todos">Categorías</option>
-            </select>
-
-            <select
-                id="filtro-genero"
-                class="form-select form-select-dark"
-                onchange="aplicarFiltros()">
-                <option value="Todos">Géneros</option>
-            </select>
-
-            <select
-                id="filtro-anio"
-                class="form-select form-select-dark"
-                onchange="aplicarFiltros()">
-                <option value="Todos">Año</option>
-            </select>
-
-            <select
-                id="filtro-orden"
-                class="form-select form-select-dark"
-                onchange="aplicarFiltros()">
-                <option value="nuevo">Más recientes</option>
-                <option value="viejo">Más antiguos</option>
-                <option value="az">A-Z</option>
-            </select>
-
-        </div>
-
-    </div>
-</nav>
-
-    <div class="container-fluid">
-
-        <div
-            id="banner-app"
-            class="card mb-2 border-0"
-            style="display:block; background:#1f1f1f; border:1px solid #333;">
-
-            <div class="card-body p-2 d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-android2 text-success fs-1 me-2"></i>
-
-                    <div style="line-height:1.2;">
-                        <span
-                            class="fw-bold text-white"
-                            style="font-size:0.9rem;">
-                            App Oficial
-                        </span>
-
-                        <div
-                            class="text-secondary"
-                            style="font-size:0.7rem;">
-                            Acceso de pago · 30 días
-                        </div>
-                    </div>
-                </div>
-
-                             <button
-                    type="button"
-                    id="btn-apk"
-                    class="btn btn-sm btn-success rounded-pill fw-bold px-3 stretched-link"
-                    style="font-size:0.8rem;"
-                    onclick="abrirAplicacionesTodoVilu()"
-                    aria-label="Ver aplicaciones, precios y opciones de acceso a TodoVilu">
-                    VER APLICACIÓN
-                </button>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between mb-2">
-            <span
-                id="contador"
-                class="text-secondary small">
-                0 resultados
-            </span>
-        </div>
-
-        <div
-            id="grid"
-            class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2">
-        </div>
-
-        <div
-            id="pagination"
-            class="pagination-container"
-            style="display:none;">
+              <span>
+                Entiendo que descargar la app no incluye el acceso
+                y que debo contratar el servicio.
+              </span>
+            </label>
 
             <button
-                class="btn-page"
-                onclick="prevPage()">
-                ❮ Anterior
+              id="tv-download-button"
+              type="button"
+              class="btn btn-ghost full"
+              onclick="descargarAndroidTodoVilu()"
+              disabled>
+              <i class="bi bi-download"></i>
+              Descargar APK para Android
             </button>
-
-            <span
-                id="page-info"
-                class="text-white align-self-center small fw-bold">
-                1 / 1
-            </span>
-
-            <button
-                class="btn-page"
-                onclick="nextPage()">
-                Siguiente ❯
-            </button>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <div
-        id="fab-cart"
-        onclick="descargarPack()">
+    <section>
+      <div class="container">
+        <div class="cta">
+          <h2>Descubre tu próximo favorito</h2>
+          <p>
+            Explora el catálogo o consulta cómo obtener acceso.
+          </p>
 
-        <i class="bi bi-cloud-download-fill"></i>
-        Descargar Pack
-        (<span id="cart-count">0</span>)
-    </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="/catalogo/">
+              <i class="bi bi-grid-3x3-gap-fill"></i>
+              Ver catálogo
+            </a>
 
-    <div
-        class="modal fade"
-        id="infoModal"
-        tabindex="-1"
-        aria-hidden="true">
-
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-
-                <div class="modal-header border-0 pb-0">
-                    <h5
-                        class="modal-title w-100 text-center fw-bold"
-                        id="m-titulo">
-                        Título
-                    </h5>
-
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                    </button>
-                </div>
-
-                <div class="modal-body pt-0">
-
-                    <div
-                        style="text-align:center; margin-bottom:15px;">
-
-                        <img
-                            id="m-img"
-                            src=""
-                            style="width:140px; border-radius:8px; box-shadow:0 5px 20px rgba(0,0,0,0.5);">
-
-                        <div id="dynamic-btn-container"></div>
-                    </div>
-
-                    <button
-                        class="btn-play-sales"
-                        onclick="mostrarOpcionesVenta()">
-
-                        <i class="bi bi-play-fill fs-1"></i>
-                        REPRODUCIR
-                    </button>
-
-                    <div id="sales-overlay">
-                        <h6 class="fw-bold text-white mb-2">
-                            🔒 CONTENIDO EXCLUSIVO
-                        </h6>
-
-                        <p class="small text-muted mb-3">
-                            Contrata el servicio para desbloquear todo el catálogo.
-                        </p>
-
-                        <div class="d-grid gap-2">
-                            <a
-                                href="https://wa.me/573181974244"
-                                target="_blank"
-                                class="btn btn-success fw-bold">
-                                <i class="bi bi-whatsapp"></i>
-                                WhatsApp
-                            </a>
-
-                            <a
-                                href="https://t.me/Registrotodovilu"
-                                target="_blank"
-                                class="btn btn-primary fw-bold"
-                                style="background:#0088cc; border:none;">
-                                <i class="bi bi-telegram"></i>
-                                Telegram
-                            </a>
-                        </div>
-                    </div>
-
-                    <div
-                        class="d-flex justify-content-center gap-2 mt-3 mb-3">
-
-                        <span
-                            id="m-anio"
-                            class="meta-tag">
-                        </span>
-
-                        <span
-                            id="m-cat"
-                            class="meta-tag">
-                        </span>
-                    </div>
-
-                    <p
-                        id="m-sinopsis"
-                        style="font-size:0.9rem; color:#ccc; line-height:1.4; text-align:justify;">
-                    </p>
-
-                    <div
-                        id="sec-btn-container"
-                        class="d-grid gap-2">
-                    </div>
-                </div>
-            </div>
+            <a class="btn btn-ghost" href="#acceso">
+              <i class="bi bi-android2"></i>
+              Descargar aplicación
+            </a>
+          </div>
         </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-layout">
+      <div>
+        <b>TodoVilu Streaming</b>
+        <div>Tu universo, a tu ritmo.</div>
+      </div>
+
+      <button
+        id="tv-footer-whatsapp"
+        type="button"
+        class="btn btn-ghost btn-small"
+        onclick="contactoGeneralTodoVilu()"
+        disabled>
+        <i class="bi bi-whatsapp"></i>
+        Contactar
+      </button>
+
+      <div>© <span id="year"></span> TodoVilu Streaming</div>
     </div>
-    <!-- Aplicaciones y contratación -->
-    <div
-        class="modal fade"
-        id="appsTodoViluModal"
-        tabindex="-1"
-        aria-labelledby="tv-apps-title"
-        aria-hidden="true">
+  </footer>
 
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
+  <script>
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbynmmuez_uPO30pjulj6NzUbcKDQYiLbSQC7mQA40LiwoI-dh5FplZ-0_bNFkMwVu2l/exec?key=TodoVilu_Secret_2026_Access";
 
-                <div class="modal-header">
-                    <div>
-                        <h5
-                            class="modal-title fw-bold mb-1"
-                            id="tv-apps-title">
-                            TodoVilu en tus dispositivos
-                        </h5>
+    let tvConfiguracion = null;
+    let tvApkUrl = "";
+    let tvCargando = false;
 
-                        <div class="small tv-muted">
-                            Aplicaciones y acceso al servicio
-                        </div>
-                    </div>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
 
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                    </button>
-                </div>
+    function tvNumeroValido(valor, permitirCero = false) {
+      return typeof valor === "number" &&
+        Number.isFinite(valor) &&
+        (permitirCero ? valor >= 0 : valor > 0);
+    }
 
-                <div class="modal-body">
+    function tvUrlHttps(valor) {
+      try {
+        const url = new URL(String(valor || ""));
+        return url.protocol === "https:" ? url.href : "";
+      } catch (_) {
+        return "";
+      }
+    }
 
-                    <ul
-                        class="nav nav-pills tv-platform-tabs mb-4"
-                        role="tablist"
-                        aria-label="Plataformas">
+    function tvDinero(valor, moneda) {
+      return new Intl.NumberFormat(
+        moneda === "COP" ? "es-CO" : "en-US",
+        {
+          style: "currency",
+          currency: moneda,
+          minimumFractionDigits: moneda === "COP" ? 0 : 2,
+          maximumFractionDigits: moneda === "COP" ? 0 : 2
+        }
+      ).format(valor) + " " + moneda;
+    }
 
-                        <li class="nav-item" role="presentation">
-                            <button
-                                class="nav-link active"
-                                id="tv-tab-android"
-                                data-bs-toggle="pill"
-                                data-bs-target="#tv-panel-android"
-                                type="button"
-                                role="tab"
-                                aria-controls="tv-panel-android"
-                                aria-selected="true">
-                                <i class="bi bi-android2 me-1"></i>
-                                Android
-                            </button>
-                        </li>
+    async function cargarConfiguracionTodoVilu() {
+      if (tvCargando) return;
 
-                        <li class="nav-item" role="presentation">
-                            <button
-                                class="nav-link"
-                                id="tv-tab-tv"
-                                data-bs-toggle="pill"
-                                data-bs-target="#tv-panel-tv"
-                                type="button"
-                                role="tab"
-                                aria-controls="tv-panel-tv"
-                                aria-selected="false">
-                                <i class="bi bi-tv me-1"></i>
-                                TV
-                            </button>
-                        </li>
+      tvCargando = true;
 
-                        <li class="nav-item" role="presentation">
-                            <button
-                                class="nav-link"
-                                id="tv-tab-pc"
-                                data-bs-toggle="pill"
-                                data-bs-target="#tv-panel-pc"
-                                type="button"
-                                role="tab"
-                                aria-controls="tv-panel-pc"
-                                aria-selected="false">
-                                <i class="bi bi-pc-display me-1"></i>
-                                PC
-                            </button>
-                        </li>
-                    </ul>
+      const status = document.getElementById("tv-config-status");
+      status.textContent = "Cargando precios y configuración…";
+      document.getElementById("tv-retry").hidden = true;
 
-                    <div class="tab-content">
+      try {
+        const response = await fetch(API_URL + "&vista=config");
 
-                        <div
-                            class="tab-pane fade show active"
-                            id="tv-panel-android"
-                            role="tabpanel"
-                            aria-labelledby="tv-tab-android">
-
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <i class="bi bi-android2 text-success fs-1"></i>
-                                <div>
-                                    <h6 class="fw-bold mb-1">
-                                        Aplicación para Android
-                                    </h6>
-                                    <div
-                                        id="tv-app-version"
-                                        class="small tv-muted">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tv-access-notice mb-3">
-                                <i class="bi bi-lock-fill me-1"></i>
-                                El acceso a los canales es de pago.
-                                Descargar la aplicación no activa el servicio.
-                                La activación se coordina por WhatsApp.
-                            </div>
-
-                            <p
-                                id="tv-config-status"
-                                class="small tv-muted"
-                                role="status">
-                                Cargando información…
-                            </p>
-
-                            <label
-                                for="tv-region"
-                                class="form-label small">
-                                ¿Desde dónde vas a contratar?
-                            </label>
-
-                            <select
-                                id="tv-region"
-                                class="form-select tv-field mb-3"
-                                onchange="actualizarOfertaTodoVilu()">
-                                <option value="">Selecciona tu ubicación</option>
-                                <option value="co">Colombia · COP</option>
-                                <option value="internacional">Otros países · USD</option>
-                            </select>
-
-                            <div id="tv-method-wrapper" hidden>
-                                <label
-                                    for="tv-payment-method"
-                                    class="form-label small">
-                                    Método de pago
-                                </label>
-
-                                <select
-                                    id="tv-payment-method"
-                                    class="form-select tv-field mb-3"
-                                    onchange="actualizarOfertaTodoVilu()">
-                                    <option value="">Selecciona un método</option>
-                                </select>
-                            </div>
-
-                            <div
-                                class="tv-price-box mb-3"
-                                aria-live="polite">
-
-                                <div class="tv-price-line">
-                                    <span>Acceso</span>
-                                    <span id="tv-duration">—</span>
-                                </div>
-
-                                <div class="tv-price-line">
-                                    <span>Precio del servicio</span>
-                                    <span id="tv-base-price">—</span>
-                                </div>
-
-                                <div
-                                    id="tv-fee-row"
-                                    class="tv-price-line"
-                                    hidden>
-                                    <span>Comisión adicional</span>
-                                    <span id="tv-fee">—</span>
-                                </div>
-
-                                <div class="tv-price-line tv-total-line mb-0">
-                                    <span>Total</span>
-                                    <span id="tv-total">—</span>
-                                </div>
-                            </div>
-
-                            <button
-                                type="button"
-                                id="tv-contact-button"
-                                class="btn btn-success tv-action w-100 fw-bold mb-3"
-                                onclick="contactarTodoVilu()"
-                                disabled>
-                                <i class="bi bi-whatsapp me-1"></i>
-                                Consultar y activar por WhatsApp
-                            </button>
-
-                            <div class="form-check mb-3">
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    id="tv-acknowledge"
-                                    onchange="actualizarOfertaTodoVilu()">
-
-                                <label
-                                    class="form-check-label small tv-muted"
-                                    for="tv-acknowledge">
-                                    Entiendo que descargar la app no incluye
-                                    el acceso y que debo contratar el servicio.
-                                </label>
-                            </div>
-
-                            <button
-                                type="button"
-                                id="tv-download-button"
-                                class="btn btn-outline-light tv-action w-100"
-                                onclick="descargarAndroidTodoVilu()"
-                                disabled>
-                                <i class="bi bi-download me-1"></i>
-                                Descargar APK para Android
-                            </button>
-
-                        </div>
-
-                        <div
-                            class="tab-pane fade"
-                            id="tv-panel-tv"
-                            role="tabpanel"
-                            aria-labelledby="tv-tab-tv">
-                            <div class="tv-coming-soon">
-                                <i class="bi bi-tv"></i>
-                                <h5 class="text-white">TodoVilu para TV</h5>
-                                <p class="mb-0">Próximamente.</p>
-                            </div>
-                        </div>
-
-                        <div
-                            class="tab-pane fade"
-                            id="tv-panel-pc"
-                            role="tabpanel"
-                            aria-labelledby="tv-tab-pc">
-                            <div class="tv-coming-soon">
-                                <i class="bi bi-pc-display"></i>
-                                <h5 class="text-white">TodoVilu para PC</h5>
-                                <p class="mb-0">Próximamente.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        const API_URL =
-    "https://script.google.com/macros/s/AKfycbynmmuez_uPO30pjulj6NzUbcKDQYiLbSQC7mQA40LiwoI-dh5FplZ-0_bNFkMwVu2l/exec?key=TodoVilu_Secret_2026_Access";
-
-        const ES_APP_TODOVILU =
-            navigator.userAgent.includes("TodoViluApp") ||
-            typeof Android !== "undefined";
-
-        if (ES_APP_TODOVILU) {
-            document.body.classList.add("en-app");
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
         }
 
-        let DB = [];
-        let VIEW_DB = [];
-        let currentPage = 1;
-        const itemsPerPage = 24;
-        let selectedIds = new Set();
-        let isSelectMode = false;
-        let tvConfiguracion = null;
-        let tvApkUrl = "";
-        let tvConfigPromise = null;
+        const paquete = await response.json();
+        const config = paquete.configuracion;
 
-        function tvNumeroValido(valor, permitirCero = false) {
-            return typeof valor === "number" &&
-                Number.isFinite(valor) &&
-                (permitirCero ? valor >= 0 : valor > 0);
+        if (!config || typeof config !== "object") {
+          throw new Error("Falta la configuración comercial");
         }
 
-        function tvUrlHttps(valor) {
-            try {
-                const url = new URL(String(valor || ""));
-                return url.protocol === "https:" ? url.href : "";
-            } catch (_) {
-                return "";
-            }
-        }
-
-        function tvDinero(valor, moneda) {
-            return new Intl.NumberFormat(
-                moneda === "COP" ? "es-CO" : "en-US",
-                {
-                    style: "currency",
-                    currency: moneda,
-                    minimumFractionDigits: moneda === "COP" ? 0 : 2,
-                    maximumFractionDigits: moneda === "COP" ? 0 : 2
-                }
-            ).format(valor) + " " + moneda;
-        }
-
-        function aplicarPaqueteComercialTodoVilu(paquete) {
-            tvApkUrl = tvUrlHttps(paquete.apk);
-
-            const config = paquete.configuracion;
-
-            if (config && typeof config === "object") {
-                tvConfiguracion = {
-                    version: String(config.version || ""),
-                    whatsapp: String(config.whatsapp || "")
-                        .replace(/\D/g, ""),
-                    duracionDias: config.duracionDias,
-                    precioColombiaCOP: config.precioColombiaCOP,
-                    precioInternacionalUSD:
-                        config.precioInternacionalUSD,
-                    metodosPago: (
-                        Array.isArray(config.metodosPago)
-                            ? config.metodosPago
-                            : []
-                    ).filter(metodo =>
-                        metodo &&
-                        String(metodo.nombre || "").trim() &&
-                        tvNumeroValido(metodo.comisionUSD, true)
-                    )
-                };
-
-                const select =
-                    document.getElementById("tv-payment-method");
-
-                select.replaceChildren(
-                    new Option("Selecciona un método", "")
-                );
-
-                tvConfiguracion.metodosPago.forEach(
-                    (metodo, index) => {
-                        select.add(
-                            new Option(
-                                String(metodo.nombre),
-                                String(index)
-                            )
-                        );
-                    }
-                );
-
-                // Actualiza también los contactos antiguos de venta.
-                document.querySelectorAll(
-                    '#sales-overlay a[href*="wa.me/"]'
-                ).forEach(enlace => {
-                    if (
-                        /^[1-9]\d{6,14}$/.test(
-                            tvConfiguracion.whatsapp
-                        )
-                    ) {
-                        enlace.href =
-                            "https://wa.me/" +
-                            tvConfiguracion.whatsapp;
-                        enlace.rel = "noopener noreferrer";
-                    }
-                });
-            }
-
-            actualizarOfertaTodoVilu();
-        }
-
-        async function abrirAplicacionesTodoVilu() {
-            if (ES_APP_TODOVILU) return;
-
-            bootstrap.Tab.getOrCreateInstance(
-                document.getElementById("tv-tab-android")
-            ).show();
-
-            bootstrap.Modal.getOrCreateInstance(
-                document.getElementById("appsTodoViluModal")
-            ).show();
-
-            if (tvConfiguracion) {
-                actualizarOfertaTodoVilu();
-                return;
-            }
-
-            const status =
-                document.getElementById("tv-config-status");
-
-            status.textContent = "Cargando información…";
-
-            try {
-                if (!tvConfigPromise) {
-                    tvConfigPromise = fetch(
-                        API_URL + "&vista=config"
-                    )
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(
-                                    "HTTP " + response.status
-                                );
-                            }
-                            return response.json();
-                        })
-                        .then(paquete => {
-                            if (!paquete.configuracion) {
-                                throw new Error(
-                                    "Falta la configuración comercial"
-                                );
-                            }
-                            aplicarPaqueteComercialTodoVilu(
-                                paquete
-                            );
-                        })
-                        .finally(() => {
-                            tvConfigPromise = null;
-                        });
-                }
-
-                await tvConfigPromise;
-            } catch (error) {
-                console.error(error);
-                status.textContent =
-                    "No se pudo cargar la información. " +
-                    "Cierra esta ventana y vuelve a intentarlo.";
-            }
-        }
-
-        function obtenerOfertaTodoVilu() {
-            const region =
-                document.getElementById("tv-region").value;
-
-            if (!tvConfiguracion || !region) return null;
-
-            const dias = tvConfiguracion.duracionDias;
-
-            if (!Number.isInteger(dias) || dias <= 0) {
-                return null;
-            }
-
-            if (region === "co") {
-                const base =
-                    tvConfiguracion.precioColombiaCOP;
-
-                if (!tvNumeroValido(base)) return null;
-
-                return {
-                    region: "Colombia",
-                    moneda: "COP",
-                    dias: dias,
-                    base: base,
-                    comision: 0,
-                    total: base,
-                    metodo: ""
-                };
-            }
-
-            if (region !== "internacional") return null;
-
-            const base =
-                tvConfiguracion.precioInternacionalUSD;
-
-            const seleccion =
-                document.getElementById(
-                    "tv-payment-method"
-                ).value;
-
-            if (!tvNumeroValido(base) || seleccion === "") {
-                return null;
-            }
-
-            const metodo =
-                tvConfiguracion.metodosPago[
-                    Number(seleccion)
-                ];
-
-            if (!metodo) return null;
-
-            return {
-                region: "Otros países",
-                moneda: "USD",
-                dias: dias,
-                base: base,
-                comision: metodo.comisionUSD,
-                total: Math.round(
-                    (base + metodo.comisionUSD) * 100
-                ) / 100,
-                metodo: String(metodo.nombre)
-            };
-        }
-
-        function actualizarOfertaTodoVilu() {
-            const region =
-                document.getElementById("tv-region").value;
-
-            const internacional =
-                region === "internacional";
-
-            document.getElementById(
-                "tv-method-wrapper"
-            ).hidden = !internacional;
-
-            const feeRow =
-                document.getElementById("tv-fee-row");
-
-            feeRow.hidden = !internacional;
-
-            // Bootstrap aplica display:flex a esta fila.
-            feeRow.style.display =
-                internacional ? "flex" : "none";
-
-            const oferta = obtenerOfertaTodoVilu();
-
-            document.getElementById(
-                "tv-app-version"
-            ).textContent =
-                tvConfiguracion
-                    ? tvConfiguracion.version
-                    : "";
-
-            const dias = tvConfiguracion?.duracionDias;
-
-            document.getElementById(
-                "tv-duration"
-            ).textContent =
-                Number.isInteger(dias) && dias > 0
-                    ? dias + " días"
-                    : "—";
-
-            const base = internacional
-                ? tvConfiguracion?.precioInternacionalUSD
-                : tvConfiguracion?.precioColombiaCOP;
-
-            document.getElementById(
-                "tv-base-price"
-            ).textContent =
-                region && tvNumeroValido(base)
-                    ? tvDinero(
-                        base,
-                        internacional ? "USD" : "COP"
-                    )
-                    : "—";
-
-            document.getElementById("tv-fee").textContent =
-                oferta
-                    ? tvDinero(oferta.comision, "USD")
-                    : "—";
-
-            document.getElementById("tv-total").textContent =
-                oferta
-                    ? tvDinero(
-                        oferta.total,
-                        oferta.moneda
-                    )
-                    : "—";
-
-            const whatsappValido =
-                /^[1-9]\d{6,14}$/.test(
-                    tvConfiguracion?.whatsapp || ""
-                );
-
-            document.getElementById(
-                "tv-contact-button"
-            ).disabled = !oferta || !whatsappValido;
-
-            const aceptado =
-                document.getElementById(
-                    "tv-acknowledge"
-                ).checked;
-
-            document.getElementById(
-                "tv-download-button"
-            ).disabled =
-                !oferta || !aceptado || !tvApkUrl;
-
-            const status =
-                document.getElementById("tv-config-status");
-
-            if (!tvConfiguracion) {
-                status.textContent =
-                    "Información comercial pendiente de cargar.";
-            } else if (!region) {
-                status.textContent =
-                    "Selecciona tu ubicación para ver el precio.";
-            } else if (!tvNumeroValido(base)) {
-                status.textContent =
-                    "Precio no disponible. Inténtalo más tarde.";
-            } else if (internacional && !oferta) {
-                status.textContent =
-                    "Selecciona un método para calcular el total.";
-            } else if (!whatsappValido) {
-                status.textContent =
-                    "El contacto de activación no está disponible.";
-            } else {
-                status.textContent =
-                    "El pago y la activación se coordinan " +
-                    "por WhatsApp. Esta página no procesa pagos.";
-            }
-        }
-
-        function contactarTodoVilu() {
-            const oferta = obtenerOfertaTodoVilu();
-            const numero = tvConfiguracion?.whatsapp || "";
-
-            if (
-                !oferta ||
-                !/^[1-9]\d{6,14}$/.test(numero)
-            ) {
-                return;
-            }
-
-            const lineas = [
-                "Hola, quiero contratar TodoVilu.",
-                "Ubicación: " + oferta.region,
-                "Duración: " + oferta.dias + " días",
-                "Precio: " + tvDinero(
-                    oferta.base,
-                    oferta.moneda
-                )
-            ];
-
-            if (oferta.metodo) {
-                lineas.push(
-                    "Método: " + oferta.metodo,
-                    "Comisión adicional: " +
-                        tvDinero(oferta.comision, "USD")
-                );
-            }
-
-            lineas.push(
-                "Total: " + tvDinero(
-                    oferta.total,
-                    oferta.moneda
-                ),
-                "¿Cómo puedo pagar y activar el acceso?"
-            );
-
-            window.open(
-                "https://wa.me/" + numero +
-                    "?text=" +
-                    encodeURIComponent(lineas.join("\n")),
-                "_blank",
-                "noopener,noreferrer"
-            );
-        }
-
-        function descargarAndroidTodoVilu() {
-            const oferta = obtenerOfertaTodoVilu();
-
-            const aceptado =
-                document.getElementById(
-                    "tv-acknowledge"
-                ).checked;
-
-            if (!oferta || !aceptado || !tvApkUrl) return;
-
-            window.open(
-                tvApkUrl,
-                "_blank",
-                "noopener,noreferrer"
-            );
-        }
-        window.onload = function() {
-            cargarCatalogo();
+        tvConfiguracion = {
+          version: String(config.version || ""),
+          whatsapp: String(config.whatsapp || "").replace(/\D/g, ""),
+          duracionDias: config.duracionDias,
+          precioColombiaCOP: config.precioColombiaCOP,
+          precioInternacionalUSD: config.precioInternacionalUSD,
+          metodosPago: (
+            Array.isArray(config.metodosPago)
+              ? config.metodosPago
+              : []
+          ).filter(metodo =>
+            metodo &&
+            String(metodo.nombre || "").trim() &&
+            tvNumeroValido(metodo.comisionUSD, true)
+          )
         };
 
-        function cargarCatalogo() {
-            fetch(API_URL + "&vista=indice")
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("HTTP " + response.status);
-                    }
+        tvApkUrl = tvUrlHttps(paquete.apk);
 
-                    return response.json();
-                })
-                .then(paquete => {
+        const select = document.getElementById("tv-payment-method");
 
-                                        aplicarPaqueteComercialTodoVilu(paquete);
+        select.replaceChildren(
+          new Option("Selecciona un método", "")
+        );
 
-                    iniciarWeb(paquete.catalogo || []);
-                })
-                .catch(error => {
-                    document.getElementById("loader").innerHTML = `
-                        <div class="text-white text-center p-5">
-                            Error de conexión.<br>
-                            Verifica la URL del catálogo.
-                        </div>
-                    `;
+        tvConfiguracion.metodosPago.forEach((metodo, index) => {
+          select.add(
+            new Option(String(metodo.nombre), String(index))
+          );
+        });
 
-                    console.error(error);
-                });
-        };
+        document.getElementById("tv-region").disabled = false;
 
-        function normalizarCategoria(categoria) {
-            return String(categoria || "")
-                .toLowerCase()
-                .trim();
-        }
+        document.getElementById("tv-footer-whatsapp").disabled =
+          !/^[1-9]\d{6,14}$/.test(tvConfiguracion.whatsapp);
 
-        function normalizarTexto(valor) {
-    return String(valor || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[_-]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-}
-
-function normalizarColeccion(valor) {
-    return normalizarTexto(valor)
-        .replace(/\s+coleccion$/i, "")
-        .trim();
-}
-        function iniciarWeb(datos) {
-            const generosSet = new Set();
-            const categoriasSet = new Set();
-            const aniosSet = new Set();
-
-            DB = datos.map(item => {
-                const categoria =
-                    normalizarCategoria(item.categoria);
-
-                const generos = Array.isArray(item.generos)
-                    ? item.generos
-                    : String(item.generos || "")
-                        .split(",")
-                        .map(g => g.trim())
-                        .filter(Boolean);
-
-                generos.forEach(g => generosSet.add(g));
-
-                if (categoria) {
-                    categoriasSet.add(categoria);
-                }
-
-                const anioNum =
-                    parseInt(item.anio || item.year || 0);
-
-                if (!isNaN(anioNum) && anioNum > 0) {
-                    aniosSet.add(anioNum);
-                }
-
-                return {
-    id: String(item.id || item.tmdbId || ""),
-    idApp: String(item.idApp || item.id || ""),
-    titulo: String(item.titulo || ""),
-    img: String(item.imagen || "")
-        .replace(/\/t\/p\/w\d+\//, "/t/p/w342/"),
-    tipo: categoria,
-    anio: isNaN(anioNum) ? 0 : anioNum,
-    generos: generos,
-    link: item.link || "",
-    sinopsis: item.sinopsis || "",
-
-    coleccion: String(
-        item.coleccion ||
-        item.collection ||
-        item.saga ||
-        ""
-    ).trim(),
-
-    jsonFull: null
-};
-            });
-
-            const selCat =
-                document.getElementById("filtro-cat");
-
-            Array.from(categoriasSet)
-                .sort()
-                .forEach(categoria => {
-                    const option =
-                        document.createElement("option");
-
-                    option.value = categoria;
-                    option.textContent = categoria;
-                    selCat.appendChild(option);
-                });
-
-            const selGen =
-                document.getElementById("filtro-genero");
-
-            Array.from(generosSet)
-                .sort()
-                .forEach(genero => {
-                    const option =
-                        document.createElement("option");
-
-                    option.value = genero;
-                    option.textContent = genero;
-                    selGen.appendChild(option);
-                });
-
-            const selAnio =
-                document.getElementById("filtro-anio");
-
-            Array.from(aniosSet)
-                .sort((a, b) => b - a)
-                .forEach(anio => {
-                    const option =
-                        document.createElement("option");
-
-                    option.value = anio;
-                    option.textContent = anio;
-                    selAnio.appendChild(option);
-                });
-
-            document.getElementById("loader")
-                .style.display = "none";
-
-            aplicarFiltros();
-        }
-
-        function resetFiltros() {
-            document.getElementById("filtro-cat").value = "Todos";
-            document.getElementById("filtro-genero").value = "Todos";
-            document.getElementById("filtro-anio").value = "Todos";
-            document.getElementById("filtro-orden").value = "nuevo";
-            document.getElementById("buscador").value = "";
-
-            aplicarFiltros();
-        }
-
-        function aplicarFiltros() {
-            const texto = normalizarTexto(
-    document.getElementById("buscador").value
-);
-
-            const categoria =
-                document.getElementById("filtro-cat").value;
-
-            const genero =
-                document.getElementById("filtro-genero").value;
-
-            const anio =
-                document.getElementById("filtro-anio").value;
-
-            const orden =
-                document.getElementById("filtro-orden").value;
-
-            VIEW_DB = DB.filter(item => {
-                const titulo = normalizarTexto(item.titulo);
-
-const coleccion = normalizarColeccion(
-    item.coleccion
-);
-
-const sinopsis = normalizarTexto(
-    item.sinopsis
-);
-
-const generosTexto = normalizarTexto(
-    Array.isArray(item.generos)
-        ? item.generos.join(" ")
-        : item.generos
-);
-
-const coincideTexto =
-    texto === "" ||
-    titulo.includes(texto) ||
-    coleccion.includes(texto) ||
-    sinopsis.includes(texto) ||
-    generosTexto.includes(texto);
-
-                const coincideCategoria =
-                    categoria === "Todos" ||
-                    item.tipo === categoria;
-
-                const coincideGenero =
-                    genero === "Todos" ||
-                    item.generos.includes(genero);
-
-                const coincideAnio =
-                    anio === "Todos" ||
-                    item.anio == anio;
-
-                return coincideTexto &&
-                    coincideCategoria &&
-                    coincideGenero &&
-                    coincideAnio;
-            });
-
-            if (orden === "nuevo") {
-                VIEW_DB.sort((a, b) => b.anio - a.anio);
-            }
-
-            if (orden === "viejo") {
-                VIEW_DB.sort((a, b) => a.anio - b.anio);
-            }
-
-            if (orden === "az") {
-                VIEW_DB.sort((a, b) =>
-                    a.titulo.localeCompare(b.titulo)
-                );
-            }
-
-            document.getElementById("contador")
-                .innerText =
-                VIEW_DB.length + " resultados";
-
-            currentPage = 1;
-            renderGrid();
-        }
-
-        function renderGrid() {
-            const container =
-                document.getElementById("grid");
-
-            container.innerHTML = "";
-
-            if (VIEW_DB.length === 0) {
-                container.innerHTML =
-                    "<p class='text-center w-100 text-muted mt-5'>" +
-                    "Sin resultados.</p>";
-
-                document.getElementById("pagination")
-                    .style.display = "none";
-
-                return;
-            }
-
-            const start =
-                (currentPage - 1) * itemsPerPage;
-
-            const end =
-                start + itemsPerPage;
-
-            const paginatedItems =
-                VIEW_DB.slice(start, end);
-
-            const maxPages =
-                Math.ceil(
-                    VIEW_DB.length / itemsPerPage
-                );
-
-            paginatedItems.forEach(item => {
-                const col =
-                    document.createElement("div");
-
-                col.className = "col";
-
-                const isSelected =
-                    selectedIds.has(item.id);
-
-                const selectedClass =
-                    isSelected ? "selected" : "";
-
-                const iconCheck =
-                    isSelected
-                        ? "<div class='select-icon'>✔</div>"
-                        : "";
-
-                const img =
-                    item.img ||
-                    "https://via.placeholder.com/300x450?text=Sin+Imagen";
-
-                col.innerHTML = `
-                    <div
-                        class="card ${selectedClass}"
-                        onclick="clickCard('${escapar(item.id)}')">
-
-                        <span class="badge-cat">
-                            ${escapar(item.tipo)}
-                        </span>
-
-                        <span class="badge-year">
-                            ${item.anio > 0 ? item.anio : ""}
-                        </span>
-
-                        <div class="select-overlay"></div>
-
-                        ${iconCheck}
-
-                        <img
-                            src="${escapar(img)}"
-                            class="card-img-top"
-                            loading="lazy"
-                            onerror="this.src='https://via.placeholder.com/300x450?text=Sin+Imagen'">
-
-                        <div class="card-body">
-                            <div class="card-title">
-                                ${escapar(item.titulo)}
-                            </div>
-
-                            ${
-                                !isSelectMode
-                                    ? "<button class='btn-detalles mt-auto'>" +
-                                      "VER DETALLES</button>"
-                                    : ""
-                            }
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(col);
-            });
-
-            document.getElementById("pagination")
-                .style.display = "flex";
-
-            document.getElementById("page-info")
-                .innerText =
-                currentPage + " / " + maxPages;
-
-            const buttons =
-                document.querySelectorAll(
-                    "#pagination button"
-                );
-
-            buttons[0].disabled =
-                currentPage === 1;
-
-            buttons[1].disabled =
-                currentPage === maxPages;
-        }
-
-        function escapar(valor) {
-            return String(valor || "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderGrid();
-                window.scrollTo(0, 0);
-            }
-        }
-
-        function nextPage() {
-            const maxPages =
-                Math.ceil(
-                    VIEW_DB.length / itemsPerPage
-                );
-
-            if (currentPage < maxPages) {
-                currentPage++;
-                renderGrid();
-                window.scrollTo(0, 0);
-            }
-        }
-
-        function toggleSelectMode() {
-            isSelectMode = !isSelectMode;
-
-            const button =
-                document.getElementById("btn-select-mode");
-
-            if (isSelectMode) {
-                button.innerText = "Cancelar";
-                button.className =
-                    "btn btn-sm btn-danger text-white";
-            } else {
-                button.innerText = "Seleccionar";
-                button.className =
-                    "btn btn-sm btn-outline-light";
-
-                selectedIds.clear();
-                updateFab();
-            }
-
-            renderGrid();
-        }
-
-        async function clickCard(id) {
-    if (!isSelectMode) {
-
-        // Si está dentro de TodoVilu:
-        // no abre modal web, envía JSON a Android.
-        if (
-            ES_APP_TODOVILU &&
-            typeof Android !== "undefined"
-        ) {
-            await enviarDetalleAAndroid(id);
-            return;
-        }
-
-        // Si está en PC o navegador:
-        // conserva el modal web normal.
-        abrirModal(id);
-        return;
-    }
-
-    // Este bloque solo funciona en PC/navegador
-    // para seleccionar varios elementos.
-    if (selectedIds.has(id)) {
-        selectedIds.delete(id);
-    } else {
-        if (selectedIds.size >= 30) {
-            alert(
-                "Solo puedes seleccionar 30 elementos."
-            );
-            return;
-        }
-
-        selectedIds.add(id);
-    }
-
-    updateFab();
-    renderGrid();
-}
-
-        function updateFab() {
-            const fab =
-                document.getElementById("fab-cart");
-
-            document.getElementById("cart-count")
-                .innerText =
-                selectedIds.size;
-
-            fab.style.display =
-                selectedIds.size > 0
-                    ? "block"
-                    : "none";
-        }
-
-        function abrirModal(id) {
-            const item =
-                DB.find(element => element.id === id);
-
-            if (!item) return;
-
-            document.getElementById("sales-overlay")
-                .style.display = "none";
-
-            document.getElementById("m-titulo")
-                .innerText = item.titulo;
-
-            document.getElementById("m-img")
-                .src = item.img;
-
-            document.getElementById("m-sinopsis")
-                .innerText =
-                item.sinopsis ||
-                "Sin sinopsis disponible.";
-
-            document.getElementById("m-anio")
-                .innerText =
-                item.anio > 0
-                    ? item.anio
-                    : "----";
-
-            document.getElementById("m-cat")
-                .innerText = item.tipo;
-
-            const buttonContainer =
-                document.getElementById(
-                    "dynamic-btn-container"
-                );
-
-            if (ES_APP_TODOVILU) {
-    buttonContainer.innerHTML = `
-        <button
-            class="btn-deeplink style-app"
-            onclick="descargarJSON('${escapar(item.id)}')">
-
-            <i class="bi bi-play-fill"></i>
-            VER DETALLES
-        </button>
-    `;
-} else {
-    buttonContainer.innerHTML = `
-        <button
-            class="btn-deeplink style-app"
-            onclick="mostrarOpcionesVenta()">
-
-            <i class="bi bi-phone-fill"></i>
-            DISPONIBLE EN LA APP
-        </button>
-    `;
-}
-
-            const secondaryContainer =
-                document.getElementById(
-                    "sec-btn-container"
-                );
-
-            secondaryContainer.innerHTML = "";
-
-            if (
-                item.link &&
-                item.link.startsWith("http") &&
-                !item.link.includes("youtube.com") &&
-                !item.link.includes("youtu.be")
-            ) {
-                const link =
-                    document.createElement("a");
-
-                link.className =
-                    "btn-secundario";
-
-                link.href = item.link;
-                link.target = "_blank";
-
-                link.innerHTML =
-                    "<i class='bi bi-cloud-download'></i>" +
-                    " Descarga directa";
-
-                secondaryContainer.appendChild(link);
-            }
-
-            const modal =
-                new bootstrap.Modal(
-                    document.getElementById("infoModal")
-                );
-
-            modal.show();
-        }
-
-        function descargarJSON(id) {
-    const item = DB.find(element => element.id === id);
-
-    if (!item || !item.jsonFull) {
-        return;
-    }
-    if (
-        ES_APP_TODOVILU &&
-        typeof Android !== "undefined"
-    ) {
-        const jsonString = JSON.stringify(item.jsonFull);
-
-        Android.downloadJson(jsonString);
-    }
-}
-        function descargarPack() {
-            if (
-                ES_APP_TODOVILU &&
-                typeof Android !== "undefined"
-            ) {
-                alert(
-                    "Elige una ficha individual para verla en la app."
-                );
-
-                return;
-            }
-
-            if (selectedIds.size === 0) return;
-
-            const pack =
-                DB
-                    .filter(item =>
-                        selectedIds.has(item.id)
-                    )
-                    .map(item => item.jsonFull);
-
-            const blob =
-                new Blob(
-                    [JSON.stringify(pack, null, 2)],
-                    {
-                        type: "application/json;charset=utf-8"
-                    }
-                );
-
-            const url =
-                URL.createObjectURL(blob);
-
-            const link =
-                document.createElement("a");
-
-            link.href = url;
-            link.download =
-                "Pack_TodoVilu_" +
-                selectedIds.size +
-                "_items.json";
-
-            document.body.appendChild(link);
-            link.click();
-
-            setTimeout(() => {
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }, 100);
-
-            toggleSelectMode();
-        }
-
-        function mostrarOpcionesVenta() {
-            document.getElementById("sales-overlay")
-                .style.display = "block";
-        }
-
-        async function obtenerJsonCompleto(item) {
-    if (item.jsonFull) {
-        return item.jsonFull;
-    }
-
-    const url = new URL(API_URL);
-
-    url.searchParams.set("vista", "detalle");
-    url.searchParams.set("id", item.id);
-    url.searchParams.set("categoria", item.tipo);
-
-    const response = await fetch(url.toString());
-
-    if (!response.ok) {
-        throw new Error("No se pudo cargar el detalle");
-    }
-
-    const paquete = await response.json();
-
-    if (!paquete.item) {
-        throw new Error("Detalle no encontrado");
-    }
-
-    item.jsonFull = {
-    ...paquete.item,
-
-    coleccion: String(
-        paquete.item.coleccion ||
-        paquete.item.collection ||
-        paquete.item.saga ||
-        item.coleccion ||
-        ""
-    ).trim(),
-
-    saga: String(
-        paquete.item.saga ||
-        paquete.item.coleccion ||
-        paquete.item.collection ||
-        item.coleccion ||
-        ""
-    ).trim()
-};
-
-    return item.jsonFull;
-}
-        async function enviarDetalleAAndroid(id) {
-    const item = DB.find(element => element.id === id);
-
-    if (
-        !item ||
-        !ES_APP_TODOVILU ||
-        typeof Android === "undefined"
-    ) {
-        return;
-    }
-
-    try {
-        document.getElementById("loader-text").textContent =
-    "Preparando detalle...";
-
-document.getElementById("loader").style.display = "flex";
-
-        const jsonFull = await obtenerJsonCompleto(item);
-
-        document.getElementById("loader").style.display = "none";
-
-        Android.downloadJson(JSON.stringify(jsonFull));
-    } catch (error) {
-        document.getElementById("loader").style.display = "none";
-        alert("No se pudo abrir el detalle. Intenta nuevamente.");
+        actualizarOfertaTodoVilu();
+      } catch (error) {
         console.error(error);
+
+        status.textContent =
+          "No se pudo cargar la información. Intenta nuevamente.";
+
+        document.getElementById("tv-retry").hidden = false;
+      } finally {
+        tvCargando = false;
+      }
     }
-}
-    </script>
+
+    function obtenerOfertaTodoVilu() {
+      const region = document.getElementById("tv-region").value;
+
+      if (!tvConfiguracion || !region) return null;
+
+      const dias = tvConfiguracion.duracionDias;
+
+      if (!Number.isInteger(dias) || dias <= 0) return null;
+
+      if (region === "co") {
+        const base = tvConfiguracion.precioColombiaCOP;
+
+        if (!tvNumeroValido(base)) return null;
+
+        return {
+          region: "Colombia",
+          moneda: "COP",
+          dias,
+          base,
+          comision: 0,
+          total: base,
+          metodo: ""
+        };
+      }
+
+      if (region !== "internacional") return null;
+
+      const base = tvConfiguracion.precioInternacionalUSD;
+      const seleccion =
+        document.getElementById("tv-payment-method").value;
+
+      if (!tvNumeroValido(base) || seleccion === "") return null;
+
+      const metodo = tvConfiguracion.metodosPago[Number(seleccion)];
+
+      if (!metodo) return null;
+
+      return {
+        region: "Otros países",
+        moneda: "USD",
+        dias,
+        base,
+        comision: metodo.comisionUSD,
+        total: Math.round((base + metodo.comisionUSD) * 100) / 100,
+        metodo: String(metodo.nombre)
+      };
+    }
+
+    function actualizarOfertaTodoVilu() {
+      const region = document.getElementById("tv-region").value;
+      const internacional = region === "internacional";
+
+      document.getElementById("tv-method-wrapper").hidden =
+        !internacional;
+
+      document.getElementById("tv-fee-row").hidden =
+        !internacional;
+
+      const oferta = obtenerOfertaTodoVilu();
+      const dias = tvConfiguracion?.duracionDias;
+
+      document.getElementById("tv-app-version").textContent =
+        tvConfiguracion?.version || "No disponible";
+
+      document.getElementById("tv-duration").textContent =
+        Number.isInteger(dias) && dias > 0
+          ? dias + " días"
+          : "—";
+
+      const base = internacional
+        ? tvConfiguracion?.precioInternacionalUSD
+        : tvConfiguracion?.precioColombiaCOP;
+
+      document.getElementById("tv-base-price").textContent =
+        region && tvNumeroValido(base)
+          ? tvDinero(base, internacional ? "USD" : "COP")
+          : "—";
+
+      document.getElementById("tv-fee").textContent =
+        oferta ? tvDinero(oferta.comision, "USD") : "—";
+
+      document.getElementById("tv-total").textContent =
+        oferta ? tvDinero(oferta.total, oferta.moneda) : "—";
+
+      const whatsappValido = /^[1-9]\d{6,14}$/.test(
+        tvConfiguracion?.whatsapp || ""
+      );
+
+      document.getElementById("tv-contact-button").disabled =
+        !oferta || !whatsappValido;
+
+      const aceptado =
+        document.getElementById("tv-acknowledge").checked;
+
+      document.getElementById("tv-download-button").disabled =
+        !oferta || !aceptado || !tvApkUrl;
+
+      const status = document.getElementById("tv-config-status");
+
+      if (!tvConfiguracion) {
+        status.textContent = "Información pendiente de cargar.";
+      } else if (!Number.isInteger(dias) || dias <= 0) {
+        status.textContent = "Duración del acceso no disponible.";
+      } else if (!region) {
+        status.textContent = "Selecciona tu ubicación para ver el precio.";
+      } else if (!tvNumeroValido(base)) {
+        status.textContent = "Precio no disponible. Inténtalo más tarde.";
+      } else if (internacional && !oferta) {
+        status.textContent = "Selecciona un método para calcular el total.";
+      } else if (!whatsappValido) {
+        status.textContent = "El contacto de activación no está disponible.";
+      } else {
+        status.textContent =
+          "El pago y la activación se coordinan por WhatsApp.";
+      }
+    }
+
+    function abrirWhatsAppTodoVilu(mensaje) {
+      const numero = tvConfiguracion?.whatsapp || "";
+
+      if (!/^[1-9]\d{6,14}$/.test(numero)) return;
+
+      window.open(
+        "https://wa.me/" + numero +
+          "?text=" + encodeURIComponent(mensaje),
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+
+    function contactarTodoVilu() {
+      const oferta = obtenerOfertaTodoVilu();
+
+      if (!oferta) return;
+
+      const lineas = [
+        "Hola, quiero contratar TodoVilu.",
+        "Ubicación: " + oferta.region,
+        "Duración: " + oferta.dias + " días",
+        "Precio: " + tvDinero(oferta.base, oferta.moneda)
+      ];
+
+      if (oferta.metodo) {
+        lineas.push(
+          "Método: " + oferta.metodo,
+          "Comisión adicional: " + tvDinero(oferta.comision, "USD")
+        );
+      }
+
+      lineas.push(
+        "Total: " + tvDinero(oferta.total, oferta.moneda),
+        "¿Cómo puedo pagar y activar el acceso?"
+      );
+
+      abrirWhatsAppTodoVilu(lineas.join("\n"));
+    }
+
+    function contactoGeneralTodoVilu() {
+      abrirWhatsAppTodoVilu(
+        "Hola, quiero información para contratar TodoVilu."
+      );
+    }
+
+    function descargarAndroidTodoVilu() {
+      const oferta = obtenerOfertaTodoVilu();
+      const aceptado =
+        document.getElementById("tv-acknowledge").checked;
+
+      if (!oferta || !aceptado || !tvApkUrl) return;
+
+      window.open(tvApkUrl, "_blank", "noopener,noreferrer");
+    }
+
+    cargarConfiguracionTodoVilu();
+  </script>
 </body>
 </html>

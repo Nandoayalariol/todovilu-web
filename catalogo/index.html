@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="es" prefix="og: https://ogp.me/ns#">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>TodoVilu Streaming | Catálogo</title>
+
+  <meta
+    name="description"
+    content="Explora películas, series, animes, ReelShorts y textos en TodoVilu Streaming."
+  >
+  <meta name="theme-color" content="#e50914">
+
+  <link
+    rel="canonical"
+    href="https://todovilu-web.vercel.app/catalogo/"
+  >
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="TodoVilu Streaming">
+  <meta property="og:title" content="TodoVilu Streaming | Catálogo">
+  <meta
+    property="og:description"
+    content="Explora el catálogo. Disponible en la aplicación TodoVilu."
+  >
+  <meta
+    property="og:url"
+    content="https://todovilu-web.vercel.app/catalogo/"
+  >
+  <meta
+    property="og:image"
+    content="https://todovilu-web.vercel.app/compartir.jpg"
+  >
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="TodoVilu Streaming | Catálogo">
+  <meta
+    name="twitter:image"
+    content="https://todovilu-web.vercel.app/compartir.jpg"
+  >
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --primary: #e50914;
+      --bg: #141414;
+      --card: #1f1f1f;
+      --text: #fff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-top: calc(145px + env(safe-area-inset-top));
+      padding-bottom: 80px;
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, sans-serif;
+    }
+
+    [hidden] { display: none !important; }
+
+    .navbar {
+      background: rgba(20, 20, 20, .98);
+      border-bottom: 1px solid #333;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-logo {
+      color: var(--primary);
+      font-weight: 900;
+      font-size: 1.5rem;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .filters-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 5px;
+      scrollbar-width: none;
+    }
+
+    .filters-bar::-webkit-scrollbar { display: none; }
+
+    .form-select-dark {
+      background-color: #333;
+      color: #fff !important;
+      border: 1px solid #444;
+      font-size: .85rem;
+      min-width: 130px;
+    }
+
+    .search-input {
+      background: #333;
+      border: 1px solid #444;
+      color: #fff !important;
+      border-radius: 50px;
+      padding: 7px 15px;
+      width: 100%;
+      outline: none;
+    }
+
+    .search-input::placeholder { color: #aaa; }
+
+    .card {
+      background-color: var(--card);
+      border: none;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      height: 100%;
+      box-shadow: 0 4px 6px #0005;
+      transition: transform .2s;
+      cursor: pointer;
+    }
+
+    .card:active { transform: scale(.98); }
+
+    .card-img-top {
+      aspect-ratio: 2 / 3;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+    }
+
+    .card-body {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: .9rem;
+      font-weight: 700;
+      color: #fff !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 5px;
+      text-shadow: 0 1px 2px #000c;
+    }
+
+    .btn-detalles {
+      width: 100%;
+      background: #eee;
+      color: #111;
+      border: none;
+      padding: 8px;
+      font-size: .8rem;
+      font-weight: bold;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .badge-cat, .badge-year {
+      position: absolute;
+      top: 5px;
+      z-index: 5;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: .65rem;
+      font-weight: bold;
+    }
+
+    .badge-cat {
+      right: 5px;
+      color: #fff;
+      background: #000d;
+      border: 1px solid #ffffff33;
+    }
+
+    .badge-year {
+      left: 5px;
+      background: #f1c40f;
+      color: #000;
+    }
+
+    .modal-content {
+      background: #141414;
+      color: #fff;
+      border: 1px solid #333;
+    }
+
+    .btn-close { filter: invert(1); }
+
+    .detail-cover {
+      width: 140px;
+      border-radius: 8px;
+      box-shadow: 0 5px 20px #0008;
+    }
+
+    .btn-app, .btn-play-sales {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-app {
+      background: linear-gradient(45deg, #2ecc71, #27ae60);
+    }
+
+    .btn-play-sales {
+      background: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    #sales-overlay {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #222;
+      border: 1px solid var(--primary);
+      text-align: center;
+    }
+
+    .meta-tag {
+      background: #333;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: .8rem;
+      color: #ccc;
+    }
+
+    #m-sinopsis {
+      color: #ccc;
+      font-size: .9rem;
+      line-height: 1.4;
+      text-align: justify;
+    }
+
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-page {
+      background: #333;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 6px 15px;
+      border-radius: 4px;
+    }
+
+    .btn-page:disabled { opacity: .5; }
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    @media (max-width: 600px) {
+      .brand-logo { font-size: 1.25rem; }
+
+      .search-input {
+        padding: 6px 10px;
+        font-size: .85rem;
+      }
+
+      body {
+        padding-top: calc(135px + env(safe-area-inset-top));
+      }
+    }
+
+    body.en-app { padding-top: 0 !important; }
+
+    body.en-app .navbar .brand-logo {
+      display: none !important;
+    }
+
+    body.en-app .navbar {
+      position: sticky !important;
+      top: 0 !important;
+      right: auto !important;
+      left: auto !important;
+      width: 100%;
+      z-index: 1030;
+      background: #141414;
+      border-bottom: 1px solid #292929;
+      backdrop-filter: none;
+    }
+
+    body.en-app .navbar .flex-grow-1 { min-width: 0; }
+
+    body.en-app .search-input {
+      min-height: 42px;
+      font-size: 14px;
+    }
+
+    body.en-app .filters-bar {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      overflow: visible;
+      padding-bottom: 4px;
+      margin-bottom: 0;
+    }
+
+    body.en-app .form-select-dark {
+      width: 100%;
+      min-width: 0;
+      min-height: 40px;
+      font-size: 13px;
+      border-radius: 8px;
+      background: #242424;
+      border-color: #383838;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loader">
+    <div
+      id="loader-spinner"
+      class="spinner-border text-danger"
+      role="status"
+      aria-label="Cargando">
+    </div>
+
+    <div
+      id="loader-text"
+      class="mt-2 text-secondary text-center px-3">
+      Cargando contenido...
+    </div>
+
+    <button
+      id="loader-retry"
+      type="button"
+      class="btn btn-outline-light mt-3"
+      onclick="location.reload()"
+      hidden>
+      Reintentar
+    </button>
+  </div>
+
+  <nav class="navbar fixed-top px-3 pb-2 pt-2">
+    <div class="container-fluid p-0">
+      <div class="d-flex align-items-center w-100 gap-2">
+        <span
+          class="brand-logo flex-shrink-0"
+          onclick="resetFiltros()">
+          TODOVILU
+        </span>
+
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-light flex-shrink-0"
+          onclick="location.reload()"
+          aria-label="Actualizar catálogo"
+          title="Actualizar catálogo">
+          ↻
+        </button>
+
+        <div class="flex-grow-1">
+          <input
+            id="buscador"
+            type="text"
+            class="search-input w-100"
+            placeholder="Buscar..."
+            aria-label="Buscar en el catálogo"
+            oninput="aplicarFiltros()">
+        </div>
+      </div>
+
+      <div class="filters-bar w-100 mt-2">
+        <select
+          id="filtro-cat"
+          class="form-select form-select-dark"
+          aria-label="Categoría"
+          onchange="aplicarFiltros()">
+          <option value="Todos">Categorías</option>
+        </select>
+
+        <select
+          id="filtro-genero"
+          class="form-select form-select-dark"
+          aria-label="Género"
+          onchange="aplicarFiltros()">
+          <option value="Todos">Géneros</option>
+        </select>
+
+        <select
+          id="filtro-anio"
+          class="form-select form-select-dark"
+          aria-label="Año"
+          onchange="aplicarFiltros()">
+          <option value="Todos">Año</option>
+        </select>
+
+        <select
+          id="filtro-orden"
+          class="form-select form-select-dark"
+          aria-label="Orden"
+          onchange="aplicarFiltros()">
+          <option value="nuevo">Más recientes</option>
+          <option value="viejo">Más antiguos</option>
+          <option value="az">A-Z</option>
+        </select>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid">
+    <div class="d-flex justify-content-between mb-2">
+      <span id="contador" class="text-secondary small">
+        0 resultados
+      </span>
+    </div>
+
+    <div
+      id="grid"
+      class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2">
+    </div>
+
+    <div
+      id="pagination"
+      class="pagination-container"
+      hidden>
+      <button
+        type="button"
+        class="btn-page"
+        onclick="prevPage()">
+        ❮ Anterior
+      </button>
+
+      <span
+        id="page-info"
+        class="text-white align-self-center small fw-bold">
+        1 / 1
+      </span>
+
+      <button
+        type="button"
+        class="btn-page"
+        onclick="nextPage()">
+        Siguiente ❯
+      </button>
+    </div>
+  </main>
+
+  <div
+    id="infoModal"
+    class="modal fade"
+    tabindex="-1"
+    aria-labelledby="m-titulo"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h5
+            id="m-titulo"
+            class="modal-title w-100 text-center fw-bold">
+            Título
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar">
+          </button>
+        </div>
+
+        <div class="modal-body pt-0">
+          <div class="text-center mb-3">
+            <img id="m-img" class="detail-cover" alt="">
+
+            <button
+              type="button"
+              class="btn-app"
+              onclick="mostrarOpcionesVenta()">
+              <i class="bi bi-phone-fill"></i>
+              DISPONIBLE EN LA APP
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="btn-play-sales"
+            onclick="mostrarOpcionesVenta()">
+            <i class="bi bi-play-fill fs-3"></i>
+            REPRODUCIR
+          </button>
+
+          <div id="sales-overlay" hidden>
+            <h6 class="fw-bold text-white mb-2">
+              Disponible en la app
+            </h6>
+
+            <p class="small text-secondary mb-3">
+              Para contratar el acceso y reproducir este contenido,
+              escríbenos por WhatsApp.
+            </p>
+
+            <a
+              id="catalogo-contacto"
+              class="btn btn-success fw-bold w-100"
+              target="_blank"
+              rel="noopener noreferrer"
+              hidden>
+              <i class="bi bi-whatsapp"></i>
+              Escribir por WhatsApp
+            </a>
+
+            <p
+              id="catalogo-contacto-error"
+              class="small text-secondary mb-0"
+              hidden>
+              El contacto no está disponible.
+              Intenta nuevamente más tarde.
+            </p>
+          </div>
+
+          <div class="d-flex justify-content-center gap-2 mt-3 mb-3">
+            <span id="m-anio" class="meta-tag"></span>
+            <span id="m-cat" class="meta-tag"></span>
+          </div>
+
+          <p id="m-sinopsis">Disponible en la app</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbynmmuez_uPO30pjulj6NzUbcKDQYiLbSQC7mQA40LiwoI-dh5FplZ-0_bNFkMwVu2l/exec?key=TodoVilu_Secret_2026_Access";
+
+    const ES_APP_TODOVILU =
+      navigator.userAgent.includes("TodoViluApp") ||
+      typeof Android !== "undefined";
+
+    if (ES_APP_TODOVILU) {
+      document.body.classList.add("en-app");
+    }
+
+    const SIN_IMAGEN =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450">' +
+        '<rect width="100%" height="100%" fill="#242424"/>' +
+        '<text x="50%" y="50%" fill="#aaaaaa" font-family="sans-serif" ' +
+        'font-size="20" text-anchor="middle">Sin imagen</text></svg>'
+      );
+
+    let DB = [];
+    let VIEW_DB = [];
+    let currentPage = 1;
+    const itemsPerPage = 24;
+    let catalogoWhatsapp = "";
+    let preparandoDetalle = false;
+    let contactoPromise = null;
+
+    function puenteAndroidDisponible() {
+      return ES_APP_TODOVILU &&
+        typeof Android !== "undefined" &&
+        typeof Android.downloadJson === "function";
+    }
+
+    function guardarContacto(paquete) {
+      catalogoWhatsapp = String(
+        paquete.configuracion?.whatsapp || ""
+      ).replace(/\D/g, "");
+    }
+
+    async function cargarCatalogo() {
+      try {
+        const response = await fetch(API_URL + "&vista=indice");
+
+        if (!response.ok) {
+          throw new Error("HTTP " + response.status);
+        }
+
+        const paquete = await response.json();
+
+        guardarContacto(paquete);
+        iniciarWeb(paquete.catalogo || []);
+      } catch (error) {
+        console.error(error);
+
+        document.getElementById("loader-spinner").hidden = true;
+
+        document.getElementById("loader-text").textContent =
+          "No se pudo cargar el catálogo. Revisa tu conexión.";
+
+        document.getElementById("loader-retry").hidden = false;
+      }
+    }
+
+    function normalizarCategoria(categoria) {
+      return String(categoria || "").toLowerCase().trim();
+    }
+
+    function normalizarTexto(valor) {
+      return String(valor || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function normalizarColeccion(valor) {
+      return normalizarTexto(valor)
+        .replace(/\s+coleccion$/i, "")
+        .trim();
+    }
+
+    function iniciarWeb(datos) {
+      const generosSet = new Set();
+      const categoriasSet = new Set();
+      const aniosSet = new Set();
+
+      DB = datos.map(item => {
+        const categoria = normalizarCategoria(item.categoria);
+
+        const generos = Array.isArray(item.generos)
+          ? item.generos
+          : String(item.generos || "")
+              .split(",")
+              .map(g => g.trim())
+              .filter(Boolean);
+
+        generos.forEach(g => generosSet.add(g));
+
+        if (categoria) categoriasSet.add(categoria);
+
+        const anioNum = parseInt(item.anio || item.year || 0);
+
+        if (!isNaN(anioNum) && anioNum > 0) {
+          aniosSet.add(anioNum);
+        }
+
+        return {
+          id: String(item.id || item.tmdbId || ""),
+          idApp: String(item.idApp || item.id || ""),
+          titulo: String(item.titulo || ""),
+          img: String(item.imagen || "")
+            .replace(/\/t\/p\/w\d+\//, "/t/p/w342/"),
+          tipo: categoria,
+          anio: isNaN(anioNum) ? 0 : anioNum,
+          generos,
+          sinopsis: item.sinopsis || "",
+          coleccion: String(
+            item.coleccion ||
+            item.collection ||
+            item.saga ||
+            ""
+          ).trim(),
+          jsonFull: null
+        };
+      });
+
+      llenarFiltro(
+        "filtro-cat",
+        Array.from(categoriasSet).sort()
+      );
+
+      llenarFiltro(
+        "filtro-genero",
+        Array.from(generosSet).sort()
+      );
+
+      llenarFiltro(
+        "filtro-anio",
+        Array.from(aniosSet).sort((a, b) => b - a)
+      );
+
+      document.getElementById("loader").style.display = "none";
+
+      aplicarFiltros();
+    }
+
+    function llenarFiltro(id, valores) {
+      const select = document.getElementById(id);
+
+      while (select.options.length > 1) {
+        select.remove(1);
+      }
+
+      valores.forEach(valor => {
+        select.add(new Option(String(valor), String(valor)));
+      });
+    }
+
+    function resetFiltros() {
+      document.getElementById("filtro-cat").value = "Todos";
+      document.getElementById("filtro-genero").value = "Todos";
+      document.getElementById("filtro-anio").value = "Todos";
+      document.getElementById("filtro-orden").value = "nuevo";
+      document.getElementById("buscador").value = "";
+
+      aplicarFiltros();
+    }
+
+    function aplicarFiltros() {
+      const texto = normalizarTexto(
+        document.getElementById("buscador").value
+      );
+
+      const categoria = document.getElementById("filtro-cat").value;
+      const genero = document.getElementById("filtro-genero").value;
+      const anio = document.getElementById("filtro-anio").value;
+      const orden = document.getElementById("filtro-orden").value;
+
+      VIEW_DB = DB.filter(item => {
+        const coincideTexto =
+          texto === "" ||
+          normalizarTexto(item.titulo).includes(texto) ||
+          normalizarColeccion(item.coleccion).includes(texto) ||
+          normalizarTexto(item.sinopsis).includes(texto) ||
+          normalizarTexto(item.generos.join(" ")).includes(texto);
+
+        return coincideTexto &&
+          (categoria === "Todos" || item.tipo === categoria) &&
+          (genero === "Todos" || item.generos.includes(genero)) &&
+          (anio === "Todos" || item.anio == anio);
+      });
+
+      if (orden === "nuevo") {
+        VIEW_DB.sort((a, b) => b.anio - a.anio);
+      }
+
+      if (orden === "viejo") {
+        VIEW_DB.sort((a, b) => a.anio - b.anio);
+      }
+
+      if (orden === "az") {
+        VIEW_DB.sort((a, b) => a.titulo.localeCompare(b.titulo));
+      }
+
+      document.getElementById("contador").textContent =
+        VIEW_DB.length + " resultados";
+
+      currentPage = 1;
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const container = document.getElementById("grid");
+      container.replaceChildren();
+
+      if (VIEW_DB.length === 0) {
+        const mensaje = document.createElement("p");
+        mensaje.className = "text-center w-100 text-secondary mt-5";
+        mensaje.textContent = "Sin resultados.";
+        container.appendChild(mensaje);
+
+        document.getElementById("pagination").hidden = true;
+        return;
+      }
+
+      const start = (currentPage - 1) * itemsPerPage;
+      const items = VIEW_DB.slice(start, start + itemsPerPage);
+      const maxPages = Math.ceil(VIEW_DB.length / itemsPerPage);
+
+      items.forEach(item => {
+        const col = document.createElement("div");
+        col.className = "col";
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const categoria = document.createElement("span");
+        categoria.className = "badge-cat";
+        categoria.textContent = item.tipo;
+
+        const anio = document.createElement("span");
+        anio.className = "badge-year";
+        anio.textContent = item.anio > 0 ? item.anio : "";
+
+        const img = document.createElement("img");
+        img.className = "card-img-top";
+        img.loading = "lazy";
+        img.alt = item.titulo;
+
+        img.onerror = function () {
+          this.onerror = null;
+          this.src = SIN_IMAGEN;
+        };
+
+        img.src = item.img || SIN_IMAGEN;
+
+        const body = document.createElement("div");
+        body.className = "card-body";
+
+        const titulo = document.createElement("div");
+        titulo.className = "card-title";
+        titulo.textContent = item.titulo;
+
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.className = "btn-detalles mt-auto";
+        boton.textContent = "VER DETALLES";
+
+        body.append(titulo, boton);
+        card.append(categoria, anio, img, body);
+
+        card.addEventListener("click", () => clickCard(item.id));
+
+        col.appendChild(card);
+        container.appendChild(col);
+      });
+
+      document.getElementById("pagination").hidden = false;
+
+      document.getElementById("page-info").textContent =
+        currentPage + " / " + maxPages;
+
+      const buttons =
+        document.querySelectorAll("#pagination button");
+
+      buttons[0].disabled = currentPage === 1;
+      buttons[1].disabled = currentPage === maxPages;
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderGrid();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    function nextPage() {
+      const maxPages = Math.ceil(VIEW_DB.length / itemsPerPage);
+
+      if (currentPage < maxPages) {
+        currentPage++;
+        renderGrid();
+        window.scrollTo(0, 0);
+      }
+    }
+
+    async function clickCard(id) {
+      if (puenteAndroidDisponible()) {
+        await enviarDetalleAAndroid(id);
+        return;
+      }
+
+      abrirModal(id);
+    }
+
+    function actualizarEnlaceContacto(item) {
+      const contacto = document.getElementById("catalogo-contacto");
+      const error = document.getElementById("catalogo-contacto-error");
+
+      const valido = /^[1-9]\d{6,14}$/.test(catalogoWhatsapp);
+
+      contacto.hidden = !valido;
+      error.hidden = valido;
+      contacto.removeAttribute("href");
+
+      if (!valido) return;
+
+      const mensaje =
+        "Hola, quiero contratar TodoVilu para ver: " +
+        item.titulo +
+        ". ¿Cómo puedo activar el acceso?";
+
+      contacto.href =
+        "https://wa.me/" + catalogoWhatsapp +
+        "?text=" + encodeURIComponent(mensaje);
+    }
+
+    async function asegurarContacto() {
+      if (/^[1-9]\d{6,14}$/.test(catalogoWhatsapp)) return;
+
+      if (!contactoPromise) {
+        contactoPromise = (async () => {
+          try {
+            const response = await fetch(API_URL + "&vista=config");
+
+            if (!response.ok) {
+              throw new Error("HTTP " + response.status);
+            }
+
+            guardarContacto(await response.json());
+          } catch (error) {
+            console.error(error);
+          } finally {
+            contactoPromise = null;
+          }
+        })();
+      }
+
+      await contactoPromise;
+    }
+
+    let fichaActual = null;
+
+    function abrirModal(id) {
+      const item = DB.find(element => element.id === id);
+
+      if (!item) return;
+
+      fichaActual = item;
+
+      document.getElementById("sales-overlay").hidden = true;
+      document.getElementById("m-titulo").textContent = item.titulo;
+      document.getElementById("m-anio").textContent =
+        item.anio > 0 ? item.anio : "----";
+      document.getElementById("m-cat").textContent = item.tipo;
+
+      document.getElementById("m-sinopsis").textContent =
+        item.sinopsis || "Disponible en la app";
+
+      const img = document.getElementById("m-img");
+      img.alt = item.titulo;
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = SIN_IMAGEN;
+      };
+      img.src = item.img || SIN_IMAGEN;
+
+      actualizarEnlaceContacto(item);
+
+      bootstrap.Modal.getOrCreateInstance(
+        document.getElementById("infoModal")
+      ).show();
+    }
+
+    async function mostrarOpcionesVenta() {
+      if (!fichaActual) return;
+
+      document.getElementById("sales-overlay").hidden = false;
+
+      const item = fichaActual;
+
+      await asegurarContacto();
+
+      if (fichaActual === item) {
+        actualizarEnlaceContacto(item);
+      }
+    }
+
+    async function obtenerJsonCompleto(item) {
+      if (!puenteAndroidDisponible()) {
+        throw new Error(
+          "El detalle completo está disponible dentro de la app."
+        );
+      }
+
+      if (item.jsonFull) return item.jsonFull;
+
+      const url = new URL(API_URL);
+      url.searchParams.set("vista", "detalle");
+      url.searchParams.set("id", item.id);
+      url.searchParams.set("categoria", item.tipo);
+
+      const response = await fetch(url.toString());
+
+      if (!response.ok) {
+        throw new Error("No se pudo cargar el detalle");
+      }
+
+      const paquete = await response.json();
+
+      if (!paquete.item) {
+        throw new Error("Detalle no encontrado");
+      }
+
+      item.jsonFull = {
+        ...paquete.item,
+
+        coleccion: String(
+          paquete.item.coleccion ||
+          paquete.item.collection ||
+          paquete.item.saga ||
+          item.coleccion ||
+          ""
+        ).trim(),
+
+        saga: String(
+          paquete.item.saga ||
+          paquete.item.coleccion ||
+          paquete.item.collection ||
+          item.coleccion ||
+          ""
+        ).trim()
+      };
+
+      return item.jsonFull;
+    }
+
+    async function enviarDetalleAAndroid(id) {
+      const item = DB.find(element => element.id === id);
+
+      if (
+        !item ||
+        !puenteAndroidDisponible() ||
+        preparandoDetalle
+      ) {
+        return;
+      }
+
+      preparandoDetalle = true;
+
+      document.getElementById("loader-text").textContent =
+        "Preparando detalle...";
+
+      document.getElementById("loader-spinner").hidden = false;
+      document.getElementById("loader-retry").hidden = true;
+      document.getElementById("loader").style.display = "flex";
+
+      try {
+        const jsonFull = await obtenerJsonCompleto(item);
+
+        Android.downloadJson(JSON.stringify(jsonFull));
+      } catch (error) {
+        console.error(error);
+        alert("No se pudo abrir el detalle. Intenta nuevamente.");
+      } finally {
+        document.getElementById("loader").style.display = "none";
+        preparandoDetalle = false;
+      }
+    }
+
+    cargarCatalogo();
+  </script>
+</body>
+</html>
