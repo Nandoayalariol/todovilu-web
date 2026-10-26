@@ -55,13 +55,14 @@
       --line: #292930;
       --red: #e50914;
       --muted: #adadb8;
+      --header-offset: 86px;
     }
 
     * { box-sizing: border-box; }
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 100px;
+      scroll-padding-top: var(--header-offset);
     }
 
     body {
@@ -260,7 +261,6 @@
     .stat b { display: block; }
     .stat small { color: var(--muted); }
 
-    /* Mascota contenida: no se estira para llenar la columna. */
     .visual {
       display: grid;
       place-items: center;
@@ -338,7 +338,11 @@
       font-weight: 800;
     }
 
-    /* Plataformas */
+    /* Reduce la separación entre los pasos y los dispositivos. */
+    #como-funciona { padding-bottom: 24px; }
+
+    .access-section { padding-top: 24px; }
+
     .apps-card {
       overflow: hidden;
       background: var(--panel);
@@ -524,7 +528,11 @@
     .coming-soon h3 { margin-bottom: 6px; }
     .coming-soon p { margin: 0; }
 
-    /* Banner final */
+    .promo-stack {
+      display: grid;
+      gap: 24px;
+    }
+
     .promo {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -578,6 +586,37 @@
     }
 
     .btn-promo:hover { background: #933bcd; }
+
+    /* Publicidad de Vilux: enlace dinámico desde Config!H2. */
+    .promo-vilux {
+      background: #191921;
+      border-color: #32323e;
+    }
+
+    .promo-vilux .promo-action img {
+      width: 96px;
+      height: 96px;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .vilux-image-link {
+      display: inline-block;
+      border-radius: 16px;
+      transition: transform .15s;
+    }
+
+    .vilux-image-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-vilux {
+      color: #201329;
+      background: #c19aff;
+      border-radius: 12px;
+    }
+
+    .btn-vilux:hover { background: #ceafff; }
 
     footer {
       padding: 30px 0;
@@ -638,6 +677,9 @@
         max-height: 240px;
       }
 
+      #como-funciona { padding-bottom: 18px; }
+      .access-section { padding-top: 18px; }
+
       .access-layout {
         padding: 18px;
         gap: 24px;
@@ -668,6 +710,11 @@
         border-radius: 15px;
       }
 
+      .promo-vilux .promo-action img {
+        width: 76px;
+        height: 76px;
+      }
+
       .promo-action .btn {
         padding: 12px 15px;
         font-size: .8rem;
@@ -682,7 +729,7 @@
 </head>
 
 <body>
-  <header>
+  <header id="site-header">
     <div class="container nav">
       <a class="brand" href="/" aria-label="TodoVilu Inicio">
         <img
@@ -848,10 +895,12 @@
       </div>
     </section>
 
-    <section id="acceso">
+    <section class="access-section">
       <div class="container">
         <div class="section-head">
-          <h2>TodoVilu en tus dispositivos</h2>
+          <!-- El ancla está en el título, no en el padding de la sección. -->
+          <h2 id="acceso">TodoVilu en tus dispositivos</h2>
+
           <p>
             Elige tu plataforma para conocer las opciones disponibles.
           </p>
@@ -1066,7 +1115,7 @@
     </section>
 
     <section>
-      <div class="container">
+      <div class="container promo-stack">
         <div class="promo">
           <div>
             <span class="promo-label">
@@ -1095,6 +1144,51 @@
             </a>
           </div>
         </div>
+
+        <!-- Se muestra al recibir una URL HTTPS válida desde Sheets. -->
+        <aside
+          id="vilux-publicidad"
+          class="promo promo-vilux"
+          aria-labelledby="vilux-title"
+          hidden>
+
+          <div>
+            <span class="promo-label">PUBLICIDAD · VILUX</span>
+
+            <h2 id="vilux-title">Conoce Vilux.</h2>
+
+            <p>
+              Descubre lo que Vilux tiene para ti.
+              Visita su página para conocer más.
+            </p>
+          </div>
+
+          <div class="promo-action">
+            <a
+              id="vilux-image-link"
+              class="vilux-image-link"
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              aria-label="Conocer Vilux, abre en otra pestaña">
+
+              <img
+                src="/vilux.png"
+                alt="Vilux"
+                width="96"
+                height="96"
+                loading="lazy">
+            </a>
+
+            <a
+              id="vilux-button-link"
+              class="btn btn-vilux"
+              target="_blank"
+              rel="sponsored noopener noreferrer">
+              Conocer Vilux
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </aside>
       </div>
     </section>
   </main>
@@ -1131,7 +1225,39 @@
     document.getElementById("year").textContent =
       new Date().getFullYear();
 
-    /* Pestañas Android / TV / PC */
+    /* Ajusta las anclas a la altura real del encabezado. */
+    const encabezado = document.getElementById("site-header");
+
+    function actualizarAlturaEncabezado() {
+      const altura =
+        Math.ceil(encabezado.getBoundingClientRect().height);
+
+      document.documentElement.style.setProperty(
+        "--header-offset",
+        (altura + 12) + "px"
+      );
+    }
+
+    actualizarAlturaEncabezado();
+
+    window.addEventListener(
+      "resize",
+      actualizarAlturaEncabezado
+    );
+
+    if ("ResizeObserver" in window) {
+      const observadorEncabezado = new ResizeObserver(
+        actualizarAlturaEncabezado
+      );
+
+      observadorEncabezado.observe(encabezado);
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(actualizarAlturaEncabezado);
+    }
+
+    /* Pestañas Android / TV / PC. */
     const plataformas = ["android", "tv", "pc"];
 
     function seleccionarPlataforma(nombre, enfocar = false) {
@@ -1182,7 +1308,7 @@
       });
     });
 
-    /* Configuración comercial */
+    /* Configuración comercial. */
     function tvNumeroValido(valor, permitirCero = false) {
       return typeof valor === "number" &&
         Number.isFinite(valor) &&
@@ -1191,8 +1317,17 @@
 
     function tvUrlHttps(valor) {
       try {
-        const url = new URL(String(valor || ""));
-        return url.protocol === "https:" ? url.href : "";
+        const url = new URL(String(valor || "").trim());
+
+        if (
+          url.protocol !== "https:" ||
+          url.username ||
+          url.password
+        ) {
+          return "";
+        }
+
+        return url.href;
       } catch (_) {
         return "";
       }
@@ -1208,6 +1343,29 @@
           maximumFractionDigits: moneda === "COP" ? 0 : 2
         }
       ).format(valor) + " " + moneda;
+    }
+
+    function aplicarPublicidadVilux(valor) {
+      const url = tvUrlHttps(valor);
+
+      const bloque =
+        document.getElementById("vilux-publicidad");
+
+      const imagen =
+        document.getElementById("vilux-image-link");
+
+      const boton =
+        document.getElementById("vilux-button-link");
+
+      bloque.hidden = true;
+      imagen.removeAttribute("href");
+      boton.removeAttribute("href");
+
+      if (!url) return;
+
+      imagen.href = url;
+      boton.href = url;
+      bloque.hidden = false;
     }
 
     async function cargarConfiguracionTodoVilu() {
@@ -1243,6 +1401,9 @@
           duracionDias: config.duracionDias,
           precioColombiaCOP: config.precioColombiaCOP,
           precioInternacionalUSD: config.precioInternacionalUSD,
+          publicidadViluxUrl: tvUrlHttps(
+            config.publicidadViluxUrl
+          ),
           metodosPago: (
             Array.isArray(config.metodosPago)
               ? config.metodosPago
@@ -1255,6 +1416,10 @@
         };
 
         tvApkUrl = tvUrlHttps(paquete.apk);
+
+        aplicarPublicidadVilux(
+          tvConfiguracion.publicidadViluxUrl
+        );
 
         const select =
           document.getElementById("tv-payment-method");
@@ -1477,11 +1642,3 @@
       window.open(
         tvApkUrl,
         "_blank",
-        "noopener,noreferrer"
-      );
-    }
-
-    cargarConfiguracionTodoVilu();
-  </script>
-</body>
-</html>
