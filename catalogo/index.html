@@ -1,1058 +1,1463 @@
 <!DOCTYPE html>
-<html lang="es" prefix="og: https://ogp.me/ns#">
+<html lang="es">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>TodoVilu Streaming | Catálogo</title>
+  <title>TodoVilu Streaming — Tu universo, a tu ritmo</title>
 
   <meta
     name="description"
-    content="Explora películas, series, animes, ReelShorts y textos en TodoVilu Streaming."
+    content="Descubre TodoVilu Streaming. Explora el catálogo, consulta los precios de acceso y descarga la aplicación oficial para Android."
   >
-  <meta name="theme-color" content="#e50914">
+  <meta name="theme-color" content="#101014">
 
-  <link
-    rel="canonical"
-    href="https://todovilu-web.vercel.app/catalogo/"
-  >
+  <link rel="canonical" href="https://todovilu-web.vercel.app/">
   <link rel="icon" type="image/png" href="/favicon.png">
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="es_ES">
   <meta property="og:site_name" content="TodoVilu Streaming">
-  <meta property="og:title" content="TodoVilu Streaming | Catálogo">
+  <meta property="og:title" content="TodoVilu Streaming">
   <meta
     property="og:description"
-    content="Explora el catálogo. Disponible en la aplicación TodoVilu."
+    content="Tu universo, a tu ritmo. Explora el catálogo y conoce nuestras opciones de acceso."
   >
-  <meta
-    property="og:url"
-    content="https://todovilu-web.vercel.app/catalogo/"
-  >
+  <meta property="og:url" content="https://todovilu-web.vercel.app/">
   <meta
     property="og:image"
     content="https://todovilu-web.vercel.app/compartir.jpg"
   >
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="TodoVilu Streaming | Catálogo">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TodoVilu Streaming">
   <meta
     name="twitter:image"
     content="https://todovilu-web.vercel.app/compartir.jpg"
   >
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
+
   <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     rel="stylesheet"
   >
 
   <style>
     :root {
-      --primary: #e50914;
-      --bg: #141414;
-      --card: #1f1f1f;
-      --text: #fff;
+      --bg: #0c0c10;
+      --panel: #18181f;
+      --line: #2d2d38;
+      --text: #f8f8fc;
+      --muted: #b0afbd;
+      --accent: #bc8cff;
+      --red: #e50914;
     }
 
-    * { box-sizing: border-box; }
-
-    html { background: var(--bg); }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding-top: calc(145px + env(safe-area-inset-top));
-      padding-bottom: 80px;
-      font-family: -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Roboto, sans-serif;
+    * {
+      box-sizing: border-box;
     }
 
-    [hidden] { display: none !important; }
-
-    .navbar {
-      background: rgba(20, 20, 20, .98);
-      border-bottom: 1px solid #333;
-      backdrop-filter: blur(10px);
-    }
-
-    .brand-logo {
-      color: var(--primary);
-      font-weight: 900;
-      font-size: 1.5rem;
-      text-decoration: none;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .filters-bar {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 5px;
-      scrollbar-width: none;
-    }
-
-    .filters-bar::-webkit-scrollbar { display: none; }
-
-    .form-select-dark {
-      background-color: #333;
-      color: #fff !important;
-      border: 1px solid #444;
-      font-size: .85rem;
-      min-width: 130px;
-    }
-
-    .search-input {
-      background: #333;
-      border: 1px solid #444;
-      color: #fff !important;
-      border-radius: 50px;
-      padding: 7px 15px;
-      width: 100%;
-      outline: none;
-    }
-
-    .search-input::placeholder { color: #aaa; }
-
-    .card {
-      background-color: var(--card);
-      border: none;
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-      height: 100%;
-      box-shadow: 0 4px 6px #0005;
-      transition: transform .2s;
-      cursor: pointer;
-    }
-
-    .card:active { transform: scale(.98); }
-
-    .card-img-top {
-      aspect-ratio: 2 / 3;
-      object-fit: cover;
-      width: 100%;
-      display: block;
-    }
-
-    .card-body {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-title {
-      font-size: .9rem;
-      font-weight: 700;
-      color: #fff !important;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 5px;
-      text-shadow: 0 1px 2px #000c;
-    }
-
-    .btn-detalles {
-      width: 100%;
-      background: #eee;
-      color: #111;
-      border: none;
-      padding: 8px;
-      font-size: .8rem;
-      font-weight: bold;
-      margin-top: 8px;
-      cursor: pointer;
-    }
-
-    .badge-cat, .badge-year {
-      position: absolute;
-      top: 5px;
-      z-index: 5;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: .65rem;
-      font-weight: bold;
-    }
-
-    .badge-cat {
-      right: 5px;
-      color: #fff;
-      background: #000d;
-      border: 1px solid #ffffff33;
-    }
-
-    .badge-year {
-      left: 5px;
-      background: #f1c40f;
-      color: #000;
-    }
-
-    .modal-content {
-      background: #141414;
-      color: #fff;
-      border: 1px solid #333;
-    }
-
-    .btn-close { filter: invert(1); }
-
-    .detail-cover {
-      width: 140px;
-      border-radius: 8px;
-      box-shadow: 0 5px 20px #0008;
-    }
-
-    .btn-app, .btn-play-sales {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 12px;
-      margin-top: 12px;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn-app {
-      background: linear-gradient(45deg, #2ecc71, #27ae60);
-    }
-
-    .btn-play-sales {
-      background: var(--primary);
-      font-size: 1.1rem;
-    }
-
-    #sales-overlay {
-      margin-top: 15px;
-      padding: 15px;
-      border-radius: 8px;
-      background: #222;
-      border: 1px solid var(--primary);
-      text-align: center;
-    }
-
-    .meta-tag {
-      background: #333;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: .8rem;
-      color: #ccc;
-    }
-
-    #m-sinopsis {
-      color: #ccc;
-      font-size: .9rem;
-      line-height: 1.4;
-      text-align: justify;
-    }
-
-    .pagination-container {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn-page {
-      background: #333;
-      color: #fff;
-      border: 1px solid #444;
-      padding: 6px 15px;
-      border-radius: 4px;
-    }
-
-    .btn-page:disabled { opacity: .5; }
-
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    @media (max-width: 600px) {
-      .brand-logo { font-size: 1.25rem; }
-
-      .search-input {
-        padding: 6px 10px;
-        font-size: .85rem;
-      }
-
-      body {
-        padding-top: calc(135px + env(safe-area-inset-top));
-      }
-    }
-
-    body.en-app { padding-top: 0 !important; }
-
-    body.en-app .navbar .brand-logo {
+    [hidden] {
       display: none !important;
     }
 
-    body.en-app .navbar {
-      position: sticky !important;
-      top: 0 !important;
-      right: auto !important;
-      left: auto !important;
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 95px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, select, input {
+      font: inherit;
+    }
+
+    button, a, select, input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    select:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(12, 12, 16, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .navigation {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      flex-shrink: 0;
+    }
+
+    .brand-logo {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.4px;
+    }
+
+    .brand-name small {
+      display: block;
+      margin-top: 4px;
+      font-size: .56rem;
+      letter-spacing: 3px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 12px 20px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 700;
+      font-size: .9rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+
+    .button:active {
+      transform: scale(.98);
+    }
+
+    .button-primary {
+      background: var(--red);
+    }
+
+    .button-primary:hover {
+      background: #fa1722;
+    }
+
+    .button-secondary {
+      background: #ffffff06;
+      border-color: var(--line);
+    }
+
+    .button-secondary:hover {
+      background: #ffffff10;
+    }
+
+    .button-whatsapp {
+      background: #23884e;
+    }
+
+    .button-whatsapp:hover {
+      background: #299c5a;
+    }
+
+    .button-accent {
+      background: var(--accent);
+      color: #201329;
+    }
+
+    .button-small {
+      min-height: 41px;
+      padding: 9px 15px;
+      font-size: .82rem;
+    }
+
+    .button:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    .full {
       width: 100%;
-      z-index: 1030;
-      background: #141414;
-      border-bottom: 1px solid #292929;
-      backdrop-filter: none;
     }
 
-    body.en-app .navbar .flex-grow-1 { min-width: 0; }
-
-    body.en-app .search-input {
-      min-height: 42px;
-      font-size: 14px;
+    .hero {
+      padding: 64px 0 70px;
     }
 
-    body.en-app .filters-bar {
+    .hero-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      overflow: visible;
-      padding-bottom: 4px;
-      margin-bottom: 0;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 58px;
+      align-items: center;
     }
 
-    body.en-app .form-select-dark {
+    .eyebrow {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 23px;
+      font-size: clamp(2.7rem, 5.7vw, 4.4rem);
+      line-height: 1.06;
+      font-weight: 800;
+      letter-spacing: -2px;
+    }
+
+    h1 span {
+      color: var(--accent);
+    }
+
+    .hero-description {
+      max-width: 520px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      color: #8f8e9c;
+      font-size: .78rem;
+    }
+
+    .hero-art {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: #18131e;
+      box-shadow: 0 25px 65px #0005;
+    }
+
+    .hero-art img {
+      display: block;
       width: 100%;
-      min-width: 0;
-      min-height: 40px;
-      font-size: 13px;
-      border-radius: 8px;
-      background: #242424;
-      border-color: #383838;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .apps-section {
+      padding: 30px 0 65px;
+    }
+
+    .section-heading {
+      margin-bottom: 26px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.7rem, 3.6vw, 2.35rem);
+      line-height: 1.2;
+      letter-spacing: -.8px;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .apps-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+    }
+
+    .platform-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      background: #131319;
+    }
+
+    .platform-tab {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: none;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .platform-tab[aria-selected="true"] {
+      background: #30303a;
+      color: #fff;
+    }
+
+    .platform-tab i {
+      font-size: 1.1rem;
+    }
+
+    .android-panel {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 44px;
+      padding: 34px;
+      align-items: start;
+    }
+
+    .app-heading {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .app-heading img {
+      width: 66px;
+      height: 66px;
+      border-radius: 16px;
+      object-fit: contain;
+      background: #fff;
+    }
+
+    h3 {
+      margin: 0 0 5px;
+      font-size: 1.2rem;
+      letter-spacing: -.3px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .version {
+      font-size: .82rem;
+      color: var(--muted);
+    }
+
+    .app-description {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 15px;
+      border: 1px solid #685039;
+      border-radius: 12px;
+      background: #33271c;
+      color: #ead5bd;
+      font-size: .83rem;
+      line-height: 1.7;
+    }
+
+    .calculator {
+      padding: 23px;
+      border: 1px solid #353540;
+      border-radius: 18px;
+      background: #111116;
+    }
+
+    .calculator-title {
+      margin: 0 0 4px;
+      font-size: 1.05rem;
+    }
+
+    .status {
+      margin: 0 0 16px;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    .field-label {
+      display: block;
+      margin: 16px 0 7px;
+      font-size: .84rem;
+      font-weight: 600;
+    }
+
+    select {
+      width: 100%;
+      min-height: 47px;
+      padding: 11px 12px;
+      color: #fff;
+      background: #23232b;
+      border: 1px solid #41414c;
+      border-radius: 10px;
+    }
+
+    .summary {
+      margin: 20px 0;
+      padding-top: 4px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 11px;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .summary-row span:last-child {
+      text-align: right;
+    }
+
+    .summary-total {
+      padding-top: 14px;
+      margin-top: 14px;
+      border-top: 1px solid var(--line);
+      color: #fff;
+      font-size: 1.16rem;
+      font-weight: 800;
+    }
+
+    .acknowledge {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 17px 0;
+      color: var(--muted);
+      font-size: .76rem;
+      line-height: 1.6;
+    }
+
+    .acknowledge input {
+      margin-top: 4px;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .coming-soon {
+      min-height: 310px;
+      padding: 60px 25px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .coming-soon > i {
+      color: var(--accent);
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+
+    .coming-soon p {
+      color: var(--muted);
+      margin: 5px 0 0;
+    }
+
+    .promo-section {
+      padding: 0 0 65px;
+    }
+
+    .promo {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 35px;
+      padding: 40px;
+      border: 1px solid #574064;
+      border-radius: 24px;
+      background: linear-gradient(115deg, #30203e, #342128);
+    }
+
+    .promo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(90deg, #211728f5 5%, #211728d9 58%, #21172880),
+        url("/banner.jpg") center / cover no-repeat;
+    }
+
+    .promo .eyebrow {
+      margin-bottom: 12px;
+      font-size: .65rem;
+    }
+
+    .promo h2 {
+      max-width: 600px;
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+    }
+
+    .promo p {
+      margin: 14px 0 0;
+      color: #d8cddd;
+      max-width: 650px;
+      font-size: .9rem;
+    }
+
+    .promo-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 17px;
+    }
+
+    .promo-action img {
+      width: 94px;
+      height: 94px;
+      object-fit: contain;
+      border-radius: 22px;
+      background: #fff;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 25px 0;
+    }
+
+    .footer-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .footer-copy {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    .footer-contact {
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font-size: inherit;
+    }
+
+    .footer-contact:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 850px) {
+      .hero-grid {
+        gap: 30px;
+      }
+
+      .android-panel {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .app-description {
+        max-width: 650px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .container {
+        width: calc(100% - 28px);
+      }
+
+      .navigation {
+        min-height: 70px;
+        gap: 10px;
+      }
+
+      .brand-logo {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand-name {
+        font-size: .88rem;
+      }
+
+      .brand-name small {
+        font-size: .49rem;
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-link {
+        display: none;
+      }
+
+      .navigation .button {
+        padding: 9px 12px;
+        min-height: 40px;
+        font-size: .77rem;
+      }
+
+      .hero {
+        padding: 36px 0 45px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      h1 {
+        font-size: clamp(2.6rem, 11vw, 3.5rem);
+        letter-spacing: -1.4px;
+      }
+
+      .hero-description {
+        font-size: .94rem;
+      }
+
+      .hero-actions {
+        gap: 10px;
+      }
+
+      .hero-actions .button {
+        flex: 1 1 160px;
+      }
+
+      .hero-art {
+        width: 100%;
+        max-width: 440px;
+        margin-inline: auto;
+        border-radius: 22px;
+      }
+
+      .hero-art img {
+        aspect-ratio: 5 / 4;
+        object-position: center 42%;
+      }
+
+      .apps-section {
+        padding-top: 10px;
+        padding-bottom: 42px;
+      }
+
+      .android-panel {
+        padding: 20px;
+      }
+
+      .calculator {
+        padding: 18px;
+      }
+
+      .platform-tab {
+        font-size: .85rem;
+        gap: 6px;
+      }
+
+      .promo-section {
+        padding-bottom: 42px;
+      }
+
+      .promo {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 27px;
+      }
+
+      .promo-action {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .promo-action img {
+        width: 66px;
+        height: 66px;
+        border-radius: 16px;
+      }
+
+      .promo-action .button {
+        font-size: .81rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div id="loader">
-    <div
-      id="loader-spinner"
-      class="spinner-border text-danger"
-      role="status"
-      aria-label="Cargando">
-    </div>
+  <header>
+    <div class="container navigation">
+      <a class="brand" href="/" aria-label="TodoVilu Inicio">
+        <img
+          class="brand-logo"
+          src="/v.jpg"
+          alt=""
+          width="45"
+          height="45">
 
-    <div
-      id="loader-text"
-      class="mt-2 text-secondary text-center px-3">
-      Cargando contenido...
-    </div>
-
-    <button
-      id="loader-retry"
-      type="button"
-      class="btn btn-outline-light mt-3"
-      onclick="location.reload()"
-      hidden>
-      Reintentar
-    </button>
-  </div>
-
-  <nav class="navbar fixed-top px-3 pb-2 pt-2">
-    <div class="container-fluid p-0">
-      <div class="d-flex align-items-center w-100 gap-2">
-        <span
-          class="brand-logo flex-shrink-0"
-          onclick="resetFiltros()">
+        <span class="brand-name">
           TODOVILU
+          <small>STREAMING</small>
         </span>
+      </a>
 
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-light flex-shrink-0"
-          onclick="location.reload()"
-          aria-label="Actualizar catálogo"
-          title="Actualizar catálogo">
-          ↻
-        </button>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a class="nav-link" href="#aplicaciones">
+          Aplicaciones y acceso
+        </a>
 
-        <div class="flex-grow-1">
-          <input
-            id="buscador"
-            type="text"
-            class="search-input w-100"
-            placeholder="Buscar..."
-            aria-label="Buscar en el catálogo"
-            oninput="aplicarFiltros()">
-        </div>
-      </div>
-
-      <div class="filters-bar w-100 mt-2">
-        <select
-          id="filtro-cat"
-          class="form-select form-select-dark"
-          aria-label="Categoría"
-          onchange="aplicarFiltros()">
-          <option value="Todos">Categorías</option>
-        </select>
-
-        <select
-          id="filtro-genero"
-          class="form-select form-select-dark"
-          aria-label="Género"
-          onchange="aplicarFiltros()">
-          <option value="Todos">Géneros</option>
-        </select>
-
-        <select
-          id="filtro-anio"
-          class="form-select form-select-dark"
-          aria-label="Año"
-          onchange="aplicarFiltros()">
-          <option value="Todos">Año</option>
-        </select>
-
-        <select
-          id="filtro-orden"
-          class="form-select form-select-dark"
-          aria-label="Orden"
-          onchange="aplicarFiltros()">
-          <option value="nuevo">Más recientes</option>
-          <option value="viejo">Más antiguos</option>
-          <option value="az">A-Z</option>
-        </select>
-      </div>
+        <a class="button button-primary button-small" href="/catalogo/">
+          Ver catálogo
+          <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+        </a>
+      </nav>
     </div>
-  </nav>
+  </header>
 
-  <main class="container-fluid">
-    <div class="d-flex justify-content-between mb-2">
-      <span id="contador" class="text-secondary small">
-        0 resultados
-      </span>
-    </div>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">BIENVENIDO A TODOVILU</span>
 
-    <div
-      id="grid"
-      class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-2">
-    </div>
+          <h1>
+            Tu universo,<br>
+            <span>a tu ritmo.</span>
+          </h1>
 
-    <div
-      id="pagination"
-      class="pagination-container"
-      hidden>
-      <button
-        type="button"
-        class="btn-page"
-        onclick="prevPage()">
-        ❮ Anterior
-      </button>
+          <p class="hero-description">
+            Películas, series, animes, ReelShorts y textos.
+            Explora el catálogo y encuentra tu próximo
+            momento de entretenimiento.
+          </p>
 
-      <span
-        id="page-info"
-        class="text-white align-self-center small fw-bold">
-        1 / 1
-      </span>
+          <div class="hero-actions">
+            <a class="button button-primary" href="/catalogo/">
+              Explorar catálogo
+              <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
 
-      <button
-        type="button"
-        class="btn-page"
-        onclick="nextPage()">
-        Siguiente ❯
-      </button>
-    </div>
-  </main>
+            <a class="button button-secondary" href="#aplicaciones">
+              <i class="bi bi-android2" aria-hidden="true"></i>
+              Aplicación y acceso
+            </a>
+          </div>
 
-  <div
-    id="infoModal"
-    class="modal fade"
-    tabindex="-1"
-    aria-labelledby="m-titulo"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header border-0 pb-0">
-          <h5
-            id="m-titulo"
-            class="modal-title w-100 text-center fw-bold">
-            Título
-          </h5>
-
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Cerrar">
-          </button>
+          <p class="hero-note">
+            El contenido se disfruta desde la aplicación.
+            El acceso se contrata por separado.
+          </p>
         </div>
 
-        <div class="modal-body pt-0">
-          <div class="text-center mb-3">
-            <img id="m-img" class="detail-cover" alt="">
+        <div class="hero-art">
+          <img
+            src="/mascota.jpg"
+            alt="Mascota de TodoVilu con gafas de cine y palomitas"
+            width="1024"
+            height="1024"
+            fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <section id="aplicaciones" class="apps-section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>TodoVilu en tus dispositivos</h2>
+          <p>Elige tu plataforma para conocer las opciones disponibles.</p>
+        </div>
+
+        <div class="apps-card">
+          <div
+            class="platform-tabs"
+            role="tablist"
+            aria-label="Plataformas">
 
             <button
+              id="tab-android"
+              class="platform-tab"
               type="button"
-              class="btn-app"
-              onclick="mostrarOpcionesVenta()">
-              <i class="bi bi-phone-fill"></i>
-              DISPONIBLE EN LA APP
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-android"
+              tabindex="0">
+              <i class="bi bi-android2" aria-hidden="true"></i>
+              Android
+            </button>
+
+            <button
+              id="tab-tv"
+              class="platform-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-tv"
+              tabindex="-1">
+              <i class="bi bi-tv" aria-hidden="true"></i>
+              TV
+            </button>
+
+            <button
+              id="tab-pc"
+              class="platform-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-pc"
+              tabindex="-1">
+              <i class="bi bi-pc-display" aria-hidden="true"></i>
+              PC
             </button>
           </div>
 
-          <button
-            type="button"
-            class="btn-play-sales"
-            onclick="mostrarOpcionesVenta()">
-            <i class="bi bi-play-fill fs-3"></i>
-            REPRODUCIR
-          </button>
+          <div
+            id="panel-android"
+            role="tabpanel"
+            aria-labelledby="tab-android"
+            tabindex="0">
 
-          <div id="sales-overlay" hidden>
-            <h6 class="fw-bold text-white mb-2">
-              Disponible en la app
-            </h6>
+            <div class="android-panel">
+              <div>
+                <div class="app-heading">
+                  <img
+                    src="/v.jpg"
+                    alt="Logo de TodoVilu"
+                    width="66"
+                    height="66">
 
-            <p class="small text-secondary mb-3">
-              Para contratar el acceso y reproducir este contenido,
-              escríbenos por WhatsApp.
-            </p>
+                  <div>
+                    <h3>TodoVilu para Android</h3>
+                    <div class="version">
+                      Versión:
+                      <span id="app-version">Cargando…</span>
+                    </div>
+                  </div>
+                </div>
 
-            <a
-              id="catalogo-contacto"
-              class="btn btn-success fw-bold w-100"
-              target="_blank"
-              rel="noopener noreferrer"
-              hidden>
-              <i class="bi bi-whatsapp"></i>
-              Escribir por WhatsApp
-            </a>
+                <p class="app-description">
+                  Elige tu ubicación, consulta tu tarifa
+                  y coordina la activación por WhatsApp.
+                </p>
 
-            <p
-              id="catalogo-contacto-error"
-              class="small text-secondary mb-0"
-              hidden>
-              El contacto no está disponible.
-              Intenta nuevamente más tarde.
-            </p>
+                <div class="notice">
+                  <i class="bi bi-lock" aria-hidden="true"></i>
+                  Descargar la app no incluye el acceso.
+                  El pago y la activación se coordinan por WhatsApp.
+                  Esta página no procesa pagos.
+                </div>
+              </div>
+
+              <div class="calculator">
+                <h3 class="calculator-title">Consulta tu tarifa</h3>
+
+                <p id="config-status" class="status" role="status">
+                  Cargando información…
+                </p>
+
+                <button
+                  id="config-retry"
+                  class="button button-secondary button-small"
+                  type="button"
+                  hidden>
+                  Reintentar
+                </button>
+
+                <label class="field-label" for="region">
+                  Tu ubicación
+                </label>
+
+                <select id="region" disabled>
+                  <option value="">Selecciona una opción</option>
+                  <option value="co">Colombia · COP</option>
+                  <option value="internacional">Otros países · USD</option>
+                </select>
+
+                <div id="method-wrapper" hidden>
+                  <label class="field-label" for="payment-method">
+                    Método de pago
+                  </label>
+
+                  <select id="payment-method">
+                    <option value="">Selecciona un método</option>
+                  </select>
+                </div>
+
+                <div class="summary" aria-live="polite">
+                  <div class="summary-row">
+                    <span>Duración del acceso</span>
+                    <span id="duration">—</span>
+                  </div>
+
+                  <div class="summary-row">
+                    <span>Precio del servicio</span>
+                    <span id="base-price">—</span>
+                  </div>
+
+                  <div id="fee-row" class="summary-row" hidden>
+                    <span>Comisión del método</span>
+                    <span id="fee">—</span>
+                  </div>
+
+                  <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span id="total">—</span>
+                  </div>
+                </div>
+
+                <button
+                  id="contact-button"
+                  class="button button-whatsapp full"
+                  type="button"
+                  disabled>
+                  <i class="bi bi-whatsapp" aria-hidden="true"></i>
+                  Consultar por WhatsApp
+                </button>
+
+                <label class="acknowledge" for="acknowledge">
+                  <input id="acknowledge" type="checkbox">
+
+                  <span>
+                    Entiendo que descargar la aplicación
+                    no activa el servicio.
+                  </span>
+                </label>
+
+                <button
+                  id="download-button"
+                  class="button button-secondary full"
+                  type="button"
+                  disabled>
+                  <i class="bi bi-download" aria-hidden="true"></i>
+                  Descargar APK
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div class="d-flex justify-content-center gap-2 mt-3 mb-3">
-            <span id="m-anio" class="meta-tag"></span>
-            <span id="m-cat" class="meta-tag"></span>
+          <div
+            id="panel-tv"
+            role="tabpanel"
+            aria-labelledby="tab-tv"
+            tabindex="0"
+            hidden>
+            <div class="coming-soon">
+              <i class="bi bi-tv" aria-hidden="true"></i>
+              <h3>TodoVilu para TV</h3>
+              <p>Próximamente.</p>
+            </div>
           </div>
 
-          <p id="m-sinopsis">Disponible en la app</p>
+          <div
+            id="panel-pc"
+            role="tabpanel"
+            aria-labelledby="tab-pc"
+            tabindex="0"
+            hidden>
+            <div class="coming-soon">
+              <i class="bi bi-pc-display" aria-hidden="true"></i>
+              <h3>TodoVilu para PC</h3>
+              <p>Próximamente.</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <section class="promo-section">
+      <div class="container">
+        <div class="promo">
+          <div>
+            <span class="eyebrow">DESCUBRE TODOVILU STREAMING</span>
+
+            <h2>Tu próximo momento de entretenimiento.</h2>
+
+            <p>
+              Explora el catálogo y encuentra
+              una historia para tu próximo descanso.
+            </p>
+          </div>
+
+          <div class="promo-action">
+            <img
+              src="/v.jpg"
+              alt="TodoVilu Streaming"
+              width="94"
+              height="94"
+              loading="lazy">
+
+            <a class="button button-accent" href="/catalogo/">
+              Conocer el catálogo
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-layout">
+      <div class="footer-copy">
+        © <span id="year"></span> TodoVilu Streaming
+      </div>
+
+      <div class="footer-links">
+        <a href="/catalogo/">Catálogo</a>
+
+        <button
+          id="footer-contact"
+          class="footer-contact"
+          type="button"
+          disabled>
+          WhatsApp
+        </button>
+      </div>
+    </div>
+  </footer>
 
   <script>
+    "use strict";
+
     const API_URL =
       "https://script.google.com/macros/s/AKfycbynmmuez_uPO30pjulj6NzUbcKDQYiLbSQC7mQA40LiwoI-dh5FplZ-0_bNFkMwVu2l/exec?key=TodoVilu_Secret_2026_Access";
 
-    const ES_APP_TODOVILU =
-      navigator.userAgent.includes("TodoViluApp") ||
-      typeof Android !== "undefined";
+    const $ = id => document.getElementById(id);
 
-    if (ES_APP_TODOVILU) {
-      document.body.classList.add("en-app");
+    let configuracion = null;
+    let apkUrl = "";
+    let cargandoConfig = false;
+
+    $("year").textContent = new Date().getFullYear();
+
+    const plataformas = ["android", "tv", "pc"];
+
+    function seleccionarPlataforma(nombre, enfocar = false) {
+      plataformas.forEach(plataforma => {
+        const activo = plataforma === nombre;
+        const tab = $("tab-" + plataforma);
+
+        tab.setAttribute("aria-selected", String(activo));
+        tab.tabIndex = activo ? 0 : -1;
+
+        $("panel-" + plataforma).hidden = !activo;
+      });
+
+      if (enfocar) {
+        $("tab-" + nombre).focus();
+      }
     }
 
-    const SIN_IMAGEN =
-      "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450">' +
-        '<rect width="100%" height="100%" fill="#242424"/>' +
-        '<text x="50%" y="50%" fill="#aaaaaa" font-family="sans-serif" ' +
-        'font-size="20" text-anchor="middle">Sin imagen</text></svg>'
-      );
+    plataformas.forEach((nombre, index) => {
+      const tab = $("tab-" + nombre);
 
-    let DB = [];
-    let VIEW_DB = [];
-    let currentPage = 1;
-    const itemsPerPage = 24;
-    let catalogoWhatsapp = "";
-    let preparandoDetalle = false;
-    let contactoPromise = null;
+      tab.addEventListener("click", () => {
+        seleccionarPlataforma(nombre);
+      });
 
-    function puenteAndroidDisponible() {
-      return ES_APP_TODOVILU &&
-        typeof Android !== "undefined" &&
-        typeof Android.downloadJson === "function";
+      tab.addEventListener("keydown", event => {
+        let destino = null;
+
+        if (event.key === "ArrowRight") {
+          destino = (index + 1) % plataformas.length;
+        } else if (event.key === "ArrowLeft") {
+          destino =
+            (index - 1 + plataformas.length) % plataformas.length;
+        } else if (event.key === "Home") {
+          destino = 0;
+        } else if (event.key === "End") {
+          destino = plataformas.length - 1;
+        }
+
+        if (destino !== null) {
+          event.preventDefault();
+          seleccionarPlataforma(plataformas[destino], true);
+        }
+      });
+    });
+
+    function numeroValido(valor, permitirCero = false) {
+      return typeof valor === "number" &&
+        Number.isFinite(valor) &&
+        (permitirCero ? valor >= 0 : valor > 0);
     }
 
-    function guardarContacto(paquete) {
-      catalogoWhatsapp = String(
-        paquete.configuracion?.whatsapp || ""
-      ).replace(/\D/g, "");
-    }
-
-    async function cargarCatalogo() {
+    function urlHttps(valor) {
       try {
-        const response = await fetch(API_URL + "&vista=indice");
+        const url = new URL(String(valor || ""));
+        return url.protocol === "https:" ? url.href : "";
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function dinero(valor, moneda) {
+      return new Intl.NumberFormat(
+        moneda === "COP" ? "es-CO" : "en-US",
+        {
+          style: "currency",
+          currency: moneda,
+          minimumFractionDigits: moneda === "COP" ? 0 : 2,
+          maximumFractionDigits: moneda === "COP" ? 0 : 2
+        }
+      ).format(valor) + " " + moneda;
+    }
+
+    function whatsappValido() {
+      return /^[1-9]\d{6,14}$/.test(
+        configuracion?.whatsapp || ""
+      );
+    }
+
+    async function cargarConfiguracion() {
+      if (cargandoConfig) return;
+
+      cargandoConfig = true;
+
+      $("config-status").textContent = "Cargando información…";
+      $("config-retry").hidden = true;
+
+      try {
+        const response = await fetch(API_URL + "&vista=config");
 
         if (!response.ok) {
           throw new Error("HTTP " + response.status);
         }
 
         const paquete = await response.json();
+        const config = paquete.configuracion;
 
-        guardarContacto(paquete);
-        iniciarWeb(paquete.catalogo || []);
+        if (!config || typeof config !== "object") {
+          throw new Error("Falta la configuración comercial");
+        }
+
+        configuracion = {
+          version: String(config.version || ""),
+          whatsapp: String(config.whatsapp || "")
+            .replace(/\D/g, ""),
+          duracionDias: config.duracionDias,
+          precioColombiaCOP: config.precioColombiaCOP,
+          precioInternacionalUSD: config.precioInternacionalUSD,
+          metodosPago: (
+            Array.isArray(config.metodosPago)
+              ? config.metodosPago
+              : []
+          ).filter(metodo =>
+            metodo &&
+            String(metodo.nombre || "").trim() &&
+            numeroValido(metodo.comisionUSD, true)
+          )
+        };
+
+        apkUrl = urlHttps(paquete.apk);
+
+        $("payment-method").replaceChildren(
+          new Option("Selecciona un método", "")
+        );
+
+        configuracion.metodosPago.forEach((metodo, index) => {
+          $("payment-method").add(
+            new Option(
+              String(metodo.nombre),
+              String(index)
+            )
+          );
+        });
+
+        $("region").disabled = false;
+        $("footer-contact").disabled = !whatsappValido();
+
+        actualizarOferta();
       } catch (error) {
         console.error(error);
 
-        document.getElementById("loader-spinner").hidden = true;
+        $("config-status").textContent =
+          "No se pudo cargar la información. Intenta nuevamente.";
 
-        document.getElementById("loader-text").textContent =
-          "No se pudo cargar el catálogo. Revisa tu conexión.";
-
-        document.getElementById("loader-retry").hidden = false;
+        $("config-retry").hidden = false;
+      } finally {
+        cargandoConfig = false;
       }
     }
 
-    function normalizarCategoria(categoria) {
-      return String(categoria || "").toLowerCase().trim();
-    }
+    function obtenerOferta() {
+      const region = $("region").value;
 
-    function normalizarTexto(valor) {
-      return String(valor || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[_-]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
+      if (!configuracion || !region) return null;
 
-    function normalizarColeccion(valor) {
-      return normalizarTexto(valor)
-        .replace(/\s+coleccion$/i, "")
-        .trim();
-    }
+      const dias = configuracion.duracionDias;
 
-    function iniciarWeb(datos) {
-      const generosSet = new Set();
-      const categoriasSet = new Set();
-      const aniosSet = new Set();
+      if (!Number.isInteger(dias) || dias <= 0) {
+        return null;
+      }
 
-      DB = datos.map(item => {
-        const categoria = normalizarCategoria(item.categoria);
+      if (region === "co") {
+        const base = configuracion.precioColombiaCOP;
 
-        const generos = Array.isArray(item.generos)
-          ? item.generos
-          : String(item.generos || "")
-              .split(",")
-              .map(g => g.trim())
-              .filter(Boolean);
-
-        generos.forEach(g => generosSet.add(g));
-
-        if (categoria) categoriasSet.add(categoria);
-
-        const anioNum = parseInt(item.anio || item.year || 0);
-
-        if (!isNaN(anioNum) && anioNum > 0) {
-          aniosSet.add(anioNum);
-        }
+        if (!numeroValido(base)) return null;
 
         return {
-          id: String(item.id || item.tmdbId || ""),
-          idApp: String(item.idApp || item.id || ""),
-          titulo: String(item.titulo || ""),
-          img: String(item.imagen || "")
-            .replace(/\/t\/p\/w\d+\//, "/t/p/w342/"),
-          tipo: categoria,
-          anio: isNaN(anioNum) ? 0 : anioNum,
-          generos,
-          sinopsis: item.sinopsis || "",
-          coleccion: String(
-            item.coleccion ||
-            item.collection ||
-            item.saga ||
-            ""
-          ).trim(),
-          jsonFull: null
+          region: "Colombia",
+          moneda: "COP",
+          dias,
+          base,
+          comision: 0,
+          total: base,
+          metodo: ""
         };
-      });
-
-      llenarFiltro(
-        "filtro-cat",
-        Array.from(categoriasSet).sort()
-      );
-
-      llenarFiltro(
-        "filtro-genero",
-        Array.from(generosSet).sort()
-      );
-
-      llenarFiltro(
-        "filtro-anio",
-        Array.from(aniosSet).sort((a, b) => b - a)
-      );
-
-      document.getElementById("loader").style.display = "none";
-
-      aplicarFiltros();
-    }
-
-    function llenarFiltro(id, valores) {
-      const select = document.getElementById(id);
-
-      while (select.options.length > 1) {
-        select.remove(1);
       }
 
-      valores.forEach(valor => {
-        select.add(new Option(String(valor), String(valor)));
-      });
-    }
+      if (region !== "internacional") return null;
 
-    function resetFiltros() {
-      document.getElementById("filtro-cat").value = "Todos";
-      document.getElementById("filtro-genero").value = "Todos";
-      document.getElementById("filtro-anio").value = "Todos";
-      document.getElementById("filtro-orden").value = "nuevo";
-      document.getElementById("buscador").value = "";
+      const base = configuracion.precioInternacionalUSD;
+      const seleccion = $("payment-method").value;
 
-      aplicarFiltros();
-    }
-
-    function aplicarFiltros() {
-      const texto = normalizarTexto(
-        document.getElementById("buscador").value
-      );
-
-      const categoria = document.getElementById("filtro-cat").value;
-      const genero = document.getElementById("filtro-genero").value;
-      const anio = document.getElementById("filtro-anio").value;
-      const orden = document.getElementById("filtro-orden").value;
-
-      VIEW_DB = DB.filter(item => {
-        const coincideTexto =
-          texto === "" ||
-          normalizarTexto(item.titulo).includes(texto) ||
-          normalizarColeccion(item.coleccion).includes(texto) ||
-          normalizarTexto(item.sinopsis).includes(texto) ||
-          normalizarTexto(item.generos.join(" ")).includes(texto);
-
-        return coincideTexto &&
-          (categoria === "Todos" || item.tipo === categoria) &&
-          (genero === "Todos" || item.generos.includes(genero)) &&
-          (anio === "Todos" || item.anio == anio);
-      });
-
-      if (orden === "nuevo") {
-        VIEW_DB.sort((a, b) => b.anio - a.anio);
+      if (!numeroValido(base) || seleccion === "") {
+        return null;
       }
 
-      if (orden === "viejo") {
-        VIEW_DB.sort((a, b) => a.anio - b.anio);
-      }
+      const metodo =
+        configuracion.metodosPago[Number(seleccion)];
 
-      if (orden === "az") {
-        VIEW_DB.sort((a, b) => a.titulo.localeCompare(b.titulo));
-      }
+      if (!metodo) return null;
 
-      document.getElementById("contador").textContent =
-        VIEW_DB.length + " resultados";
-
-      currentPage = 1;
-      renderGrid();
-    }
-
-    function renderGrid() {
-      const container = document.getElementById("grid");
-      container.replaceChildren();
-
-      if (VIEW_DB.length === 0) {
-        const mensaje = document.createElement("p");
-        mensaje.className = "text-center w-100 text-secondary mt-5";
-        mensaje.textContent = "Sin resultados.";
-        container.appendChild(mensaje);
-
-        document.getElementById("pagination").hidden = true;
-        return;
-      }
-
-      const start = (currentPage - 1) * itemsPerPage;
-      const items = VIEW_DB.slice(start, start + itemsPerPage);
-      const maxPages = Math.ceil(VIEW_DB.length / itemsPerPage);
-
-      items.forEach(item => {
-        const col = document.createElement("div");
-        col.className = "col";
-
-        const card = document.createElement("div");
-        card.className = "card";
-
-        const categoria = document.createElement("span");
-        categoria.className = "badge-cat";
-        categoria.textContent = item.tipo;
-
-        const anio = document.createElement("span");
-        anio.className = "badge-year";
-        anio.textContent = item.anio > 0 ? item.anio : "";
-
-        const img = document.createElement("img");
-        img.className = "card-img-top";
-        img.loading = "lazy";
-        img.alt = item.titulo;
-
-        img.onerror = function () {
-          this.onerror = null;
-          this.src = SIN_IMAGEN;
-        };
-
-        img.src = item.img || SIN_IMAGEN;
-
-        const body = document.createElement("div");
-        body.className = "card-body";
-
-        const titulo = document.createElement("div");
-        titulo.className = "card-title";
-        titulo.textContent = item.titulo;
-
-        const boton = document.createElement("button");
-        boton.type = "button";
-        boton.className = "btn-detalles mt-auto";
-        boton.textContent = "VER DETALLES";
-
-        body.append(titulo, boton);
-        card.append(categoria, anio, img, body);
-
-        card.addEventListener("click", () => clickCard(item.id));
-
-        col.appendChild(card);
-        container.appendChild(col);
-      });
-
-      document.getElementById("pagination").hidden = false;
-
-      document.getElementById("page-info").textContent =
-        currentPage + " / " + maxPages;
-
-      const buttons =
-        document.querySelectorAll("#pagination button");
-
-      buttons[0].disabled = currentPage === 1;
-      buttons[1].disabled = currentPage === maxPages;
-    }
-
-    function prevPage() {
-      if (currentPage > 1) {
-        currentPage--;
-        renderGrid();
-        window.scrollTo(0, 0);
-      }
-    }
-
-    function nextPage() {
-      const maxPages = Math.ceil(VIEW_DB.length / itemsPerPage);
-
-      if (currentPage < maxPages) {
-        currentPage++;
-        renderGrid();
-        window.scrollTo(0, 0);
-      }
-    }
-
-    async function clickCard(id) {
-      if (puenteAndroidDisponible()) {
-        await enviarDetalleAAndroid(id);
-        return;
-      }
-
-      abrirModal(id);
-    }
-
-    function actualizarEnlaceContacto(item) {
-      const contacto = document.getElementById("catalogo-contacto");
-      const error = document.getElementById("catalogo-contacto-error");
-
-      const valido = /^[1-9]\d{6,14}$/.test(catalogoWhatsapp);
-
-      contacto.hidden = !valido;
-      error.hidden = valido;
-      contacto.removeAttribute("href");
-
-      if (!valido) return;
-
-      const mensaje =
-        "Hola, quiero contratar TodoVilu para ver: " +
-        item.titulo +
-        ". ¿Cómo puedo activar el acceso?";
-
-      contacto.href =
-        "https://wa.me/" + catalogoWhatsapp +
-        "?text=" + encodeURIComponent(mensaje);
-    }
-
-    async function asegurarContacto() {
-      if (/^[1-9]\d{6,14}$/.test(catalogoWhatsapp)) return;
-
-      if (!contactoPromise) {
-        contactoPromise = (async () => {
-          try {
-            const response = await fetch(API_URL + "&vista=config");
-
-            if (!response.ok) {
-              throw new Error("HTTP " + response.status);
-            }
-
-            guardarContacto(await response.json());
-          } catch (error) {
-            console.error(error);
-          } finally {
-            contactoPromise = null;
-          }
-        })();
-      }
-
-      await contactoPromise;
-    }
-
-    let fichaActual = null;
-
-    function abrirModal(id) {
-      const item = DB.find(element => element.id === id);
-
-      if (!item) return;
-
-      fichaActual = item;
-
-      document.getElementById("sales-overlay").hidden = true;
-      document.getElementById("m-titulo").textContent = item.titulo;
-      document.getElementById("m-anio").textContent =
-        item.anio > 0 ? item.anio : "----";
-      document.getElementById("m-cat").textContent = item.tipo;
-
-      document.getElementById("m-sinopsis").textContent =
-        item.sinopsis || "Disponible en la app";
-
-      const img = document.getElementById("m-img");
-      img.alt = item.titulo;
-      img.onerror = function () {
-        this.onerror = null;
-        this.src = SIN_IMAGEN;
+      return {
+        region: "Otros países",
+        moneda: "USD",
+        dias,
+        base,
+        comision: metodo.comisionUSD,
+        total: Math.round(
+          (base + metodo.comisionUSD) * 100
+        ) / 100,
+        metodo: String(metodo.nombre)
       };
-      img.src = item.img || SIN_IMAGEN;
-
-      actualizarEnlaceContacto(item);
-
-      bootstrap.Modal.getOrCreateInstance(
-        document.getElementById("infoModal")
-      ).show();
     }
 
-    async function mostrarOpcionesVenta() {
-      if (!fichaActual) return;
+    function actualizarOferta() {
+      const region = $("region").value;
+      const internacional = region === "internacional";
 
-      document.getElementById("sales-overlay").hidden = false;
+      $("method-wrapper").hidden = !internacional;
+      $("fee-row").hidden = !internacional;
 
-      const item = fichaActual;
+      const oferta = obtenerOferta();
+      const dias = configuracion?.duracionDias;
 
-      await asegurarContacto();
+      $("app-version").textContent =
+        configuracion?.version || "No disponible";
 
-      if (fichaActual === item) {
-        actualizarEnlaceContacto(item);
+      $("duration").textContent =
+        Number.isInteger(dias) && dias > 0
+          ? dias + " días"
+          : "—";
+
+      const base = internacional
+        ? configuracion?.precioInternacionalUSD
+        : configuracion?.precioColombiaCOP;
+
+      $("base-price").textContent =
+        region && numeroValido(base)
+          ? dinero(base, internacional ? "USD" : "COP")
+          : "—";
+
+      $("fee").textContent =
+        oferta ? dinero(oferta.comision, "USD") : "—";
+
+      $("total").textContent =
+        oferta ? dinero(oferta.total, oferta.moneda) : "—";
+
+      $("contact-button").disabled =
+        !oferta || !whatsappValido();
+
+      $("download-button").disabled =
+        !oferta || !$("acknowledge").checked || !apkUrl;
+
+      if (!configuracion) {
+        $("config-status").textContent =
+          "Información pendiente de cargar.";
+      } else if (!Number.isInteger(dias) || dias <= 0) {
+        $("config-status").textContent =
+          "Duración del acceso no disponible.";
+      } else if (!region) {
+        $("config-status").textContent =
+          "Selecciona tu ubicación para ver el precio.";
+      } else if (!numeroValido(base)) {
+        $("config-status").textContent =
+          "Precio no disponible. Inténtalo más tarde.";
+      } else if (internacional && !oferta) {
+        $("config-status").textContent =
+          "Selecciona un método de pago.";
+      } else if (!whatsappValido()) {
+        $("config-status").textContent =
+          "Contacto de activación no disponible.";
+      } else {
+        $("config-status").textContent =
+          "Consulta el pago y la activación por WhatsApp.";
       }
     }
 
-    async function obtenerJsonCompleto(item) {
-      if (!puenteAndroidDisponible()) {
-        throw new Error(
-          "El detalle completo está disponible dentro de la app."
+    function abrirWhatsApp(mensaje) {
+      if (!whatsappValido()) return;
+
+      window.open(
+        "https://wa.me/" + configuracion.whatsapp +
+          "?text=" + encodeURIComponent(mensaje),
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+
+    function contactarConOferta() {
+      const oferta = obtenerOferta();
+
+      if (!oferta) return;
+
+      const lineas = [
+        "Hola, quiero contratar TodoVilu.",
+        "Ubicación: " + oferta.region,
+        "Duración: " + oferta.dias + " días",
+        "Precio: " + dinero(oferta.base, oferta.moneda)
+      ];
+
+      if (oferta.metodo) {
+        lineas.push(
+          "Método: " + oferta.metodo,
+          "Comisión adicional: " +
+            dinero(oferta.comision, "USD")
         );
       }
 
-      if (item.jsonFull) return item.jsonFull;
+      lineas.push(
+        "Total: " + dinero(oferta.total, oferta.moneda),
+        "¿Cómo puedo pagar y activar el acceso?"
+      );
 
-      const url = new URL(API_URL);
-      url.searchParams.set("vista", "detalle");
-      url.searchParams.set("id", item.id);
-      url.searchParams.set("categoria", item.tipo);
-
-      const response = await fetch(url.toString());
-
-      if (!response.ok) {
-        throw new Error("No se pudo cargar el detalle");
-      }
-
-      const paquete = await response.json();
-
-      if (!paquete.item) {
-        throw new Error("Detalle no encontrado");
-      }
-
-      item.jsonFull = {
-        ...paquete.item,
-
-        coleccion: String(
-          paquete.item.coleccion ||
-          paquete.item.collection ||
-          paquete.item.saga ||
-          item.coleccion ||
-          ""
-        ).trim(),
-
-        saga: String(
-          paquete.item.saga ||
-          paquete.item.coleccion ||
-          paquete.item.collection ||
-          item.coleccion ||
-          ""
-        ).trim()
-      };
-
-      return item.jsonFull;
+      abrirWhatsApp(lineas.join("\n"));
     }
 
-    async function enviarDetalleAAndroid(id) {
-      const item = DB.find(element => element.id === id);
-
+    function descargarAplicacion() {
       if (
-        !item ||
-        !puenteAndroidDisponible() ||
-        preparandoDetalle
+        !obtenerOferta() ||
+        !$("acknowledge").checked ||
+        !apkUrl
       ) {
         return;
       }
 
-      preparandoDetalle = true;
-
-      document.getElementById("loader-text").textContent =
-        "Preparando detalle...";
-
-      document.getElementById("loader-spinner").hidden = false;
-      document.getElementById("loader-retry").hidden = true;
-      document.getElementById("loader").style.display = "flex";
-
-      try {
-        const jsonFull = await obtenerJsonCompleto(item);
-
-        Android.downloadJson(JSON.stringify(jsonFull));
-      } catch (error) {
-        console.error(error);
-        alert("No se pudo abrir el detalle. Intenta nuevamente.");
-      } finally {
-        document.getElementById("loader").style.display = "none";
-        preparandoDetalle = false;
-      }
+      window.open(
+        apkUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
     }
 
-    cargarCatalogo();
+    $("region").addEventListener("change", actualizarOferta);
+    $("payment-method").addEventListener("change", actualizarOferta);
+    $("acknowledge").addEventListener("change", actualizarOferta);
+
+    $("config-retry").addEventListener(
+      "click",
+      cargarConfiguracion
+    );
+
+    $("contact-button").addEventListener(
+      "click",
+      contactarConOferta
+    );
+
+    $("download-button").addEventListener(
+      "click",
+      descargarAplicacion
+    );
+
+    $("footer-contact").addEventListener("click", () => {
+      abrirWhatsApp(
+        "Hola, quiero información para contratar TodoVilu."
+      );
+    });
+
+    cargarConfiguracion();
   </script>
 </body>
 </html>
