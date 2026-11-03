@@ -1215,8 +1215,7 @@
   </footer>
 
   <script>
-    const API_URL =
-      "https://script.google.com/macros/s/AKfycbynmmuez_uPO30pjulj6NzUbcKDQYiLbSQC7mQA40LiwoI-dh5FplZ-0_bNFkMwVu2l/exec?key=TodoVilu_Secret_2026_Access";
+    const API_URL = "/api/catalogo";
 
     let tvConfiguracion = null;
     let tvApkUrl = "";
@@ -1381,7 +1380,7 @@
 
       try {
         const response =
-          await fetch(API_URL + "&vista=config");
+          await fetch(API_URL + "?vista=config");
 
         if (!response.ok) {
           throw new Error("HTTP " + response.status);
