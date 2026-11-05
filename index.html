@@ -1557,7 +1557,7 @@
         document.getElementById("tv-acknowledge").checked;
 
       document.getElementById("tv-download-button").disabled =
-        !oferta || !aceptado || !tvApkUrl;
+      !aceptado || !tvApkUrl;
 
       const status =
         document.getElementById("tv-config-status");
@@ -1632,20 +1632,17 @@
     }
 
     function descargarAndroidTodoVilu() {
-      const oferta = obtenerOfertaTodoVilu();
+  const aceptado =
+    document.getElementById("tv-acknowledge").checked;
 
-      const aceptado =
-        document.getElementById("tv-acknowledge").checked;
+  if (!aceptado || !tvApkUrl) return;
 
-      if (!oferta || !aceptado || !tvApkUrl) return;
-
-      window.open(
-        tvApkUrl,
-        "_blank",
-        "noopener,noreferrer"
-      );
-    }
-
+  window.open(
+    tvApkUrl,
+    "_blank",
+    "noopener,noreferrer"
+  );
+}
     cargarConfiguracionTodoVilu();
   </script>
 </body>
