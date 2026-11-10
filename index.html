@@ -8,7 +8,7 @@
 
   <meta
     name="description"
-    content="Explora TodoVilu Streaming. Consulta los precios de acceso y descarga la aplicación oficial para Android."
+    content="Explora TodoVilu Streaming. Consulta los precios de acceso y descarga la aplicación oficial para Android y Google TV."
   >
   <meta name="theme-color" content="#e50914">
 
@@ -352,7 +352,7 @@
 
     .platform-tabs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 7px;
       padding: 10px;
       background: #101014;
@@ -921,19 +921,7 @@
               aria-controls="panel-android"
               tabindex="0">
               <i class="bi bi-android2" aria-hidden="true"></i>
-              Android
-            </button>
-
-            <button
-              id="tab-tv"
-              class="platform-tab"
-              type="button"
-              role="tab"
-              aria-selected="false"
-              aria-controls="panel-tv"
-              tabindex="-1">
-              <i class="bi bi-tv" aria-hidden="true"></i>
-              TV
+              Android y Google TV
             </button>
 
             <button
@@ -965,7 +953,7 @@
                     height="62">
 
                   <div>
-                    <h3>TodoVilu para Android</h3>
+                    <h3>TodoVilu para Android y Google TV</h3>
 
                     <div class="version">
                       Versión:
@@ -975,8 +963,9 @@
                 </div>
 
                 <p>
-                  Elige tu ubicación, consulta tu tarifa
-                  y coordina la activación por WhatsApp.
+                  La misma aplicación funciona en móviles, tablets y dispositivos
+                  Android TV o Google TV. Consulta tu tarifa y coordina la activación
+                  por WhatsApp.
                 </p>
 
                 <div class="notice">
@@ -1079,24 +1068,12 @@
                   onclick="descargarAndroidTodoVilu()"
                   disabled>
                   <i class="bi bi-download" aria-hidden="true"></i>
-                  Descargar APK
+                  Descargar APK para Android y Google TV
                 </button>
               </div>
             </div>
           </div>
 
-          <div
-            id="panel-tv"
-            role="tabpanel"
-            aria-labelledby="tab-tv"
-            tabindex="0"
-            hidden>
-            <div class="coming-soon">
-              <i class="bi bi-tv" aria-hidden="true"></i>
-              <h3>TodoVilu para TV</h3>
-              <p>Próximamente.</p>
-            </div>
-          </div>
 
           <div
             id="panel-pc"
@@ -1257,8 +1234,8 @@
       document.fonts.ready.then(actualizarAlturaEncabezado);
     }
 
-    /* Pestañas Android / TV / PC. */
-    const plataformas = ["android", "tv", "pc"];
+    /* Pestañas Android / Google TV / PC. */
+    const plataformas = ["android", "pc"];
 
     function seleccionarPlataforma(nombre, enfocar = false) {
       plataformas.forEach(plataforma => {
